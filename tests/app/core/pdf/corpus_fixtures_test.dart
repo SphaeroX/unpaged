@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/pdfrx_adapter.dart';
 
 /// Keeps the engine fixtures (`tests/reflow_engine/fixtures/*.json`) in sync
 /// with what the pdfrx adapter really extracts from the corpus PDFs.

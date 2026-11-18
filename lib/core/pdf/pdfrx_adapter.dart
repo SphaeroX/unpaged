@@ -2,10 +2,10 @@ import 'dart:isolate';
 import 'dart:typed_data';
 
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/core/pdf/png_encoder.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/core/pdf/png_encoder.dart';
 
 /// [PdfAdapter] backed by pdfrx (PDFium).
 class PdfrxAdapter implements PdfAdapter {

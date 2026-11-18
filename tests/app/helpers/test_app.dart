@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/app.dart';
+import 'package:unpaged/app.dart';
 
 /// Builds the full app with the given provider overrides.
 Widget buildTestApp({
@@ -12,6 +12,6 @@ Widget buildTestApp({
 }) {
   return ProviderScope(
     overrides: overrides.cast(),
-    child: PaperflowApp(locale: locale, home: home),
+    child: UnpagedApp(locale: locale, home: home),
   );
 }

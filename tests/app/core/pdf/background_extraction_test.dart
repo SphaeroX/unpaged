@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/pdfrx_adapter.dart';
 
 /// Spike result (Task 02): text extraction and the engine both work off the
 /// main isolate, so the import pipeline can run in the background.

@@ -1,4 +1,4 @@
-# Roadmap-Regelwerk für KI-Agenten – paperflow
+# Roadmap-Regelwerk für KI-Agenten – Unpaged
 
 Diese Datei legt fest, wie Tasks dieses Projekts abgearbeitet werden. Lies sie vollständig, bevor du an einem Task arbeitest, und halte dich strikt daran. Die Regeln sind bewusst starr: Mehrere Agenten arbeiten nacheinander am selben Projekt, und nur ein einheitlicher Ablauf stellt sicher, dass jeder den Stand des Vorgängers findet.
 

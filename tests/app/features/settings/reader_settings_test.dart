@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 void main() {
   const defaults = ReaderSettings.defaults;

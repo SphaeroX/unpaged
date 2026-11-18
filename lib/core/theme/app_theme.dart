@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 const _seed = Color(0xFF3D5A80);
 

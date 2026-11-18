@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
 
 /// The few highlight colours offered (ARGB, drawn semi-transparent).
 enum HighlightColor {

@@ -1,4 +1,4 @@
-"""Generates the synthetic corpus PDFs (CC0, written for paperflow).
+"""Generates the synthetic corpus PDFs (CC0, written for Unpaged).
 
 Run from the project root with fpdf2 installed in a throwaway venv:
     python3 -m venv /tmp/venv && /tmp/venv/bin/pip install fpdf2

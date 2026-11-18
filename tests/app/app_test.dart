@@ -13,7 +13,7 @@ void main() {
   setUp(() => env = TestEnv());
   tearDown(() => env.dispose());
 
-  group('PaperflowApp', () {
+  group('UnpagedApp', () {
     testWidgets('shows the open button in English', (tester) async {
       await tester.pumpWidget(buildTestApp(overrides: env.overrides));
       await settleIo(tester);

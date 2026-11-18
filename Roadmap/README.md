@@ -1,10 +1,10 @@
-# paperflow – Roadmap
+# Unpaged – Roadmap
 
 Projektübergreifendes Gedächtnis. Agenten lesen diese Datei vor jedem Task und aktualisieren sie, wenn sich etwas ergibt, das über einen einzelnen Task hinausgeht. Regeln für die Arbeit: [AGENTS.md](AGENTS.md).
 
 ## Projektziel
 
-paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, Code auf GitHub). Er öffnet PDFs im Original-Layout und bietet zusätzlich einen eBook-Modus, der PDFs mit Textebene komplett offline neu umbricht, damit sich Fachtexte auf dem Handy bequem lesen lassen.
+Unpaged ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, Code auf GitHub). Er öffnet PDFs im Original-Layout und bietet zusätzlich einen eBook-Modus, der PDFs mit Textebene komplett offline neu umbricht, damit sich Fachtexte auf dem Handy bequem lesen lassen.
 
 **Was die Software tut:** Import über Dateiauswahl, „Öffnen mit“ und „Teilen“ (die App legt eine eigene Kopie an); Bibliothek mit Lesestand; Original-Seitenansicht; eBook-Modus mit Reflow, bei dem Tabellen, Abbildungen und Formeln als zoombare Bildausschnitte erscheinen (Umrechnung beim Import im Hintergrund, zwischengespeichert); Lese-Einstellungen (Schrift, Größe, Zeilenabstand, hell/dunkel/Sepia); Markierungen und Notizen getrennt pro Ansicht; Oberfläche DE/EN.
 
@@ -59,7 +59,7 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 Dinge, die global noch zu beachten sind: Besonderheiten, bekannte Einschränkungen, kleinere Details. Wird laufend ergänzt.
 
 - Hauptrisiko ist die Reflow-Qualität bei Mehrspaltern; deshalb liegen die Engine-Tasks (02–04) vor der App-Integration. *(Roadmap-Anlage)*
-- Offene Entscheidungen des Nutzers: endgültige `applicationId` (Platzhalter `dev.paperflow`) und URL des Datenschutzhinweises (Task_12). Copyright-Inhaber entschieden: „The paperflow authors“. Task_12 ist vom Nutzer vorerst zurückgestellt. *(Task_11)*
+- Projekt am 2026-11-18 von „paperflow“ in **Unpaged** umbenannt (Repo, Dart-Paket `unpaged`, App-Titel). `applicationId` endgültig: `io.github.sphaerox.unpaged`. Offene Entscheidung des Nutzers: URL des Datenschutzhinweises (Task_12). Copyright-Inhaber entschieden: „The Unpaged authors“. Task_12 ist vom Nutzer vorerst zurückgestellt. *(Task_11)*
 - Cloud-Umgebung: Flutter unter `/opt/flutter`, Android-SDK unter `/opt/android-sdk` (nachinstalliert, nicht persistent). APK-Builds funktionieren; Integrationstests laufen dort **nicht** (kein Gerät/Emulator) und müssen lokal nachgeholt werden. *(Task_01)*
 - Bekannte Engine-Grenzen: mehr als zwei Spalten, abgesetzte Akzente (`supe´rieure`), teils zerlegte Ligaturen (`i feld`). *(Task_03)*
 - pdfrx liefert keine Schriftgrößen und keine Bild-/Linienobjekte, nur Zeichen + Boxen. *(Task_01)*

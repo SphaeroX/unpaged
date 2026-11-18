@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/files/pdf_picker.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
-import 'package:paperflow/core/platform/incoming_pdf_channel.dart';
-import 'package:paperflow/features/import/domain/import_service.dart';
-import 'package:paperflow/features/progress/data/reading_position_repository.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
-import 'package:paperflow/features/reader/presentation/reader_screen.dart';
-import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
-import 'package:paperflow/features/viewer/presentation/viewer_screen.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/files/pdf_picker.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/core/platform/incoming_pdf_channel.dart';
+import 'package:unpaged/features/import/domain/import_service.dart';
+import 'package:unpaged/features/progress/data/reading_position_repository.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/reader/presentation/reader_screen.dart';
+import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
+import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 final booksProvider = StreamProvider<List<Book>>(
   (ref) => ref.watch(databaseProvider).watchBooks(),

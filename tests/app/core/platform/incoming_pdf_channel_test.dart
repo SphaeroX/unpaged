@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
-import 'package:paperflow/core/platform/incoming_pdf_channel.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/core/platform/incoming_pdf_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

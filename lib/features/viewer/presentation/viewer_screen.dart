@@ -4,15 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart'
     show FutureProviderFamily, StreamProviderFamily;
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/features/annotations/data/annotation_repository.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/annotations/presentation/annotation_sheets.dart';
-import 'package:paperflow/features/progress/data/reading_position_repository.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
-import 'package:paperflow/features/reader/presentation/reader_screen.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/features/annotations/data/annotation_repository.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/annotations/presentation/annotation_sheets.dart';
+import 'package:unpaged/features/progress/data/reading_position_repository.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/reader/presentation/reader_screen.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 /// Opens a PDF by path once and exposes its [PdfInfo].
 final FutureProviderFamily<PdfInfo, String> _pdfInfoProvider = FutureProvider

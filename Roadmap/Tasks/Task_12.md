@@ -64,10 +64,10 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Aus Task_08: OFL-Lizenzen der Schriften (`assets/fonts/*-OFL.txt`) in die Lizenzseite aufnehmen.
-- Endgültige `applicationId` (offene Entscheidung des Nutzers).
-- Name des Copyright-Inhabers für die MIT-Lizenz: vom Nutzer entschieden (2026-11-18) → „The paperflow authors“.
+- `applicationId`: bei der Umbenennung in Unpaged festgelegt (2026-11-18) → `io.github.sphaerox.unpaged`.
+- Name des Copyright-Inhabers für die MIT-Lizenz: vom Nutzer entschieden (2026-11-18) → „The Unpaged authors“ (Projekt umbenannt von „paperflow“).
 - Bereits erledigt (auf Wunsch des Nutzers vorgezogen): GitHub-Actions-Workflow mit Release-APK bei Tags `v*` und optionaler Release-Signatur über `android/key.properties` bzw. Repository-Secrets (siehe `docs/conventions.md`, Abschnitt „CI und Release“). Offen bleibt das Erzeugen des echten Upload-Keystores durch den Nutzer und das Hinterlegen der Secrets.
-- Stand 2026-11-18: Der Nutzer hat diesen Task vorerst zurückgestellt; `applicationId` und Datenschutz-URL sind noch offen.
+- Stand 2026-11-18: Der Nutzer hat diesen Task vorerst zurückgestellt; die Datenschutz-URL ist noch offen.
 - Hosting des Datenschutzhinweises für den Play Store (Play verlangt eine URL; z. B. GitHub-Seite des Repos) – mit dem Nutzer klären.
 
 ## Notizen zu diesem Task

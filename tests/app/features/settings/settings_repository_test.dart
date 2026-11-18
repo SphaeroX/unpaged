@@ -1,8 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/settings/data/settings_repository.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/settings/data/settings_repository.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 void main() {
   test('loads defaults from an empty database', () async {

@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
-import 'package:paperflow/features/reflow/domain/reflow_pipeline.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/pdf/pdfrx_adapter.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/features/reflow/domain/reflow_pipeline.dart';
 
 /// On a device: a real PDF goes through extraction, the engine in a
 /// background isolate and storage (Task 06), checking that this works on
@@ -19,7 +19,7 @@ void main() {
 
   testWidgets('processes a PDF to done with a stored document', (tester) async {
     await pdfrxFlutterInitialize();
-    final tmp = Directory.systemTemp.createTempSync('paperflow_it_reflow');
+    final tmp = Directory.systemTemp.createTempSync('unpaged_it_reflow');
     final db = AppDatabase(NativeDatabase.memory());
     final books = BookFileStore(tmp);
     final store = ReflowStore(tmp);

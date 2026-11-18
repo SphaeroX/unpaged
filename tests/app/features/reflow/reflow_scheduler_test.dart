@@ -1,9 +1,9 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/reflow/domain/reflow_pipeline.dart';
-import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/reflow/domain/reflow_pipeline.dart';
+import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
 
 class _MockPipeline extends Mock implements ReflowPipeline;
 

@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/files/pdf_picker.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/files/pdf_picker.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
 
 import '../app/helpers/test_app.dart';
 
@@ -33,7 +33,7 @@ void main() {
     tester,
   ) async {
     await pdfrxFlutterInitialize();
-    final tmp = Directory.systemTemp.createTempSync('paperflow_it_ebook');
+    final tmp = Directory.systemTemp.createTempSync('unpaged_it_ebook');
     final file = File('${tmp.path}/synthetic.pdf');
     await file.writeAsBytes(base64Decode(_pdf));
 
@@ -64,7 +64,7 @@ void main() {
 
   testWidgets('continue reading reopens the last used view', (tester) async {
     await pdfrxFlutterInitialize();
-    final tmp = Directory.systemTemp.createTempSync('paperflow_it_resume');
+    final tmp = Directory.systemTemp.createTempSync('unpaged_it_resume');
     final file = File('${tmp.path}/synthetic.pdf');
     await file.writeAsBytes(base64Decode(_pdf));
 

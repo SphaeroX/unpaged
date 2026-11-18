@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
 
 /// Highlights and notes, stored only in the app's database.
 class AnnotationRepository {

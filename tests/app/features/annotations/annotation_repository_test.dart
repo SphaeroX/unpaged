@@ -1,9 +1,9 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/annotations/data/annotation_repository.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/annotations/data/annotation_repository.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
 
 void main() {
   late AppDatabase db;

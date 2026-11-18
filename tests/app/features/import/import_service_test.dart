@@ -6,15 +6,15 @@ import 'package:crypto/crypto.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/features/annotations/data/annotation_repository.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/import/domain/import_service.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/features/annotations/data/annotation_repository.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/import/domain/import_service.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
 
 class _MockAdapter extends Mock implements PdfAdapter;
 
@@ -41,7 +41,7 @@ void main() {
 
   setUp(() {
     db = AppDatabase(NativeDatabase.memory());
-    dir = Directory.systemTemp.createTempSync('paperflow_import');
+    dir = Directory.systemTemp.createTempSync('unpaged_import');
     store = BookFileStore(dir);
     adapter = _MockAdapter();
     when(() => adapter.inspect(any()))

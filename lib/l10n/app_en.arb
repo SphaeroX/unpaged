@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "paperflow",
+  "appTitle": "Unpaged",
   "openPdf": "Open PDF",
   "@openPdf": {
     "description": "Button that opens the system file picker for a PDF"

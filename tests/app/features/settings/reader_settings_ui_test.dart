@@ -2,12 +2,12 @@ import 'package:drift/drift.dart' show Value;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart' show Scaffold, Theme;
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/theme/app_theme.dart';
-import 'package:paperflow/features/reader/presentation/reader_screen.dart';
-import 'package:paperflow/features/settings/data/settings_repository.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/theme/app_theme.dart';
+import 'package:unpaged/features/reader/presentation/reader_screen.dart';
+import 'package:unpaged/features/settings/data/settings_repository.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';

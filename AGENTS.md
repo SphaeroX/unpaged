@@ -1,4 +1,4 @@
-# paperflow
+# Unpaged
 
 Open-Source-PDF-Reader für Android (MIT) mit Offline-eBook-Modus, der PDFs mit Textebene neu umbricht (Reflow). Flutter/Dart, pdfrx, Riverpod, drift; die Layout-Analyse liegt im reinen Dart-Paket `packages/reflow_engine/`.
 

@@ -3,8 +3,8 @@ import 'dart:collection';
 
 import 'package:drift/drift.dart' show OrderingTerm;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/reflow/domain/reflow_pipeline.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/reflow/domain/reflow_pipeline.dart';
 
 /// Background reflow work as seen by the UI.
 abstract interface class ReflowQueue {

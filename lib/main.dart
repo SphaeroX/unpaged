@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/app.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:unpaged/app.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,7 @@ Future<void> main() async {
         bookFileStoreProvider.overrideWithValue(BookFileStore(storage)),
         reflowStoreProvider.overrideWithValue(ReflowStore(storage)),
       ],
-      child: const PaperflowApp(),
+      child: const UnpagedApp(),
     ),
   );
 }

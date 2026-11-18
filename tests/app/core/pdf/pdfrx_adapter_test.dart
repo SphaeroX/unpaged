@@ -2,10 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/core/pdf/pdfrx_adapter.dart';
 
 void main() {
   // Host tests have no Flutter plugins; use the pure-Dart initializer.

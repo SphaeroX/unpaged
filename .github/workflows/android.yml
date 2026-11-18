@@ -106,11 +106,11 @@ jobs:
         run: |
           mkdir -p dist
           cp build/app/outputs/flutter-apk/app-release.apk \
-            "dist/paperflow-${{ steps.version.outputs.name }}.apk"
+            "dist/unpaged-${{ steps.version.outputs.name }}.apk"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: paperflow-apk
+          name: unpaged-apk
           path: dist/*.apk
 
       - name: Publish GitHub release
@@ -119,6 +119,6 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.name }}
           target_commitish: ${{ github.sha }}
-          name: paperflow ${{ steps.version.outputs.name }}
+          name: Unpaged ${{ steps.version.outputs.name }}
           files: dist/*.apk
           generate_release_notes: true
