@@ -29,5 +29,11 @@
 - Commit-Nachrichten: Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `refactor:`, `chore:`).
 - Branch-Strategie: direkt auf `main`, sofern die Arbeitsumgebung keinen anderen Branch vorgibt.
 
+## CI und Release
+
+- Workflow `.github/workflows/android.yml` (GitHub Actions, Flutter 3.50.0, Java 21): bei jedem Push/PR auf `main` Format-Check, `flutter analyze`, `flutter test tests/app tests/reflow_engine` und Release-APK als Artefakt.
+- Release: Tag `vX.Y.Z` pushen (`git tag v1.0.0 && git push origin v1.0.0`) → APK `paperflow-X.Y.Z.apk` wird als GitHub-Release veröffentlicht (Versionsname aus dem Tag, Build-Nummer = Lauf-Nummer).
+- Signatur: Mit den Repository-Secrets `ANDROID_KEYSTORE_BASE64` (Keystore als Base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` schreibt der Workflow `android/key.properties` + Keystore und `android/app/build.gradle.kts` signiert damit; ohne Secrets wird mit dem Debug-Schlüssel signiert (nur zum Testen, Updates zwischen beiden Varianten sind nicht möglich). Keystore und `key.properties` nie committen (stehen in `.gitignore`).
+
 ---
 Pflege: Bei neuen Konventionen oder Komponenten diese Datei sofort aktualisieren.
