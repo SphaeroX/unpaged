@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 60 180 180" width="512" height="512">
+  <!-- Unpaged app icon (master). Android resources in android/app/src/main/res are derived from these coordinates. -->
+  <rect x="40" y="60" width="180" height="180" rx="42" fill="#1F2A5C"/>
+  <path d="M80 95 H128 L146 113 V187 Q146 195 138 195 H80 Q72 195 72 187 V103 Q72 95 80 95Z" fill="#F4F1EA"/>
+  <path d="M128 95 V107 Q128 113 134 113 H146Z" fill="#C9C3B4"/>
+  <g stroke-linecap="round" stroke-width="6" fill="none">
+    <line x1="86" y1="121" x2="116" y2="121" stroke="#1F2A5C" stroke-opacity="0.35"/>
+    <line x1="86" y1="135" x2="132" y2="135" stroke="#1F2A5C" stroke-opacity="0.35"/>
+    <line x1="86" y1="151" x2="198" y2="151" stroke="#FF8A5B"/>
+    <line x1="86" y1="166" x2="184" y2="166" stroke="#FF8A5B"/>
+    <line x1="86" y1="181" x2="194" y2="181" stroke="#FF8A5B"/>
+  </g>
+</svg>
