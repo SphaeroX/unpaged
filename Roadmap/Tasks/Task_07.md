@@ -61,6 +61,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Seitenweises Blättern statt Scrollen ist nicht gefordert; Annahme: vertikales Scrollen.
+- Aus Task_06: Dokument über `ReflowStore.readDocument(bookId)` (null = fehlt/kaputt), Ausschnitte über `ReflowStore.cropFile(bookId, blockId)`; Neuberechnung über `ref.read(reflowSchedulerProvider).enqueue(id)` nach Zurücksetzen des Status auf `pending`. Status in `Books.reflowStatus`. `ViewerScreen` bekommt bisher nur `path`/`title` – für den Moduswechsel braucht er die Buch-ID.
 
 ## Notizen zu diesem Task
 

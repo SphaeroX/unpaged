@@ -1,5 +1,9 @@
+import 'dart:isolate';
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
+import 'package:paperflow/core/pdf/png_encoder.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
 
@@ -69,6 +73,43 @@ class PdfrxAdapter implements PdfAdapter {
       height: page.height,
       chars: chars,
     );
+  }
+
+  @override
+  Future<List<Uint8List>> renderRegions(
+    String path,
+    List<RegionRequest> regions, {
+    double scale = 3,
+  }) async {
+    final document = await _open(path);
+    try {
+      final pngs = <Uint8List>[];
+      for (final r in regions) {
+        final page = document.pages[r.page - 1];
+        final width = (r.box.width * scale).round().clamp(1, 1 << 14);
+        final height = (r.box.height * scale).round().clamp(1, 1 << 14);
+        final image = await page.render(
+          x: (r.box.left * scale).round(),
+          y: (r.box.top * scale).round(),
+          width: width,
+          height: height,
+          fullWidth: page.width * scale,
+          fullHeight: page.height * scale,
+        );
+        if (image == null) throw PdfOpenException('page ${r.page} not loaded');
+        final pixels = image.pixels;
+        final (w, h) = (image.width, image.height);
+        image.dispose();
+        pngs.add(
+          await Isolate.run(
+            () => encodePngFromBgra(pixels, width: w, height: h),
+          ),
+        );
+      }
+      return pngs;
+    } finally {
+      await document.dispose();
+    }
   }
 
   /// Maps PDFium-specific code points to plain text.

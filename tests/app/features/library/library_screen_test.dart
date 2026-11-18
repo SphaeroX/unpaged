@@ -1,5 +1,7 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart' show LinearProgressIndicator;
 import 'package:mocktail/mocktail.dart';
 import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
@@ -61,6 +63,47 @@ void main() {
     expect(find.text('Paper One'), findsOneWidget);
     expect(find.text('12 Seiten'), findsOneWidget);
     expect(find.text('1 Seite'), findsOneWidget);
+
+    await env.unmount(tester);
+  });
+
+  testWidgets('shows the reflow progress of a book being prepared', (
+    tester,
+  ) async {
+    await addBook('a', 'Paper One', 12);
+    await env.db
+        .update(env.db.books)
+        .write(
+          const BooksCompanion(
+            reflowStatus: Value(ReflowStatus.running),
+            reflowProgress: Value(0.4),
+          ),
+        );
+
+    await tester.pumpWidget(buildTestApp(overrides: overrides()));
+    await settleIo(tester);
+
+    expect(find.text('12 pages · Preparing eBook … 40 %'), findsOneWidget);
+    expect(find.byType(LinearProgressIndicator), findsOneWidget);
+
+    await env.unmount(tester);
+  });
+
+  testWidgets('explains when a PDF has no text layer', (tester) async {
+    await addBook('a', 'Scan', 3);
+    await env.db
+        .update(env.db.books)
+        .write(const BooksCompanion(reflowStatus: Value(ReflowStatus.noText)));
+
+    await tester.pumpWidget(
+      buildTestApp(overrides: overrides(), locale: const Locale('de')),
+    );
+    await settleIo(tester);
+
+    expect(
+      find.text('3 Seiten · Kein Text – nur Originalansicht'),
+      findsOneWidget,
+    );
 
     await env.unmount(tester);
   });

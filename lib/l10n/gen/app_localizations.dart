@@ -157,6 +157,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This PDF is already in your library.'**
   String get alreadyInLibrary;
+
+  /// No description provided for @reflowRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing eBook … {percent} %'**
+  String reflowRunning(int percent);
+
+  /// No description provided for @reflowFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'eBook mode could not be prepared'**
+  String get reflowFailed;
+
+  /// No description provided for @reflowNoText.
+  ///
+  /// In en, this message translates to:
+  /// **'No text – original view only'**
+  String get reflowNoText;
 }
 
 class _AppLocalizationsDelegate

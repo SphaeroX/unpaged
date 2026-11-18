@@ -9,5 +9,8 @@
   "deleteConfirmTitle": "„{title}“ löschen?",
   "deleteConfirmBody": "Die PDF-Kopie und alle zugehörigen Daten werden aus der App entfernt.",
   "cancel": "Abbrechen",
-  "alreadyInLibrary": "Diese PDF ist bereits in deiner Bibliothek."
+  "alreadyInLibrary": "Diese PDF ist bereits in deiner Bibliothek.",
+  "reflowRunning": "eBook wird vorbereitet … {percent} %",
+  "reflowFailed": "eBook-Modus konnte nicht vorbereitet werden",
+  "reflowNoText": "Kein Text – nur Originalansicht"
 }

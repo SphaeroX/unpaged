@@ -29,5 +29,15 @@
   },
   "deleteConfirmBody": "The PDF copy and all its data are removed from the app.",
   "cancel": "Cancel",
-  "alreadyInLibrary": "This PDF is already in your library."
+  "alreadyInLibrary": "This PDF is already in your library.",
+  "reflowRunning": "Preparing eBook … {percent} %",
+  "@reflowRunning": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "reflowFailed": "eBook mode could not be prepared",
+  "reflowNoText": "No text – original view only"
 }

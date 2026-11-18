@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
 import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:reflow_engine/reflow_engine.dart';
 
 void main() {
   // Host tests have no Flutter plugins; use the pure-Dart initializer.
@@ -84,6 +86,32 @@ void main() {
         PdfrxAdapter().extractText('tests/fixtures/not_a_pdf.pdf'),
         throwsA(isA<PdfOpenException>()),
       );
+    });
+  });
+
+  group('PdfrxAdapter.renderRegions', () {
+    const pdf = 'tests/reflow_engine/corpus/synthetic_single_column.pdf';
+
+    test('returns one PNG per requested region', () async {
+      final pngs = await PdfrxAdapter().renderRegions(pdf, const [
+        RegionRequest(page: 1, box: BBox(70, 70, 300, 120)),
+        RegionRequest(page: 2, box: BBox(70, 70, 200, 100)),
+      ]);
+
+      expect(pngs, hasLength(2));
+      for (final png in pngs) {
+        expect(png.sublist(0, 4), [137, 80, 78, 71]);
+      }
+    });
+
+    test('renders at the requested scale', () async {
+      final png = (await PdfrxAdapter().renderRegions(pdf, const [
+        RegionRequest(page: 1, box: BBox(0, 0, 100, 50)),
+      ], scale: 2)).single;
+      final header = ByteData.sublistView(png, 16);
+
+      expect(header.getUint32(0), 200);
+      expect(header.getUint32(4), 100);
     });
   });
 }

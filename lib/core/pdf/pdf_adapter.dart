@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
@@ -21,6 +23,18 @@ class PdfOpenException implements Exception {
   String toString() => 'PdfOpenException: $reason';
 }
 
+/// A rectangle of a page to render as an image.
+@immutable
+class RegionRequest {
+  const new({required this.page, required this.box});
+
+  /// 1-based page number.
+  final int page;
+
+  /// Area in top-down page points.
+  final BBox box;
+}
+
 /// The only gateway to the PDF engine. Features never import pdfrx directly.
 abstract class PdfAdapter {
   /// Opens the PDF at [path] and returns basic facts.
@@ -33,6 +47,13 @@ abstract class PdfAdapter {
   /// Coordinates are converted to top-down page points. Throws
   /// [PdfOpenException] if the file cannot be read as a PDF.
   Future<DocumentInput> extractText(String path);
+
+  /// Renders each region as a PNG at [scale] pixels per point.
+  Future<List<Uint8List>> renderRegions(
+    String path,
+    List<RegionRequest> regions, {
+    double scale = 3,
+  });
 
   /// Widget showing the original pages of the PDF at [path].
   Widget pageView(String path);

@@ -14,7 +14,7 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 bis Task_05 erledigt.
+Stand: 2026-11-18 – Task_01 bis Task_06 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
@@ -23,7 +23,7 @@ Stand: 2026-11-18 – Task_01 bis Task_05 erledigt.
 | 03 | Spalten & Lesereihenfolge | erledigt |
 | 04 | Blocktypen & Nicht-Text-Bereiche | erledigt |
 | 05 | Bibliothek & Import | erledigt |
-| 06 | Reflow-Pipeline in der App | offen |
+| 06 | Reflow-Pipeline in der App | erledigt |
 | 07 | eBook-Leseansicht | offen |
 | 08 | Lese-Einstellungen | offen |
 | 09 | Lesestand | offen |
@@ -48,6 +48,7 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Engine-Ausgabe ist ab `engineVersion` 3 inhaltlich vollständig: Blocktypen inkl. Bereiche (Tabelle/Abbildung/Formel mit leerem Text, Seite + Box). *(Task_04)*
 - Freigabe des Nutzers (Task 05): Bestehende Tests dürfen an **geplante** Verhaltensänderungen späterer Tasks angepasst werden, wenn die Prüfabsicht erhalten bleibt; im Test kommentieren und im Commit begründen. Betroffen bisher: `viewer_flow_test.dart`, `app_test.dart`, Integrationstest (Task 05). *(Task_05)*
 - Widget-Tests mit Datenbank: Muster `TestEnv` / `settleIo` / `unmount` (`docs/testing.md`). *(Task_05)*
+- Reflow läuft beim Import im Hintergrund (`ReflowScheduler`), Ergebnisse liegen in `ReflowStore`; Details `docs/architecture.md`. *(Task_06)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details

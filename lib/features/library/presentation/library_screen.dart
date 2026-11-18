@@ -8,6 +8,7 @@ import 'package:paperflow/core/files/pdf_picker.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:paperflow/core/platform/incoming_pdf_channel.dart';
 import 'package:paperflow/features/import/domain/import_service.dart';
+import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
 import 'package:paperflow/features/viewer/presentation/viewer_screen.dart';
 import 'package:paperflow/l10n/gen/app_localizations.dart';
 
@@ -31,6 +32,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     super.initState();
     final channel = ref.read(incomingPdfChannelProvider);
     _incoming = channel.received.listen(_import);
+    // Resume interrupted runs and recompute results of older engines.
+    unawaited(ref.read(reflowSchedulerProvider).start());
     unawaited(channel.initial().then((s) => s == null ? null : _import(s)));
   }
 
@@ -51,6 +54,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final l10n = AppLocalizations.of(context);
     switch (result) {
       case ImportSuccess(:final book):
+        ref.read(reflowSchedulerProvider).enqueue(book.id);
         await _open(book);
       case ImportDuplicate(:final book):
         ScaffoldMessenger.of(context)
@@ -124,7 +128,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   return ListTile(
                     leading: const Icon(Icons.picture_as_pdf_outlined),
                     title: Text(book.title),
-                    subtitle: Text(l10n.pageCount(book.pageCount)),
+                    subtitle: _BookStatus(book: book),
                     onTap: () => _open(book),
                     trailing: IconButton(
                       tooltip: l10n.deleteBook,
@@ -135,6 +139,40 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 },
               ),
       ),
+    );
+  }
+}
+
+/// Page count plus the state of the eBook preparation.
+class _BookStatus extends StatelessWidget {
+  const new({required this.book});
+
+  final Book book;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final pages = l10n.pageCount(book.pageCount);
+    final status = switch (book.reflowStatus) {
+      ReflowStatus.running => l10n.reflowRunning(
+        (book.reflowProgress * 100).round(),
+      ),
+      ReflowStatus.failed => l10n.reflowFailed,
+      ReflowStatus.noText => l10n.reflowNoText,
+      ReflowStatus.pending || ReflowStatus.done => null,
+    };
+    final running = book.reflowStatus == ReflowStatus.running;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(status == null ? pages : '$pages · $status'),
+        if (running)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: LinearProgressIndicator(value: book.reflowProgress),
+          ),
+      ],
     );
   }
 }

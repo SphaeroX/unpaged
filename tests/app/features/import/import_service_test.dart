@@ -11,6 +11,7 @@ import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
 import 'package:paperflow/features/import/domain/import_service.dart';
+import 'package:paperflow/features/reflow/data/reflow_store.dart';
 
 class _MockAdapter extends Mock implements PdfAdapter;
 
@@ -102,6 +103,22 @@ void main() {
 
     expect(await db.select(db.books).get(), isEmpty);
     expect(File('${dir.path}/books/$sha.pdf').existsSync(), isFalse);
+  });
+
+  test('delete also removes the reflow cache of the book', () async {
+    final reflow = ReflowStore(dir);
+    final withCache = ImportService(
+      db: db,
+      store: store,
+      adapter: adapter,
+      reflowStore: reflow,
+    );
+    await withCache.importPdf(_BytesSource('a.pdf', pdfBytes));
+    await reflow.writeCrop(sha, 'p1b0', Uint8List(1));
+
+    await withCache.deleteBook(sha);
+
+    expect(Directory('${dir.path}/reflow/$sha').existsSync(), isFalse);
   });
 
   test('delete tolerates a missing file', () async {

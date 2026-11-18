@@ -9,6 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
+import 'package:paperflow/features/reflow/data/reflow_store.dart';
+import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
 
 /// In-memory database and a temporary book directory for widget tests.
 class TestEnv {
@@ -22,9 +24,13 @@ class TestEnv {
   final Directory dir;
   late final BookFileStore store;
 
+  /// Background reflow is switched off in widget tests unless a test
+  /// overrides [reflowSchedulerProvider] itself.
   List<dynamic> get overrides => [
     databaseProvider.overrideWithValue(db),
     bookFileStoreProvider.overrideWithValue(store),
+    reflowStoreProvider.overrideWithValue(ReflowStore(dir)),
+    reflowSchedulerProvider.overrideWithValue(NoopReflowScheduler()),
   ];
 
   /// Unmounts the app and lets drift's stream timers run out. Call at the

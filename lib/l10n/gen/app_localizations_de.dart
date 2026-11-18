@@ -50,4 +50,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get alreadyInLibrary => 'Diese PDF ist bereits in deiner Bibliothek.';
+
+  @override
+  String reflowRunning(int percent) {
+    return 'eBook wird vorbereitet … $percent %';
+  }
+
+  @override
+  String get reflowFailed => 'eBook-Modus konnte nicht vorbereitet werden';
+
+  @override
+  String get reflowNoText => 'Kein Text – nur Originalansicht';
 }

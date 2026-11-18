@@ -50,6 +50,7 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 - Der echte pdfrx-Adapter wird auf dem Host gegen echte PDFs getestet; PDFium wird beim ersten `flutter test` automatisch als Native Asset geladen. Initialisierung im Test: `setUpAll(() => pdfrxInitialize(tmpPath: Directory.systemTemp.path))`.
 - Integrationstests binden Test-PDFs inline (Base64) ein, damit keine Test-Assets ins App-Bundle gelangen.
 - Widget-Tests mit Datenbank/Dateien: `TestEnv` aus `tests/app/helpers/test_env.dart` (In-Memory-drift + Temp-Verzeichnis, `env.overrides`). Echte Datei-I/O läuft im Fake-Async-Kontext nicht von selbst → nach Aktionen `await settleIo(tester)`. Am Ende jedes Widget-Tests `await env.unmount(tester)` (drift-Stream-Timer laufen aus), im `tearDown` `env.dispose()` (wartet bewusst nicht auf drift, sonst hängt der Test).
+- Widget-Tests schalten die Hintergrund-Umrechnung ab (`TestEnv.overrides` setzt `NoopReflowScheduler`); die Pipeline wird separat mit Mocks getestet.
 - Nach Änderungen an drift-Tabellen: `dart run build_runner build --delete-conflicting-outputs`; die erzeugte `*.g.dart` wird eingecheckt.
 
 ## Snapshot-Regeln (Reflow-Engine)

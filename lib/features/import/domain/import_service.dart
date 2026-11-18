@@ -6,6 +6,7 @@ import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
+import 'package:paperflow/features/reflow/data/reflow_store.dart';
 
 sealed class ImportResult {
   const new();
@@ -32,8 +33,12 @@ class ImportService {
     required this.db,
     required this.store,
     required this.adapter,
+    this.reflowStore,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now;
+
+  /// Cached reflow results, removed together with the book.
+  final ReflowStore? reflowStore;
 
   final AppDatabase db;
   final BookFileStore store;
@@ -78,6 +83,7 @@ class ImportService {
   Future<void> deleteBook(String id) async {
     await (db.delete(db.books)..where((b) => b.id.equals(id))).go();
     await store.delete(id);
+    await reflowStore?.delete(id);
   }
 
   static bool _looksLikePdf(Uint8List bytes) {
@@ -98,5 +104,6 @@ final importServiceProvider = Provider<ImportService>(
     db: ref.watch(databaseProvider),
     store: ref.watch(bookFileStoreProvider),
     adapter: ref.watch(pdfAdapterProvider),
+    reflowStore: ref.watch(reflowStoreProvider),
   ),
 );
