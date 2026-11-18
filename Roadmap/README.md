@@ -51,6 +51,7 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Reflow läuft beim Import im Hintergrund (`ReflowScheduler`), Ergebnisse liegen in `ReflowStore`; Details `docs/architecture.md`. *(Task_06)*
 - Nach `dart fix --apply` immer `flutter analyze` laufen lassen: Die Korrektur `unnecessary_unawaited` hat einmal ungültigen Code erzeugt. *(Task_09)*
 - Entwicklung ab jetzt direkt auf `main`; CI und Release-APK über GitHub Actions (`docs/conventions.md`, „CI und Release“). *(nach Task_11)*
+- `PdfImage.pixels` von pdfrx ist nativer Speicher, den `dispose()` freigibt – Pixel immer vorher kopieren (Absturz bei ~60 % der Umrechnung auf Android, behoben nach v0.1.0). *(Bugfix)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details

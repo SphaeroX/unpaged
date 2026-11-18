@@ -86,30 +86,47 @@ class PdfrxAdapter implements PdfAdapter {
       final pngs = <Uint8List>[];
       for (final r in regions) {
         final page = document.pages[r.page - 1];
-        final width = (r.box.width * scale).round().clamp(1, 1 << 14);
-        final height = (r.box.height * scale).round().clamp(1, 1 << 14);
+        final longest = r.box.width > r.box.height ? r.box.width : r.box.height;
+        final s = longest * scale > maxCropSide ? maxCropSide / longest : scale;
         final image = await page.render(
-          x: (r.box.left * scale).round(),
-          y: (r.box.top * scale).round(),
-          width: width,
-          height: height,
-          fullWidth: page.width * scale,
-          fullHeight: page.height * scale,
+          x: (r.box.left * s).round(),
+          y: (r.box.top * s).round(),
+          width: (r.box.width * s).round().clamp(1, maxCropSide),
+          height: (r.box.height * s).round().clamp(1, maxCropSide),
+          fullWidth: page.width * s,
+          fullHeight: page.height * s,
         );
         if (image == null) throw PdfOpenException('page ${r.page} not loaded');
-        final pixels = image.pixels;
-        final (w, h) = (image.width, image.height);
-        image.dispose();
-        pngs.add(
-          await Isolate.run(
-            () => encodePngFromBgra(pixels, width: w, height: h),
-          ),
-        );
+        pngs.add(await encodeAndDispose(image));
       }
       return pngs;
     } finally {
       await document.dispose();
     }
+  }
+
+  /// Longest side of a rendered crop in pixels (keeps memory bounded on
+  /// phones; ~3,000 px is still sharp when zoomed).
+  static const maxCropSide = 3000;
+
+  /// Encodes [image] as PNG and releases it.
+  ///
+  /// PDFium's pixel buffer is native memory that `dispose` frees, so the
+  /// pixels are copied into Dart memory first; reading them afterwards
+  /// crashed the app on Android.
+  static Future<Uint8List> encodeAndDispose(PdfImage image) async {
+    final Uint8List pixels;
+    final int w;
+    final int h;
+    try {
+      pixels = Uint8List.fromList(image.pixels);
+      (w, h) = (image.width, image.height);
+    } finally {
+      image.dispose();
+    }
+    return await Isolate.run(
+      () => encodePngFromBgra(pixels, width: w, height: h),
+    );
   }
 
   /// Maps PDFium-specific code points to plain text.

@@ -67,7 +67,7 @@
 
 ### Reflow-Pipeline in der App (Task 06)
 
-- `ReflowPipeline` (`lib/features/reflow/domain/`): `extractText` (pdfrx, PDFium im pdfrx-Worker-Isolate) → weniger als 20 Glyphen pro Seite ⇒ `noText` → Engine in `Isolate.run` → Bereiche mit `PdfAdapter.renderRegions` als PNG (Skalierung 3 px/pt, PNG-Kodierung in `Isolate.run`, eigener Encoder `lib/core/pdf/png_encoder.dart`) → `ReflowStore`. Status und Fortschritt (0 → 0,3 → 0,6 → 0,9 → 1) stehen in `Books`; Fehler ⇒ `failed` und Cache gelöscht.
+- `ReflowPipeline` (`lib/features/reflow/domain/`): `extractText` (pdfrx, PDFium im pdfrx-Worker-Isolate) → weniger als 20 Glyphen pro Seite ⇒ `noText` → Engine in `Isolate.run` → Bereiche mit `PdfAdapter.renderRegions` als PNG (Skalierung 3 px/pt, längste Seite höchstens `PdfrxAdapter.maxCropSide` = 3000 px; Pixel werden vor `PdfImage.dispose()` in Dart-Speicher kopiert, weil `dispose` den nativen Puffer freigibt, PNG-Kodierung in `Isolate.run`, eigener Encoder `lib/core/pdf/png_encoder.dart`) → `ReflowStore`. Status und Fortschritt (0 → 0,3 → 0,6 → 0,9 → 1) stehen in `Books`; Fehler ⇒ `failed` und Cache gelöscht.
 - `ReflowStore`: `<App-Support>/reflow/<sha256>/document.json` (atomar geschrieben) und `…/crops/<blockId>.png`.
 - `ReflowScheduler` (Interface `ReflowQueue`, Provider `reflowSchedulerProvider`) arbeitet Bücher nacheinander ab. Beim Start der Bibliothek: alle `pending`/`running` (unterbrochen) und `done` mit älterer `engineVersion` neu; `failed`/`noText` werden nicht automatisch wiederholt. Nach einem Import wird das Buch eingereiht.
 - Löschen eines Buchs entfernt auch seinen Reflow-Cache.

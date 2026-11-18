@@ -104,6 +104,16 @@ void main() {
       }
     });
 
+    test('caps very large crops to keep memory bounded', () async {
+      final png = (await PdfrxAdapter().renderRegions(pdf, const [
+        RegionRequest(page: 1, box: BBox(0, 0, 595, 842)),
+      ], scale: 10)).single;
+      final header = ByteData.sublistView(png, 16);
+
+      expect(header.getUint32(0), lessThanOrEqualTo(PdfrxAdapter.maxCropSide));
+      expect(header.getUint32(4), lessThanOrEqualTo(PdfrxAdapter.maxCropSide));
+    });
+
     test('renders at the requested scale', () async {
       final png = (await PdfrxAdapter().renderRegions(pdf, const [
         RegionRequest(page: 1, box: BBox(0, 0, 100, 50)),
