@@ -4,7 +4,7 @@
 
 App: „Unpaged: PDF reader & eBook“, Paket `io.github.sphaerox.unpaged`, kostenlos.
 
-Stand 18.11.2026: alle Erklärungen unter „App-Inhalte“ und die Store-Einstellungen sind so eingetragen wie unten beschrieben. Offen ist nur die Veröffentlichung selbst (Länder/Regionen, Release im gewünschten Track, Einreichung zur Prüfung).
+Stand 18.11.2026: alle Erklärungen unter „App-Inhalte“ und die Store-Einstellungen sind so eingetragen wie unten beschrieben. Version 1.0.0 (versionCode 2) ist im Produktions-Track mit vollständigem Rollout in allen 178 Ländern/Regionen zur Prüfung eingereicht; „Verwaltete Veröffentlichung“ ist aus, nach der Freigabe geht die App also automatisch live. Versionshinweise stehen auf Englisch und Deutsch direkt im Release.
 
 ## Datenschutzerklärung
 
