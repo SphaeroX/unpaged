@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/features/viewer/presentation/home_screen.dart';
+import 'package:paperflow/features/library/presentation/library_screen.dart';
 import 'package:paperflow/l10n/gen/app_localizations.dart';
 
 class PaperflowApp extends StatelessWidget {
@@ -19,7 +19,7 @@ class PaperflowApp extends StatelessWidget {
         ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen(),
+      home: const LibraryScreen(),
     );
   }
 }

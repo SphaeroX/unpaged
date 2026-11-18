@@ -14,7 +14,7 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 bis Task_04 erledigt.
+Stand: 2026-11-18 – Task_01 bis Task_05 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
@@ -22,7 +22,7 @@ Stand: 2026-11-18 – Task_01 bis Task_04 erledigt.
 | 02 | Reflow-Spike & Engine-Basis | erledigt |
 | 03 | Spalten & Lesereihenfolge | erledigt |
 | 04 | Blocktypen & Nicht-Text-Bereiche | erledigt |
-| 05 | Bibliothek & Import | offen |
+| 05 | Bibliothek & Import | erledigt |
 | 06 | Reflow-Pipeline in der App | offen |
 | 07 | eBook-Leseansicht | offen |
 | 08 | Lese-Einstellungen | offen |
@@ -46,6 +46,8 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Der Nutzer hat Snapshot-Änderungen, die aus den geplanten Verbesserungen von Task 03/04 folgen, pauschal freigegeben (von Hand prüfen, im Commit begründen, im Abschlussbericht auflisten). Für spätere Tasks gilt wieder die Einzelfreigabe. *(Task_03)*
 - Liste der freigegebenen Snapshot-Änderungen für den Abschlussbericht: Task 03 (`single_column_text`: Seitenzahlen entfernt, Absatz über Seite 2→3; `synthetic_single_column`: nur Version), Task 04 (alle Snapshots: Blocktypen/Ebenen/Bereiche, Version 3). *(Task_04)*
 - Engine-Ausgabe ist ab `engineVersion` 3 inhaltlich vollständig: Blocktypen inkl. Bereiche (Tabelle/Abbildung/Formel mit leerem Text, Seite + Box). *(Task_04)*
+- Freigabe des Nutzers (Task 05): Bestehende Tests dürfen an **geplante** Verhaltensänderungen späterer Tasks angepasst werden, wenn die Prüfabsicht erhalten bleibt; im Test kommentieren und im Commit begründen. Betroffen bisher: `viewer_flow_test.dart`, `app_test.dart`, Integrationstest (Task 05). *(Task_05)*
+- Widget-Tests mit Datenbank: Muster `TestEnv` / `settleIo` / `unmount` (`docs/testing.md`). *(Task_05)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details

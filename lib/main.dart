@@ -1,7 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paperflow/app.dart';
+import 'package:paperflow/core/files/book_file_store.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
-  runApp(const ProviderScope(child: PaperflowApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await getApplicationSupportDirectory();
+  runApp(
+    ProviderScope(
+      overrides: [
+        bookFileStoreProvider.overrideWithValue(BookFileStore(storage)),
+      ],
+      child: const PaperflowApp(),
+    ),
+  );
 }

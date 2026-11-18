@@ -2,5 +2,12 @@
   "@@locale": "de",
   "appTitle": "paperflow",
   "openPdf": "PDF öffnen",
-  "pdfOpenError": "Diese PDF konnte nicht geöffnet werden."
+  "pdfOpenError": "Diese PDF konnte nicht geöffnet werden.",
+  "libraryEmpty": "Noch keine Bücher. Öffne eine PDF, um zu beginnen.",
+  "pageCount": "{count, plural, =1{1 Seite} other{{count} Seiten}}",
+  "deleteBook": "Löschen",
+  "deleteConfirmTitle": "„{title}“ löschen?",
+  "deleteConfirmBody": "Die PDF-Kopie und alle zugehörigen Daten werden aus der App entfernt.",
+  "cancel": "Abbrechen",
+  "alreadyInLibrary": "Diese PDF ist bereits in deiner Bibliothek."
 }

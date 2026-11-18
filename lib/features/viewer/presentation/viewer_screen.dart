@@ -13,16 +13,19 @@ final FutureProviderFamily<PdfInfo, String> _pdfInfoProvider = FutureProvider
 
 /// Original page view of a single PDF.
 class ViewerScreen extends ConsumerWidget {
-  const new({required this.path, super.key});
+  const new({required this.path, this.title, super.key});
 
   final String path;
+
+  /// Shown in the app bar; defaults to the app name.
+  final String? title;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final info = ref.watch(_pdfInfoProvider(path));
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle)),
+      appBar: AppBar(title: Text(title ?? l10n.appTitle)),
       body: info.when(
         data: (_) => ref.read(pdfAdapterProvider).pageView(path),
         loading: () => const Center(child: CircularProgressIndicator()),

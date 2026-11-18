@@ -115,6 +115,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This PDF could not be opened.'**
   String get pdfOpenError;
+
+  /// No description provided for @libraryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No books yet. Open a PDF to start.'**
+  String get libraryEmpty;
+
+  /// No description provided for @pageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 page} other{{count} pages}}'**
+  String pageCount(int count);
+
+  /// No description provided for @deleteBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteBook;
+
+  /// No description provided for @deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{title}”?'**
+  String deleteConfirmTitle(String title);
+
+  /// No description provided for @deleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The PDF copy and all its data are removed from the app.'**
+  String get deleteConfirmBody;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @alreadyInLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'This PDF is already in your library.'**
+  String get alreadyInLibrary;
 }
 
 class _AppLocalizationsDelegate

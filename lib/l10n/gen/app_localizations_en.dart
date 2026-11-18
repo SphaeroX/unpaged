@@ -17,4 +17,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pdfOpenError => 'This PDF could not be opened.';
+
+  @override
+  String get libraryEmpty => 'No books yet. Open a PDF to start.';
+
+  @override
+  String pageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pages',
+      one: '1 page',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteBook => 'Delete';
+
+  @override
+  String deleteConfirmTitle(String title) {
+    return 'Delete “$title”?';
+  }
+
+  @override
+  String get deleteConfirmBody =>
+      'The PDF copy and all its data are removed from the app.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get alreadyInLibrary => 'This PDF is already in your library.';
 }

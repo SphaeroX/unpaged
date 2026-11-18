@@ -21,6 +21,7 @@ flutter test tests/app/<pfad>_test.dart --plain-name "<testname>"   # einzelner 
 flutter test tests/integration -d <device-id>          # Integrationstests (Gerät/Emulator)
 flutter analyze                                        # Lint
 dart format .                                          # Format
+dart run build_runner build --delete-conflicting-outputs   # drift-Code erzeugen
 flutter build apk --release                            # Release-Build
 ```
 

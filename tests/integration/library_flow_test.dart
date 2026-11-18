@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/core/files/pdf_picker.dart';
+import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 import '../app/helpers/test_app.dart';
@@ -18,20 +20,26 @@ class _FixedPicker implements PdfPicker {
   final String path;
 
   @override
-  Future<String?> pickPdf() async => path;
+  Future<PdfSource?> pickPdf() async => FilePdfSource(path);
 }
 
+// Since Task 05: import into the library → open → delete (approved change
+// of the Task 01 flow, see Roadmap/README.md).
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('opens a PDF and renders the original page view', (tester) async {
-    final file = File('${Directory.systemTemp.path}/three_pages.pdf');
+  testWidgets('imports a PDF, shows its pages and deletes it again', (
+    tester,
+  ) async {
+    final tmp = Directory.systemTemp.createTempSync('paperflow_it');
+    final file = File('${tmp.path}/three_pages.pdf');
     await file.writeAsBytes(base64Decode(_threePagesPdf));
 
     await tester.pumpWidget(
       buildTestApp(
         overrides: [
           pdfPickerProvider.overrideWithValue(_FixedPicker(file.path)),
+          bookFileStoreProvider.overrideWithValue(BookFileStore(tmp)),
         ],
       ),
     );
@@ -40,5 +48,15 @@ void main() {
 
     expect(find.text('This PDF could not be opened.'), findsNothing);
     expect(find.byType(PdfViewer), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.text('three pages'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Delete'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    expect(find.text('three pages'), findsNothing);
   });
 }

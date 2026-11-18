@@ -68,6 +68,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 - Speicherort und Auflösung der Ausschnitte legt der Task fest und dokumentiert sie in `docs/architecture.md`.
 - Ob nach einem App-Neustart abgebrochene Berechnungen automatisch fortgesetzt werden, entscheidet der Task (Annahme: ja, Neustart der Berechnung).
+- Aus Task_05: `Books.reflowStatus` (`ReflowStatus.pending|running|done|failed|noText`) und `reflowProgress` existieren schon; `ImportService.deleteBook` muss zusätzlich Cache und Ausschnitte löschen; Pfade wie beim `BookFileStore` in `main()` aus dem App-Support-Verzeichnis ableiten.
 - Aus Task_04: Bereichsblöcke (`BlockType.isRegion`) haben leeren Text; `page` + `box` (Top-down-Punkte der Seite) bestimmen den Ausschnitt. pdfrx rendert mit `PdfPage.render(x, y, width, height, fullWidth, fullHeight)` in Pixeln, Ursprung oben links.
 - Aus Task_02: Engine-Ergebnis und Extraktion laufen in `Isolate.run` (Host belegt, `pdfrxInitialize(tmpPath: …)` im Isolate); auf Android noch zu prüfen.
 

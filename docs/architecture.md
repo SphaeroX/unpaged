@@ -27,6 +27,10 @@
 | `mocktail` (dev) | Mocks | MIT |
 | `integration_test`, `flutter_test`, `test` (dev) | Tests | BSD-3-Clause |
 | `meta` (Engine) | Annotationen (`@immutable`) | BSD-3-Clause |
+| `drift`, `drift_flutter` (bringt `sqlite3` mit gebündeltem SQLite) | Datenbank | MIT (SQLite: Public Domain) |
+| `drift_dev`, `build_runner` (dev) | Codegenerierung für drift | MIT / BSD-3-Clause |
+| `crypto` | SHA-256 der PDFs | BSD-3-Clause |
+| `path_provider`, `path` | App-Speicherort | BSD-3-Clause |
 
 ## Verbindliche Rahmenbedingungen
 
@@ -50,6 +54,14 @@
 4. Tabellen, Abbildungen, Formeln als Bereiche markieren und einmalig als PNG-Ausschnitt rendern.
 5. `ReflowDocument` als JSON speichern, mit `engineVersion`. Ändert sich die Engine-Version, bei Bedarf neu berechnen.
 6. Verarbeitung im Hintergrund-Isolate; Fortschritt in der Bibliothek sichtbar. Ergebnis des Spikes (Task 02): pdfrx führt PDFium-Aufrufe ohnehin in einem eigenen Worker-Isolate aus; zusätzlich funktionieren Extraktion (`pdfrxInitialize` im Isolate) und Engine in `Isolate.run` (belegt durch `tests/app/core/pdf/background_extraction_test.dart`, auf dem Host; Android in Task 06 prüfen).
+
+### Bibliothek und Import (Task 05)
+
+- Datenbank `lib/core/database/app_database.dart` (drift, Datei `paperflow` im App-Speicher; im Test `AppDatabase(NativeDatabase.memory())`). Tabelle `Books`: `id` (SHA-256, Primärschlüssel), `title` (aus dem Dateinamen; pdfrx bietet keine Metadaten), `pageCount`, `importedAt`, `reflowStatus` (`ReflowStatus`), `reflowProgress`. `schemaVersion` 1; jede Schemaänderung erhöht sie und bekommt einen `onUpgrade`-Schritt plus Migrationstest.
+- Dateiablage `BookFileStore` (`<App-Support-Verzeichnis>/books/<sha256>.pdf`); der Provider wird in `main()` mit dem echten Verzeichnis überschrieben.
+- `ImportService` (`lib/features/import/domain/`): Bytes lesen → `%PDF`-Prüfung → SHA-256 → Duplikat? → Kopie schreiben → `PdfAdapter.inspect` (bei Fehler Kopie löschen) → Eintrag. Ergebnis `ImportSuccess` / `ImportDuplicate` / `ImportFailure`.
+- Quellen sind `PdfSource`s: Dateiauswahl (`PdfPicker`, liest über `PlatformFile.xFile`, funktioniert auch mit `content://`) und Android-Intents (`IncomingPdfChannel`, MethodChannel `dev.paperflow/incoming_pdf`; `MainActivity.kt` kopiert geteilte Inhalte nach `cacheDir/incoming/` und meldet Pfad + Name; Intent-Filter für `VIEW` und `SEND` mit `application/pdf`).
+- Startbildschirm ist `LibraryScreen` (Liste, Leerzustand, Import-Button, Löschen mit Rückfrage); Antippen öffnet `ViewerScreen` mit der gespeicherten Kopie.
 
 ### Markierungen und Lesestand
 

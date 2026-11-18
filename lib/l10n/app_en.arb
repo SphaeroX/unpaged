@@ -2,7 +2,32 @@
   "@@locale": "en",
   "appTitle": "paperflow",
   "openPdf": "Open PDF",
-  "@openPdf": {"description": "Button that opens the system file picker for a PDF"},
+  "@openPdf": {
+    "description": "Button that opens the system file picker for a PDF"
+  },
   "pdfOpenError": "This PDF could not be opened.",
-  "@pdfOpenError": {"description": "Shown when a PDF file is unreadable or damaged"}
+  "@pdfOpenError": {
+    "description": "Shown when a PDF file is unreadable or damaged"
+  },
+  "libraryEmpty": "No books yet. Open a PDF to start.",
+  "pageCount": "{count, plural, =1{1 page} other{{count} pages}}",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteBook": "Delete",
+  "deleteConfirmTitle": "Delete “{title}”?",
+  "@deleteConfirmTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteConfirmBody": "The PDF copy and all its data are removed from the app.",
+  "cancel": "Cancel",
+  "alreadyInLibrary": "This PDF is already in your library."
 }
