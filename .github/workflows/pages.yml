@@ -1,0 +1,56 @@
+name: Pages
+
+# Publishes site/ (landing page and the privacy policy for Google Play) to
+# GitHub Pages: https://sphaerox.github.io/unpaged/ . Icon, screenshots,
+# demo video, feature graphic and the Literata font are copied in from the
+# repository, so the site always matches the app. See docs/conventions.md.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'assets/branding/unpaged_icon_512.png'
+      - 'docs/screenshots/**'
+      - 'docs/media/**'
+      - 'android/fastlane/metadata/android/en-US/images/featureGraphic.png'
+      - '.github/workflows/pages.yml'
+  # Commits pushed by the Screenshots workflow do not trigger push events,
+  # so redeploy once it has finished to pick up new screenshots.
+  workflow_run:
+    workflows: [Screenshots]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add icon, screenshots, video and font
+        run: |
+          cp assets/branding/unpaged_icon_512.png site/icon.png
+          cp android/fastlane/metadata/android/en-US/images/featureGraphic.png site/featureGraphic.png
+          mkdir -p site/screenshots/en site/screenshots/de site/media site/fonts
+          cp docs/screenshots/*.png site/screenshots/en/
+          cp docs/screenshots/de/*.png site/screenshots/de/
+          cp docs/media/unpaged-demo.mp4 docs/media/unpaged-demo.jpg site/media/
+          cp assets/fonts/Literata.ttf site/fonts/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

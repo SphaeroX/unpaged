@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unpaged – read PDFs like an eBook on Android</title>
+<meta name="description" content="Unpaged is a free, open-source PDF reader for Android. Its offline eBook mode reflows papers and technical PDFs so you can read them comfortably on your phone. No accounts, no tracking.">
+<meta name="theme-color" content="#1f2a5c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Unpaged – read PDFs like an eBook on Android">
+<meta property="og:description" content="Reflow papers and technical PDFs into a readable eBook, fully offline. Tables, figures and formulas stay sharp.">
+<meta property="og:image" content="https://sphaerox.github.io/unpaged/featureGraphic.png">
+<meta property="og:url" content="https://sphaerox.github.io/unpaged/">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="alternate" hreflang="en" href="https://sphaerox.github.io/unpaged/?lang=en">
+<link rel="alternate" hreflang="de" href="https://sphaerox.github.io/unpaged/?lang=de">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="40" height="40">Unpaged</a>
+      <nav aria-label="Main">
+        <a href="#demo" data-i18n="nav.demo">Demo</a>
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#screens" data-i18n="nav.screens">Screenshots</a>
+        <a href="privacy/" data-i18n="nav.privacy">Privacy</a>
+        <span class="lang" role="group" aria-label="Language / Sprache">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        </span>
+      </nav>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h1 data-i18n="hero.title">PDFs are made for paper. <em>Unpaged makes them readable on your phone.</em></h1>
+        <p class="lead" data-i18n="hero.lead">Open any PDF in its original layout, or switch to the eBook mode: papers, textbooks and technical documents are reflowed in your font, your size and your theme. Tables, figures and formulas stay sharp. Everything happens offline on your phone.</p>
+        <div class="lines" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="cta">
+          <a class="btn primary" href="https://play.google.com/store/apps/details?id=io.github.sphaerox.unpaged" data-i18n="cta.play">Get it on Google Play</a>
+          <a class="btn ghost" href="https://github.com/SphaeroX/unpaged/releases" data-i18n="cta.apk">Download the APK</a>
+          <a class="btn ghost" href="https://github.com/SphaeroX/unpaged" data-i18n="cta.github">Source on GitHub</a>
+        </div>
+        <ul class="chips">
+          <li data-i18n="chip.free">Free &amp; open source (MIT)</li>
+          <li data-i18n="chip.offline">Fully offline</li>
+          <li data-i18n="chip.lang">English &amp; German</li>
+        </ul>
+      </div>
+      <div class="phone">
+        <img data-shot="03_ebook" src="screenshots/en/03_ebook.png" alt="A two-column paper reflowed in eBook mode" width="1080" height="2400">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="demo">
+    <div class="wrap">
+      <p class="kicker" data-i18n="demo.kicker">See it in action</p>
+      <h2 data-i18n="demo.title">One tap from page to eBook</h2>
+      <p class="intro" data-i18n="demo.intro">Open a two-column paper, tap the eBook button, and read. Figures stay exactly as they were in the original.</p>
+      <div class="video">
+        <video controls playsinline preload="none" poster="media/unpaged-demo.jpg" width="1280" height="720">
+          <source src="media/unpaged-demo.mp4" type="video/mp4">
+          <a href="https://youtu.be/anXLioqkv5c">Watch the demo on YouTube</a>
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="kicker" data-i18n="features.kicker">Features</p>
+      <h2 data-i18n="features.title">Made for papers, textbooks and technical documents</h2>
+      <p class="intro" data-i18n="features.intro">Unpaged understands the layout of a page: columns, headings, captions and the parts that are not text.</p>
+      <div class="grid">
+        <div class="card"><div class="dot"></div><h3 data-i18n="f1.t">eBook mode</h3><p data-i18n="f1.d">PDFs with a text layer are reflowed like an eBook, completely offline, including two-column layouts.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f2.t">Clean reading flow</h3><p data-i18n="f2.d">Reading order across columns, running headers and page numbers removed, hyphenated words joined again.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f3.t">Figures stay sharp</h3><p data-i18n="f3.d">Tables, figures and formulas are shown as crops of the original page. Tap to zoom.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f4.t">Original view</h3><p data-i18n="f4.d">The PDF exactly as published, with smooth zooming. Switch views with one tap.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f5.t">Your reading settings</h3><p data-i18n="f5.d">Literata, Atkinson Hyperlegible or the system font, text size, line spacing, light, dark and sepia.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f6.t">Highlights and notes</h3><p data-i18n="f6.d">Mark text and add notes in both views. They stay in the app; your PDF is never changed.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f7.t">Library with progress</h3><p data-i18n="f7.d">Continue where you stopped. Import with the file picker, “Open with” or “Share” from any app.</p></div>
+        <div class="card"><div class="dot"></div><h3 data-i18n="f8.t">Share and print</h3><p data-i18n="f8.d">Hand the original PDF to any app or printer, only when you choose to.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <p class="kicker" data-i18n="screens.kicker">Screenshots</p>
+      <h2 data-i18n="screens.title">A closer look</h2>
+      <div class="shots" id="shots"></div>
+    </div>
+  </section>
+
+  <section id="private">
+    <div class="wrap">
+      <div class="private">
+        <div>
+          <p class="kicker" data-i18n="private.kicker">Private by design</p>
+          <h2 data-i18n="private.title">Your documents never leave your phone</h2>
+          <p data-i18n="private.text">Unpaged does not even have permission to access the internet. There is nothing to sign up for and nothing that phones home.</p>
+          <p><a href="privacy/" data-i18n="private.link">Read the privacy policy</a></p>
+        </div>
+        <ul>
+          <li data-i18n="private.1">No network access</li>
+          <li data-i18n="private.2">No account, no ads</li>
+          <li data-i18n="private.3">No analytics, no crash reporter</li>
+          <li data-i18n="private.4">Open source: check it yourself</li>
+        </ul>
+      </div>
+      <p class="note" data-i18n="note.ocr">Good to know: scanned PDFs without a text layer open in the original view, but cannot be reflowed, because Unpaged does no text recognition (OCR).</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Unpaged · <span data-i18n="footer.license">MIT license</span></span>
+    <a href="privacy/" data-i18n="footer.privacy">Privacy policy</a>
+    <a href="https://github.com/SphaeroX/unpaged">GitHub</a>
+    <a href="https://github.com/SphaeroX/unpaged/issues" data-i18n="footer.issues">Report a problem</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var SHOTS = [
+    ["01_library", "Library", "Reading progress for every PDF", "Bibliothek", "Lesestand für jede PDF"],
+    ["02_original", "Original view", "The page as published", "Original-Ansicht", "Die Seite wie veröffentlicht"],
+    ["03_ebook", "eBook mode", "Two columns, reflowed", "eBook-Modus", "Zwei Spalten, neu umbrochen"],
+    ["04_ebook_figure", "Figures", "Kept as crops of the page", "Abbildungen", "Als Ausschnitt der Seite"],
+    ["05_settings_sepia", "Reading settings", "Font, size, spacing, theme", "Lese-Einstellungen", "Schrift, Größe, Abstand, Farben"],
+    ["06_ebook_dark", "Dark theme", "Easy on the eyes at night", "Dunkles Design", "Angenehm am Abend"]
+  ];
+
+  var DE = {
+    "meta.title": "Unpaged – PDFs am Android-Handy lesen wie ein eBook",
+    "nav.demo": "Demo",
+    "nav.features": "Funktionen",
+    "nav.screens": "Screenshots",
+    "nav.privacy": "Datenschutz",
+    "hero.title": "PDFs sind für Papier gemacht. <em>Unpaged macht sie am Handy lesbar.</em>",
+    "hero.lead": "Öffne jede PDF im Original-Layout oder wechsle in den eBook-Modus: Paper, Fachbücher und technische Dokumente werden in deiner Schrift, deiner Größe und deinem Farbschema neu umbrochen. Tabellen, Abbildungen und Formeln bleiben scharf. Alles passiert offline auf deinem Handy.",
+    "cta.play": "Bei Google Play laden",
+    "cta.apk": "APK herunterladen",
+    "cta.github": "Quellcode auf GitHub",
+    "chip.free": "Kostenlos &amp; Open Source (MIT)",
+    "chip.offline": "Komplett offline",
+    "chip.lang": "Deutsch &amp; Englisch",
+    "demo.kicker": "In Aktion",
+    "demo.title": "Ein Tipp von der Seite zum eBook",
+    "demo.intro": "Zweispaltiges Paper öffnen, eBook-Taste antippen, lesen. Abbildungen bleiben genau wie im Original.",
+    "features.kicker": "Funktionen",
+    "features.title": "Gemacht für Paper, Fachbücher und technische Dokumente",
+    "features.intro": "Unpaged versteht das Layout einer Seite: Spalten, Überschriften, Bildunterschriften und die Teile, die kein Text sind.",
+    "f1.t": "eBook-Modus",
+    "f1.d": "PDFs mit Textebene werden wie ein eBook neu umbrochen, komplett offline, auch bei zweispaltigem Layout.",
+    "f2.t": "Sauberer Lesefluss",
+    "f2.d": "Lesereihenfolge über Spalten hinweg, ohne Kopfzeilen und Seitenzahlen, getrennte Wörter wieder zusammengefügt.",
+    "f3.t": "Abbildungen bleiben scharf",
+    "f3.d": "Tabellen, Abbildungen und Formeln erscheinen als Ausschnitt der Originalseite. Antippen zum Zoomen.",
+    "f4.t": "Original-Ansicht",
+    "f4.d": "Die PDF genau wie veröffentlicht, mit flüssigem Zoom. Mit einem Tipp die Ansicht wechseln.",
+    "f5.t": "Deine Lese-Einstellungen",
+    "f5.d": "Literata, Atkinson Hyperlegible oder Systemschrift, Schriftgröße, Zeilenabstand, hell, dunkel und Sepia.",
+    "f6.t": "Markierungen und Notizen",
+    "f6.d": "Text markieren und Notizen anlegen, in beiden Ansichten. Sie bleiben in der App, deine PDF wird nie verändert.",
+    "f7.t": "Bibliothek mit Lesestand",
+    "f7.d": "Weiterlesen, wo du aufgehört hast. Import über die Dateiauswahl, „Öffnen mit“ oder „Teilen“ aus jeder App.",
+    "f8.t": "Teilen und Drucken",
+    "f8.d": "Die Original-PDF an eine App oder einen Drucker geben, nur wenn du es willst.",
+    "screens.kicker": "Screenshots",
+    "screens.title": "Ein genauerer Blick",
+    "private.kicker": "Privat von Grund auf",
+    "private.title": "Deine Dokumente verlassen nie dein Handy",
+    "private.text": "Unpaged hat nicht einmal die Berechtigung, auf das Internet zuzugreifen. Es gibt nichts zu registrieren und nichts, das nach Hause telefoniert.",
+    "private.link": "Datenschutzerklärung lesen",
+    "private.1": "Kein Netzwerkzugriff",
+    "private.2": "Kein Konto, keine Werbung",
+    "private.3": "Keine Analyse, kein Absturzbericht",
+    "private.4": "Open Source: selbst nachprüfbar",
+    "note.ocr": "Gut zu wissen: Gescannte PDFs ohne Textebene öffnen sich in der Original-Ansicht, lassen sich aber nicht umbrechen, denn Unpaged hat keine Texterkennung (OCR).",
+    "footer.license": "MIT-Lizenz",
+    "footer.privacy": "Datenschutzerklärung",
+    "footer.issues": "Problem melden"
+  };
+
+  var EN = {};
+  document.querySelectorAll("[data-i18n]").forEach(function (el) {
+    EN[el.dataset.i18n] = el.innerHTML;
+  });
+  EN["meta.title"] = document.title;
+
+  var shots = document.getElementById("shots");
+  SHOTS.forEach(function (s) {
+    var fig = document.createElement("figure");
+    fig.innerHTML = '<img loading="lazy" width="1080" height="2400" data-shot="' + s[0] + '" alt=""><figcaption><b></b><span></span></figcaption>';
+    shots.appendChild(fig);
+  });
+
+  function apply(lang) {
+    var de = lang === "de";
+    var dict = de ? DE : EN;
+    document.documentElement.lang = lang;
+    document.title = dict["meta.title"];
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var v = dict[el.dataset.i18n];
+      if (v !== undefined) el.innerHTML = v;
+    });
+    document.querySelectorAll("img[data-shot]").forEach(function (img) {
+      img.src = "screenshots/" + lang + "/" + img.dataset.shot + ".png";
+    });
+    shots.querySelectorAll("figure").forEach(function (fig, i) {
+      var s = SHOTS[i];
+      fig.querySelector("b").textContent = de ? s[3] : s[1];
+      fig.querySelector("span").textContent = de ? s[4] : s[2];
+      fig.querySelector("img").alt = (de ? s[3] : s[1]) + ": " + (de ? s[4] : s[2]);
+    });
+    document.querySelectorAll(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+    });
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+
+  function initial() {
+    var q = new URLSearchParams(location.search).get("lang");
+    if (q === "de" || q === "en") return q;
+    try { var s = localStorage.getItem("lang"); if (s === "de" || s === "en") return s; } catch (e) {}
+    return /^de\b/i.test(navigator.language || "") ? "de" : "en";
+  }
+
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { apply(b.dataset.lang); });
+  });
+  apply(initial());
+})();
+</script>
+</body>
+</html>

@@ -35,6 +35,7 @@ Lies nur die Dateien, die für deine aktuelle Aufgabe relevant sind:
 - [docs/testing.md](docs/testing.md) – Lies das, bevor du Tests schreibst oder die Test-Konfiguration änderst. Teststruktur, Snapshot-Regeln, Fertig-Kriterien.
 - [docs/code-style.md](docs/code-style.md) – Lies das vor dem Schreiben oder Formatieren von Code. Styling und Formatierung.
 - [docs/conventions.md](docs/conventions.md) – Lies das bei Benennung, Dateiorganisation oder Commits. Namenskonventionen und Best Practices.
+- [docs/play-console.md](docs/play-console.md) – Lies das, bevor du Play-Console-Formulare änderst oder sich Berechtigungen/Datenverarbeitung der App ändern. Antworten zu Data Safety, Einstufung, Zielgruppe.
 - [docs/project-brief.md](docs/project-brief.md) – Lies das, wenn Ziel, Umfang oder Nicht-Ziele des Projekts unklar sind.
 
 ## Grenzen
