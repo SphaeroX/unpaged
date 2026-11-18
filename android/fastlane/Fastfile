@@ -1,0 +1,67 @@
+# Google Play upload for Unpaged. Runs in GitHub Actions
+# (.github/workflows/play-upload.yml); locally from android/:
+#   bundle exec fastlane android upload                       # internal, draft
+#   bundle exec fastlane android upload track:alpha status:completed
+#   bundle exec fastlane android check                        # API access only
+# Needs PLAY_SERVICE_ACCOUNT_JSON (service account key, JSON text) and
+# android/key.properties (release signing), see docs/conventions.md.
+
+default_platform(:android)
+
+ROOT = File.expand_path("../..", __dir__)
+TRACKS = %w[internal alpha beta production].freeze
+
+def play_json_key
+  ENV.fetch("PLAY_SERVICE_ACCOUNT_JSON") do
+    UI.user_error!("PLAY_SERVICE_ACCOUNT_JSON is not set")
+  end
+end
+
+# Every version code Play has seen, over all tracks.
+def play_version_codes(json_key)
+  TRACKS.flat_map do |name|
+    google_play_track_version_codes(track: name, json_key_data: json_key)
+  rescue StandardError => e
+    UI.important("Track #{name}: #{e.message}")
+    []
+  end.map(&:to_i)
+end
+
+platform :android do
+  desc "Check that the service account can reach the app on Google Play"
+  lane :check do
+    json_key = play_json_key
+    validate_play_store_json_key(json_key_data: json_key)
+    codes = play_version_codes(json_key)
+    UI.success("Play API reachable, version codes: #{codes.sort.inspect}")
+  end
+
+  desc "Build a signed app bundle and upload it to a Play track. " \
+       "Options: track (internal), status (draft or completed)"
+  lane :upload do |options|
+    track = options[:track] || "internal"
+    status = options[:status] || "draft"
+    json_key = play_json_key
+
+    # The version code must be higher than every code already on Play.
+    version_code = (play_version_codes(json_key).max || 0) + 1
+    UI.message("Building version code #{version_code}")
+
+    Dir.chdir(ROOT) do
+      sh("flutter", "build", "appbundle", "--release",
+         "--build-number", version_code.to_s)
+    end
+
+    upload_to_play_store(
+      track: track,
+      release_status: status,
+      aab: File.join(ROOT, "build/app/outputs/bundle/release/app-release.aab"),
+      json_key_data: json_key,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

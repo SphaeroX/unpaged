@@ -1,0 +1,3 @@
+# Google Play credentials come from PLAY_SERVICE_ACCOUNT_JSON (the service
+# account key as JSON text; GitHub secret in CI), see docs/conventions.md.
+package_name("io.github.sphaerox.unpaged")

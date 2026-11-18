@@ -52,5 +52,11 @@ Thumbs.db
 CLAUDE.local.md
 .claude/settings.local.json
 
+# fastlane (android/fastlane)
+android/fastlane/report.xml
+android/fastlane/README.md
+android/vendor/
+android/.bundle/
+
 # Arbeitsdateien des Launch-Videos (/brag)
 brag-output/

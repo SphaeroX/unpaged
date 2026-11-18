@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+# fastlane for the Google Play upload (android/fastlane/Fastfile,
+# .github/workflows/play-upload.yml), see docs/conventions.md.
+gem "fastlane", ">= 2.220", "< 3"
