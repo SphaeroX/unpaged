@@ -5,12 +5,14 @@ import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:material_ui/material_ui.dart' show BackButton;
 import 'package:pdfrx/pdfrx.dart';
 import 'package:unpaged/core/database/app_database.dart';
 import 'package:unpaged/core/files/book_file_store.dart';
 import 'package:unpaged/core/files/pdf_picker.dart';
 import 'package:unpaged/core/files/pdf_source.dart';
 import 'package:unpaged/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 import '../app/helpers/test_app.dart';
 import 'sample_pdfs.g.dart';
@@ -40,6 +42,20 @@ Future<void> _waitUntilGone(
   fail('Still visible after $timeout: $finder');
 }
 
+/// Waits in real time until [finder] matches something (or [timeout] passes).
+Future<void> _waitFor(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(minutes: 1),
+}) async {
+  final end = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(end)) {
+    await tester.pump(const Duration(milliseconds: 250));
+    if (finder.evaluate().isNotEmpty) return;
+  }
+  fail('Not visible after $timeout: $finder');
+}
+
 /// Lets real time pass so PDF pages and images finish rendering.
 Future<void> _settle(WidgetTester tester, [int seconds = 3]) async {
   for (var i = 0; i < seconds * 4; i++) {
@@ -47,13 +63,26 @@ Future<void> _settle(WidgetTester tester, [int seconds = 3]) async {
   }
 }
 
-/// Captures the README screenshots (docs/screenshots/). Runs only through
-/// `flutter drive` with tests/screenshots/driver.dart, which writes the PNGs;
-/// see .github/workflows/screenshots.yml.
+/// UI language of the run: `--dart-define=SCREENSHOT_LOCALE=de` captures the
+/// German screenshots into docs/screenshots/de/ (for the Play Store);
+/// the default `en` writes the README screenshots to docs/screenshots/.
+const _localeName = String.fromEnvironment(
+  'SCREENSHOT_LOCALE',
+  defaultValue: 'en',
+);
+
+/// Captures the README and Play Store screenshots (docs/screenshots/). Runs
+/// only through `flutter drive` with tests/screenshots/driver.dart, which
+/// writes the PNGs; see .github/workflows/screenshots.yml.
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('captures the README screenshots', (tester) async {
+  const locale = Locale(_localeName);
+  final l10n = lookupAppLocalizations(locale);
+  const prefix = _localeName == 'en' ? '' : '$_localeName/';
+  const german = _localeName == 'de';
+
+  testWidgets('captures the screenshots', (tester) async {
     WidgetsApp.debugAllowBannerOverride = false; // no DEBUG ribbon
     await pdfrxFlutterInitialize();
 
@@ -66,13 +95,22 @@ void main() {
 
     // The title in the library comes from the file name.
     final paths = [
-      await write('Reading on small screens', singleColumnPdf),
-      await write('Typesetting in two columns', twoColumnPdf),
+      await write(
+        german ? 'Lesen auf kleinen Bildschirmen' : 'Reading on small screens',
+        singleColumnPdf,
+      ),
+      await write(
+        german ? 'Satz in zwei Spalten' : 'Typesetting in two columns',
+        twoColumnPdf,
+      ),
       await write('Electric fields in AlGaN photodiodes', paperPdf),
     ];
 
     await tester.pumpWidget(
       buildTestApp(
+        // Not redundant: SCREENSHOT_LOCALE changes it at build time.
+        // ignore: avoid_redundant_argument_values
+        locale: locale,
         overrides: [
           // Fresh library on every run (the app's own database survives
           // reinstalls of the test build).
@@ -90,26 +128,32 @@ void main() {
 
     // Import all three; each import opens the book, go back to the library.
     for (var i = 0; i < 3; i++) {
-      await tester.tap(find.text('Open PDF'));
+      await tester.tap(find.text(l10n.openPdf));
       await tester.pumpAndSettle(const Duration(seconds: 2));
-      await tester.pageBack();
+      // Opening the book can take longer on a cold emulator. Tap the
+      // BackButton itself: `pageBack()` looks for the English tooltip "Back".
+      await _waitFor(tester, find.byType(BackButton));
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
     }
-    await _waitUntilGone(tester, find.textContaining('Preparing eBook'));
+    await _waitUntilGone(
+      tester,
+      find.textContaining(l10n.reflowRunning(0).split('…').first.trim()),
+    );
     await _settle(tester, 1);
-    await binding.takeScreenshot('01_library');
+    await binding.takeScreenshot('${prefix}01_library');
 
     // Original view of the two-column paper.
     await tester.tap(find.text('Electric fields in AlGaN photodiodes'));
     await tester.pumpAndSettle();
     await _settle(tester);
-    await binding.takeScreenshot('02_original');
+    await binding.takeScreenshot('${prefix}02_original');
 
     // The same paper reflowed as an eBook.
-    await tester.tap(find.byTooltip('eBook view'));
+    await tester.tap(find.byTooltip(l10n.switchToEbook));
     await tester.pumpAndSettle();
     await _settle(tester);
-    await binding.takeScreenshot('03_ebook');
+    await binding.takeScreenshot('${prefix}03_ebook');
 
     // The first region (table, figure or formula) kept as a crop of the page.
     // (`scrollUntilVisible` cannot take `.first` of a finder that is still
@@ -123,22 +167,22 @@ void main() {
     await tester.drag(find.byType(Scrollable).first, const Offset(0, 250));
     await tester.pumpAndSettle();
     await _settle(tester, 2);
-    await binding.takeScreenshot('04_ebook_figure');
+    await binding.takeScreenshot('${prefix}04_ebook_figure');
 
     // Reading settings with the sepia theme.
-    await tester.tap(find.byTooltip('Reading settings'));
+    await tester.tap(find.byTooltip(l10n.readingSettings));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Sepia'));
+    await tester.tap(find.text(l10n.themeSepia));
     await tester.pumpAndSettle();
     await _settle(tester, 1);
-    await binding.takeScreenshot('05_settings_sepia');
+    await binding.takeScreenshot('${prefix}05_settings_sepia');
 
     // Dark theme, sheet closed.
-    await tester.tap(find.text('Dark'));
+    await tester.tap(find.text(l10n.themeDark));
     await tester.pumpAndSettle();
     await tester.tapAt(const Offset(20, 120)); // outside the sheet
     await tester.pumpAndSettle();
     await _settle(tester, 1);
-    await binding.takeScreenshot('06_ebook_dark');
+    await binding.takeScreenshot('${prefix}06_ebook_dark');
   });
 }

@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       lane:
-        description: "upload = build and upload, check = only test API access"
+        description: "upload = build and upload, metadata = store listing, check = test API access"
         type: choice
-        options: [upload, check]
+        options: [upload, metadata, check]
         default: upload
       track:
         description: Play track

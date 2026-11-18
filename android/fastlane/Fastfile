@@ -3,6 +3,7 @@
 #   bundle exec fastlane android upload                       # internal, draft
 #   bundle exec fastlane android upload track:alpha status:completed
 #   bundle exec fastlane android check                        # API access only
+#   bundle exec fastlane android metadata                     # store listing
 # Needs PLAY_SERVICE_ACCOUNT_JSON (service account key, JSON text) and
 # android/key.properties (release signing), see docs/conventions.md.
 
@@ -34,6 +35,19 @@ platform :android do
     validate_play_store_json_key(json_key_data: json_key)
     codes = play_version_codes(json_key)
     UI.success("Play API reachable, version codes: #{codes.sort.inspect}")
+  end
+
+  desc "Upload the store listing (texts, icon, feature graphic, " \
+       "screenshots) from fastlane/metadata/android"
+  lane :metadata do
+    upload_to_play_store(
+      json_key_data: play_json_key,
+      metadata_path: File.join(__dir__, "metadata", "android"),
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      sync_image_upload: true
+    )
   end
 
   desc "Build a signed app bundle and upload it to a Play track. " \

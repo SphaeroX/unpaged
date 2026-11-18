@@ -24,7 +24,7 @@ flutter test tests/app/<pfad>_test.dart               # einzelne Datei
 flutter test tests/app/<pfad>_test.dart --plain-name "<testname>"   # einzelner Test
 flutter test tests/integration -d <device-id>         # Integrationstests (Gerät/Emulator nötig)
 flutter test --coverage tests/app tests/reflow_engine # mit Coverage
-flutter drive --driver=tests/screenshots/driver.dart --target=tests/screenshots/screenshots_test.dart -d <device-id>   # README-Screenshots nach docs/screenshots/
+flutter drive --driver=tests/screenshots/driver.dart --target=tests/screenshots/screenshots_test.dart -d <device-id>   # README-Screenshots nach docs/screenshots/ (mit --dart-define=SCREENSHOT_LOCALE=de: deutsche Oberfläche nach docs/screenshots/de/, für den Play Store)
 ```
 
 Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstests brauchen ein Android-Gerät oder einen Emulator.
@@ -40,7 +40,7 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 | `tests/app/helpers/` | Gemeinsame Test-Hilfen (z. B. `buildTestApp` mit Provider-Overrides) | – |
 | `tests/fixtures/` | Kleine, selbst erzeugte PDFs für App-Tests (keine Fremdlizenzen) | Pfade relativ zum Projekt-Root |
 | `tests/integration/` | `integration_test`-Abläufe (Import, Lesen, Moduswechsel) | Nur Kernabläufe |
-| `tests/screenshots/` | README-Screenshots: `screenshots_test.dart` (Ablauf), `driver.dart` (schreibt `docs/screenshots/<name>.png`), `sample_pdfs.g.dart` (Korpus-PDFs als Base64, erzeugt von `tool/generate_sample_pdfs.sh`) | Läuft nur über `flutter drive`, nicht mit `flutter test`; keine Prüfungen, nur Aufnahmen |
+| `tests/screenshots/` | README- und Play-Store-Screenshots: `screenshots_test.dart` (Ablauf), `driver.dart` (schreibt `docs/screenshots/<name>.png`), `sample_pdfs.g.dart` (Korpus-PDFs als Base64, erzeugt von `tool/generate_sample_pdfs.sh`) | Läuft nur über `flutter drive`, nicht mit `flutter test`; keine Prüfungen, nur Aufnahmen |
 
 - Dateinamen enden auf `_test.dart`.
 - Flutter sucht standardmäßig in `test/`; deshalb werden Testpfade immer explizit übergeben (siehe Befehle). Einen Ordner `test/` gibt es nicht.

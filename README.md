@@ -25,7 +25,7 @@ Everything happens on the device. Unpaged has no network access, no analytics an
 <div align="center">
 <a href="docs/media/unpaged-demo.mp4"><img src="docs/media/unpaged-demo.jpg" alt="Unpaged demo video: open a PDF, switch to eBook mode with one tap, figures stay crisp" width="720"></a>
 
-▶ [Watch the 23-second demo](docs/media/unpaged-demo.mp4)
+▶ [Watch the 23-second demo](docs/media/unpaged-demo.mp4) · [on YouTube](https://youtu.be/anXLioqkv5c)
 </div>
 
 ## Screenshots

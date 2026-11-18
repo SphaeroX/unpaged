@@ -1,0 +1,44 @@
+PDFs sind für Papier gemacht. Am Handy heißt das: winzige Schrift, zwei Spalten und ständiges Zoomen und seitliches Scrollen. Unpaged ändert das.
+
+Unpaged öffnet jede PDF im Original-Layout. PDFs mit Textebene kannst du zusätzlich im eBook-Modus lesen: Der Text wird wie in einem eBook neu umbrochen, in deiner Schrift, deiner Schriftgröße und deinem Farbschema. Tabellen, Abbildungen und Formeln bleiben genau wie im Original, als scharfer Ausschnitt der Seite, den du zum Zoomen antippen kannst.
+
+Gemacht für wissenschaftliche Paper, Fachbücher und technische Dokumentation, auch mit zweispaltigem Layout.
+
+<b>eBook-Modus</b>
+• Bricht PDFs mit Textebene komplett offline neu um
+• Erkennt die Lesereihenfolge über Spalten hinweg
+• Entfernt Kopfzeilen und Seitenzahlen
+• Fügt am Zeilenende getrennte Wörter wieder zusammen
+• Erkennt Überschriften, Listen und Bildunterschriften
+• Zeigt Tabellen, Abbildungen und Formeln als Bild der Originalseite, Antippen zum Zoomen
+
+<b>Original-Ansicht</b>
+• Die PDF genau wie veröffentlicht, mit flüssigem Zoom
+• Mit einem Tipp zwischen Original und eBook wechseln
+
+<b>Bibliothek</b>
+• Deine PDFs mit Lesestand, weiterlesen, wo du aufgehört hast
+• Die eBook-Fassung wird nach dem Import einmal im Hintergrund vorbereitet
+• Import über die Dateiauswahl, „Öffnen mit“ oder „Teilen“ aus jeder App
+
+<b>Lese-Einstellungen</b>
+• Schriften: Literata, Atkinson Hyperlegible oder Systemschrift
+• Schriftgröße und Zeilenabstand
+• Helles, dunkles und Sepia-Farbschema
+
+<b>Markierungen und Notizen</b>
+• Text markieren und Notizen anlegen, in beiden Ansichten
+• Nur in der App gespeichert, deine PDF bleibt unverändert
+
+<b>Teilen und Drucken</b>
+• Die Original-PDF teilen oder drucken
+
+<b>Privat von Grund auf</b>
+Unpaged hat keinen Netzwerkzugriff, keine Konten, keine Werbung, keine Analyse und keinen Absturzbericht. Deine Dokumente verlassen nie dein Handy.
+
+<b>Open Source</b>
+Unpaged ist kostenlos und Open Source unter der MIT-Lizenz. Quellcode, Fehlermeldungen und Ideen: github.com/SphaeroX/unpaged
+
+Gut zu wissen: Gescannte PDFs ohne Textebene kannst du in der Original-Ansicht lesen, aber nicht umbrechen, denn Unpaged hat keine Texterkennung (OCR).
+
+Verfügbar auf Deutsch und Englisch.

@@ -1,0 +1,44 @@
+PDFs are made for paper. On a phone that means tiny text, two columns and endless zooming and scrolling sideways. Unpaged fixes that.
+
+Unpaged opens every PDF in its original layout. For PDFs with a text layer it also offers an eBook mode: the text is reflowed like an eBook, in your font, your text size and your theme. Tables, figures and formulas stay exactly as they were, as sharp crops of the original page that you can tap to zoom.
+
+Made for scientific papers, textbooks and technical documentation, including two-column layouts.
+
+<b>eBook mode</b>
+• Reflows PDFs with a text layer completely offline
+• Finds the reading order across columns
+• Removes running headers and page numbers
+• Joins words that were hyphenated at the end of a line
+• Recognises headings, lists and captions
+• Keeps tables, figures and formulas as images of the original page, tap to zoom
+
+<b>Original view</b>
+• The PDF exactly as published, with smooth zooming
+• Switch between original and eBook with one tap
+
+<b>Library</b>
+• Your PDFs with reading progress, continue where you stopped
+• The eBook version is prepared once in the background after import
+• Import with the file picker, "Open with" or "Share" from any app
+
+<b>Reading settings</b>
+• Fonts: Literata, Atkinson Hyperlegible or the system font
+• Text size and line spacing
+• Light, dark and sepia themes
+
+<b>Highlights and notes</b>
+• Highlight text and add notes in both views
+• Stored only inside the app, your PDF is never changed
+
+<b>Share and print</b>
+• Share or print the original PDF
+
+<b>Private by design</b>
+Unpaged has no network access, no accounts, no ads, no analytics and no crash reporter. Your documents never leave your phone.
+
+<b>Open source</b>
+Unpaged is free and open source under the MIT license. Source code, issues and ideas: github.com/SphaeroX/unpaged
+
+Good to know: scanned PDFs without a text layer can be read in the original view, but not reflowed, because Unpaged does no text recognition (OCR).
+
+Available in English and German.
