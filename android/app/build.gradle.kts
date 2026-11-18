@@ -66,3 +66,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // FileProvider for sharing PDFs (Apache-2.0).
+    implementation("androidx.core:core:1.13.1")
+}

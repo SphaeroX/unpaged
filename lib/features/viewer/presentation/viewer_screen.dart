@@ -12,6 +12,7 @@ import 'package:unpaged/features/annotations/presentation/annotation_sheets.dart
 import 'package:unpaged/features/progress/data/reading_position_repository.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/reader/presentation/reader_screen.dart';
+import 'package:unpaged/features/share/presentation/share_menu.dart';
 import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 /// Opens a PDF by path once and exposes its [PdfInfo].
@@ -188,6 +189,7 @@ class _ViewerScreenState extends ConsumerState<ViewerScreen> {
               icon: const Icon(Icons.menu_book_outlined),
               onPressed: () => _switchToEbook(book),
             ),
+          PdfShareMenu(path: widget.path, title: widget.title ?? l10n.appTitle),
         ],
       ),
       body: info.when(

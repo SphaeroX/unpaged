@@ -355,6 +355,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not found in the current version'**
   String get orphanedHighlight;
+
+  /// No description provided for @shareMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Share or print'**
+  String get shareMenu;
+
+  /// No description provided for @sharePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Share PDF'**
+  String get sharePdf;
+
+  /// No description provided for @printPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Print'**
+  String get printPdf;
+
+  /// No description provided for @shareUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No app found to share or print with.'**
+  String get shareUnavailable;
 }
 
 class _AppLocalizationsDelegate

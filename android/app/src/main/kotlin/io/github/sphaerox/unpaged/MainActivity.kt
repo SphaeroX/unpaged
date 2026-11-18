@@ -31,6 +31,8 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PdfShare.CHANNEL)
+            .setMethodCallHandler(PdfShare(this))
     }
 
     override fun onNewIntent(intent: Intent) {

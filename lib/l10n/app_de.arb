@@ -42,5 +42,9 @@
   "highlights": "Markierungen",
   "noHighlights": "Noch keine Markierungen.",
   "pageLabel": "Seite {page}",
-  "orphanedHighlight": "In der aktuellen Fassung nicht gefunden"
+  "orphanedHighlight": "In der aktuellen Fassung nicht gefunden",
+  "shareMenu": "Teilen oder drucken",
+  "sharePdf": "PDF teilen",
+  "printPdf": "Drucken",
+  "shareUnavailable": "Keine App zum Teilen oder Drucken gefunden."
 }

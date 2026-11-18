@@ -156,4 +156,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get orphanedHighlight => 'In der aktuellen Fassung nicht gefunden';
+
+  @override
+  String get shareMenu => 'Teilen oder drucken';
+
+  @override
+  String get sharePdf => 'PDF teilen';
+
+  @override
+  String get printPdf => 'Drucken';
+
+  @override
+  String get shareUnavailable => 'Keine App zum Teilen oder Drucken gefunden.';
 }

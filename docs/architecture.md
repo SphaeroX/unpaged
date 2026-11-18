@@ -33,16 +33,17 @@
 | Schriften Literata, Atkinson Hyperlegible (`assets/fonts/`, offline gebündelt) | Lese-Schriften | SIL OFL 1.1 (Lizenztexte daneben) |
 | `sqlite3` (dev, direkt) | Migrationstests mit Rohdatenbank | MIT |
 | `path_provider`, `path` | App-Speicherort | BSD-3-Clause |
+| `androidx.core:core` (Android/Gradle, `android/app/build.gradle.kts`) | `FileProvider` zum Teilen von PDFs | Apache-2.0 |
 
 ## Verbindliche Rahmenbedingungen
 
-- **Komplett offline.** Keine Netzwerkzugriffe, keine Analytics, keine Crash-Reporter; es verlassen keine Daten das Gerät.
+- **Komplett offline.** Keine Netzwerkzugriffe, keine Analytics, keine Crash-Reporter; es verlassen keine Daten das Gerät. Einzige Ausnahme ist „Teilen/Drucken“: Die App übergibt die PDF nur auf ausdrücklichen Wunsch an das vom Nutzer im Systemdialog gewählte Ziel.
 - **Lizenzen:** Jede Abhängigkeit muss MIT-kompatibel sein (MIT, BSD, Apache-2.0, Zlib o. ä.). Kein GPL/AGPL, daher kein MuPDF. Neue Abhängigkeit → Lizenz prüfen und hier eintragen.
 - **Android zuerst**, `minSdk 24`. Code bleibt plattformneutral (keine Android-only-APIs außerhalb von Plattform-Adaptern).
 
 ## Architektur
 
-- `lib/features/<feature>/` mit `data/`, `domain/`, `presentation/`. Features: `library`, `import`, `viewer` (Original), `reader` (eBook), `annotations`, `settings`.
+- `lib/features/<feature>/` mit `data/`, `domain/`, `presentation/`. Features: `library`, `import`, `viewer` (Original), `reader` (eBook), `annotations`, `settings`, `share` (Teilen/Drucken).
 - `lib/core/`: Datenbank, PDF-Adapter (einzige Stelle, die `pdfrx` importiert), Dateiablage, Theming, l10n.
 - `packages/reflow_engine/`: **reines Dart-Paket ohne Flutter und ohne pdfrx** (einzige Abhängigkeit: `meta`). Enthält die gesamte Layout-Analyse. Eingabe: `DocumentInput` → `PageInput` (Nummer, Breite, Höhe) → `TextChar` (Glyph, Box, `wordStart`); Koordinaten in Punkten, Ursprung oben links, y wächst nach unten. Ausgabe: `ReflowDocument` (`engineVersion`, `ReflowBlock`s mit ID `p<Seite>b<Index>`, Typ, Text, Seite, Box, bei Überschriften `level`). Blocktypen: `heading`, `paragraph`, `listItem`, `caption` sowie die Bereiche `table`, `figure`, `formula` (`BlockType.isRegion`); Bereiche haben leeren Text und werden über Seite + Box als Bildausschnitt gezeigt. Einstieg: `const ReflowEngine().reflow(input)`; `ReflowEngine.version` wird bei jeder Ausgabeänderung erhöht. Die App bindet das Paket per `path`-Abhängigkeit ein.
 - Engine-Pipeline (`packages/reflow_engine/lib/src/`): `lines.dart` (vertikale Glyphfolgen verwerfen → Läufe in Inhaltsreihenfolge → Läufe nur bei kleinem horizontalem Abstand zu Zeilen verbinden; kleine Glyphen wie Kommas/Hochstellungen hängen am Zeilenband) → `running_elements.dart` (Kolumnentitel, Seitenzahlen, Randreste) → `reading_order.dart` (Spaltenlücke suchen, Zweispalter-Regionen links vor rechts) → `regions.dart` (Tabellen als Zellraster, Abbildungen/Tabellen über Bildunterschriften – zuerst Randlegenden: schmale Unterschrift bündig links in der Textspalte mit Beschriftungen rechts daneben ⇒ Bereich rechts davon ab Oberkante der Unterschrift bis zur nächsten Prosazeile, ohne solche bis zum gespiegelten oberen Rand; sonst Fläche darüber/darunter –, Formeln über Formelzeichen; Muster in `text_patterns.dart`) → Lesereihenfolge mit Bereichen als Platzhalterzeilen → `paragraphs.dart` (Absätze dokumentweit, Fortsetzung über Spalten-/Seitenwechsel und über Abbildungen hinweg bei unvollendetem Satz) → `classify.dart` (Überschrift mit Ebene, Listeneintrag, Bildunterschrift, Absatz) → `hyphenation.dart` (Trennstriche über das Vokabular des Dokuments auflösen) → `engine.dart`.
@@ -102,6 +103,12 @@
 - Reader-Blöcke sind `SelectableText.rich`; Markierungen erscheinen als farbige Spans. Das Kontextmenü stellt „Markieren“ und „Notiz hinzufügen“ vor die Standardeinträge (Android verschiebt hintere Einträge ins ⋮-Menü); Antippen innerhalb einer Markierung öffnet das Bearbeiten-Sheet. Eine Markierung liegt immer in genau einem Block (Auswahl über Blockgrenzen ist nicht möglich).
 - Verankerung (`lib/features/annotations/domain/reanchor.dart`): Block-ID + Offsets im Blocktext + Zitat mit je 30 Zeichen Kontext davor/danach + `engineVersion`. Beim Öffnen des Readers werden Markierungen mit anderer Engine-Version (oder verwaiste) neu verankert: gleiche Block-ID mit gleichem Zitat → bleibt; sonst Suche nach dem Zitat im ganzen Dokument, bei mehreren Treffern entscheidet der Kontext; nicht gefunden → `orphaned` (bleibt erhalten, erscheint in der Liste als „In der aktuellen Fassung nicht gefunden“).
 - Die Liste „Markierungen“ im Reader springt zum Block (`ReaderScreen.initialBlockId`).
+
+### Teilen und Drucken
+
+- `PdfShareMenu` (`lib/features/share/presentation/share_menu.dart`) sitzt in der App-Leiste von `ViewerScreen` und `ReaderScreen` (Tooltip „Teilen oder drucken“) mit „PDF teilen“ und „Drucken“. Geteilt bzw. gedruckt wird immer die unveränderte Original-PDF des Buchs, auch aus dem eBook-Modus; Dateiname/Druckauftrag = Buchtitel (`PdfShareChannel.fileNameFor`).
+- `PdfShareChannel` (`lib/core/platform/`, MethodChannel `io.github.sphaerox.unpaged/share_pdf`, Methoden `share`/`print` mit `path` + `name`) liefert `false`, wenn kein Ziel verfügbar ist → SnackBar „Keine App zum Teilen oder Drucken gefunden.“
+- Android (`PdfShare.kt`): Teilen kopiert die Datei nach `cacheDir/shared/<Titel>.pdf` (Ordner wird je Vorgang geleert) und öffnet `ACTION_SEND` über den Share-Chooser mit `FileProvider`-URI (`${applicationId}.fileprovider`, freigegeben ist nur `cache/shared/`, `res/xml/file_paths.xml`). Drucken übergibt die Datei per `PrintDocumentAdapter` unverändert an `PrintManager` (Systemdruckdialog, auch „Als PDF speichern“).
 
 ### Markierungen und Lesestand
 

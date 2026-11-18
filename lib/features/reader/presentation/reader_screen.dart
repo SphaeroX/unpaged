@@ -20,6 +20,7 @@ import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
 import 'package:unpaged/features/settings/domain/reader_settings.dart';
 import 'package:unpaged/features/settings/presentation/reader_settings_controller.dart';
 import 'package:unpaged/features/settings/presentation/reader_settings_sheet.dart';
+import 'package:unpaged/features/share/presentation/share_menu.dart';
 import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
 import 'package:unpaged/l10n/gen/app_localizations.dart';
 
@@ -135,6 +136,10 @@ class ReaderScreen extends ConsumerWidget {
                 ),
               ),
             ),
+          ),
+          PdfShareMenu(
+            path: ref.read(bookFileStoreProvider).fileFor(bookId).path,
+            title: title,
           ),
         ],
       ),
