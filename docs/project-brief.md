@@ -42,7 +42,8 @@ Die Reflow-Qualität bei mehrspaltigen Fachtexten. Abgesichert durch die isolier
 ## Offene Entscheidungen
 
 - Android-`applicationId` (Platzhalter `dev.paperflow`), festzulegen vor dem ersten Store-Upload
-- Name des Copyright-Inhabers für die MIT-Lizenz
+- Copyright-Inhaber der MIT-Lizenz: entschieden – „The paperflow authors“
+- URL des Datenschutzhinweises für den Play Store
 
 ---
 Pflege: Bei Änderungen an Zielen oder Umfang diese Datei aktualisieren.

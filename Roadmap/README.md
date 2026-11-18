@@ -29,7 +29,7 @@ Stand: 2026-11-18 – Task_01 bis Task_11 erledigt.
 | 09 | Lesestand | erledigt |
 | 10 | Markierungen im Original | erledigt |
 | 11 | Markierungen im eBook-Modus | erledigt |
-| 12 | Release-Vorbereitung | offen |
+| 12 | Release-Vorbereitung | offen (vom Nutzer zurückgestellt) |
 
 Status ist `offen`, `läuft` (Datei trägt das Präfix `RUN_`) oder `erledigt` (Datei liegt in `Archiv/`). Die Tabelle wird beim Archivieren eines Tasks aktualisiert.
 
@@ -57,7 +57,7 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 Dinge, die global noch zu beachten sind: Besonderheiten, bekannte Einschränkungen, kleinere Details. Wird laufend ergänzt.
 
 - Hauptrisiko ist die Reflow-Qualität bei Mehrspaltern; deshalb liegen die Engine-Tasks (02–04) vor der App-Integration. *(Roadmap-Anlage)*
-- Offene Entscheidungen des Nutzers: endgültige `applicationId` (Platzhalter `dev.paperflow`) und Copyright-Inhaber der MIT-Lizenz, beide spätestens in Task_12. *(Roadmap-Anlage)*
+- Offene Entscheidungen des Nutzers: endgültige `applicationId` (Platzhalter `dev.paperflow`) und URL des Datenschutzhinweises (Task_12). Copyright-Inhaber entschieden: „The paperflow authors“. Task_12 ist vom Nutzer vorerst zurückgestellt. *(Task_11)*
 - Cloud-Umgebung: Flutter unter `/opt/flutter`, Android-SDK unter `/opt/android-sdk` (nachinstalliert, nicht persistent). APK-Builds funktionieren; Integrationstests laufen dort **nicht** (kein Gerät/Emulator) und müssen lokal nachgeholt werden. *(Task_01)*
 - Bekannte Engine-Grenzen: mehr als zwei Spalten, abgesetzte Akzente (`supe´rieure`), teils zerlegte Ligaturen (`i feld`). *(Task_03)*
 - pdfrx liefert keine Schriftgrößen und keine Bild-/Linienobjekte, nur Zeichen + Boxen. *(Task_01)*

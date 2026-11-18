@@ -121,7 +121,7 @@
 ## Offene Entscheidungen
 
 - Android-`applicationId`: bis zur Release-Vorbereitung gilt der Platzhalter `dev.paperflow`.
-- Name des Copyright-Inhabers für die MIT-Lizenz.
+- Copyright-Inhaber der MIT-Lizenz: „The paperflow authors“ (entschieden, LICENSE folgt in Task 12).
 
 ---
 Pflege: Bei Änderungen an Stack oder Architektur diese Datei sofort aktualisieren.

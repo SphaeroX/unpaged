@@ -65,7 +65,8 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 - Aus Task_08: OFL-Lizenzen der Schriften (`assets/fonts/*-OFL.txt`) in die Lizenzseite aufnehmen.
 - Endgültige `applicationId` (offene Entscheidung des Nutzers).
-- Name des Copyright-Inhabers für die MIT-Lizenz (offene Entscheidung des Nutzers).
+- Name des Copyright-Inhabers für die MIT-Lizenz: vom Nutzer entschieden (2026-11-18) → „The paperflow authors“.
+- Stand 2026-11-18: Der Nutzer hat diesen Task vorerst zurückgestellt; `applicationId` und Datenschutz-URL sind noch offen.
 - Hosting des Datenschutzhinweises für den Play Store (Play verlangt eine URL; z. B. GitHub-Seite des Repos) – mit dem Nutzer klären.
 
 ## Notizen zu diesem Task
