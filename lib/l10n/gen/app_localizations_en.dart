@@ -78,4 +78,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get zoomClose => 'Close';
+
+  @override
+  String get readingSettings => 'Reading settings';
+
+  @override
+  String get font => 'Font';
+
+  @override
+  String get fontSerif => 'Serif';
+
+  @override
+  String get fontSans => 'Sans';
+
+  @override
+  String get fontSystem => 'System';
+
+  @override
+  String get textSize => 'Text size';
+
+  @override
+  String get largerText => 'Larger text';
+
+  @override
+  String get smallerText => 'Smaller text';
+
+  @override
+  String get lineSpacing => 'Line spacing';
+
+  @override
+  String get widerLines => 'More line spacing';
+
+  @override
+  String get tighterLines => 'Less line spacing';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSepia => 'Sepia';
 }

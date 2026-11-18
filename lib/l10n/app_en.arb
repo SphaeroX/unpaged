@@ -45,5 +45,20 @@
   "switchToEbook": "eBook view",
   "switchToOriginal": "Original view",
   "ebookNotReady": "The eBook version is not ready yet.",
-  "zoomClose": "Close"
+  "zoomClose": "Close",
+  "readingSettings": "Reading settings",
+  "font": "Font",
+  "fontSerif": "Serif",
+  "fontSans": "Sans",
+  "fontSystem": "System",
+  "textSize": "Text size",
+  "largerText": "Larger text",
+  "smallerText": "Smaller text",
+  "lineSpacing": "Line spacing",
+  "widerLines": "More line spacing",
+  "tighterLines": "Less line spacing",
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSepia": "Sepia"
 }

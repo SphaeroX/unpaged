@@ -30,6 +30,8 @@
 | `drift`, `drift_flutter` (bringt `sqlite3` mit gebündeltem SQLite) | Datenbank | MIT (SQLite: Public Domain) |
 | `drift_dev`, `build_runner` (dev) | Codegenerierung für drift | MIT / BSD-3-Clause |
 | `crypto` | SHA-256 der PDFs | BSD-3-Clause |
+| Schriften Literata, Atkinson Hyperlegible (`assets/fonts/`, offline gebündelt) | Lese-Schriften | SIL OFL 1.1 (Lizenztexte daneben) |
+| `sqlite3` (dev, direkt) | Migrationstests mit Rohdatenbank | MIT |
 | `path_provider`, `path` | App-Speicherort | BSD-3-Clause |
 
 ## Verbindliche Rahmenbedingungen
@@ -75,6 +77,11 @@
 - `ReaderScreen` (`lib/features/reader/presentation/`) lädt das Dokument über `reflowDocumentProvider(bookId)` und zeigt die Blöcke in einer `ListView.builder` (lazy). Stile: Überschrift nach `level` (`headlineSmall` / `titleLarge` / `titleMedium`), Absatz `bodyLarge`, Listeneintrag eingerückt, Bildunterschrift kursiv. Bereiche als `Image.file` aus dem `ReflowStore`; Antippen öffnet eine Zoom-Ansicht (`InteractiveViewer`, Doppeltipp zoomt).
 - Fehlt das Dokument oder ist es beschädigt: Hinweis + „Neu vorbereiten“ (Status `pending`, `reflowSchedulerProvider.enqueue`).
 - Umschalten: `ViewerScreen` (mit `bookId`) hat eine Aktion „eBook-Ansicht“, die nur bei `ReflowStatus.done` wechselt (sonst SnackBar mit Status); `ReaderScreen` hat „Originalansicht“. Gewechselt wird per `pushReplacement`; der Sprung an die passende Stelle folgt in Task 09.
+
+### Lese-Einstellungen (Task 08)
+
+- `ReaderSettings` (`lib/features/settings/domain/`): Schrift (`literata`, `atkinson`, `system`), Größe 14–30 in 2er-Schritten (Standard 18), Zeilenabstand 1,2–2,0 in 0,1-Schritten (Standard 1,5), Theme (`light`, `dark`, `sepia`). Gespeichert als Schlüssel/Wert-Zeilen (`reader.*`) in der Tabelle `Preferences` (`schemaVersion` 2, Migration 1→2 legt sie an, Test `tests/app/core/database/migration_test.dart`).
+- `readerSettingsProvider` (AsyncNotifier) wendet Änderungen sofort an und speichert sie. Das Theme gilt für die ganze App (`lib/core/theme/app_theme.dart`, Sepia mit eigenem Hintergrund `sepiaBackground`); Schrift/Größe/Zeilenabstand gelten im eBook-Modus. Bedienung über das Bottom-Sheet „Lese-Einstellungen“ im Reader.
 
 ### Markierungen und Lesestand
 

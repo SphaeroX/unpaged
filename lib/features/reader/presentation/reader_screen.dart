@@ -8,6 +8,9 @@ import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/features/reflow/data/reflow_store.dart';
 import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
+import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:paperflow/features/settings/presentation/reader_settings_controller.dart';
+import 'package:paperflow/features/settings/presentation/reader_settings_sheet.dart';
 import 'package:paperflow/features/viewer/presentation/viewer_screen.dart';
 import 'package:paperflow/l10n/gen/app_localizations.dart';
 import 'package:reflow_engine/reflow_engine.dart';
@@ -44,6 +47,11 @@ class ReaderScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(title),
         actions: [
+          IconButton(
+            tooltip: l10n.readingSettings,
+            icon: const Icon(Icons.text_fields),
+            onPressed: () => ReaderSettingsSheet.show(context),
+          ),
           IconButton(
             tooltip: l10n.switchToOriginal,
             icon: const Icon(Icons.picture_as_pdf_outlined),
@@ -120,30 +128,43 @@ class _BlockList extends ConsumerWidget {
   }
 }
 
-class _TextBlock extends StatelessWidget {
+class _TextBlock extends ConsumerWidget {
   const new({required this.block});
 
   final ReflowBlock block;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context).textTheme;
-    final body = theme.bodyLarge!;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings =
+        ref.watch(readerSettingsProvider).value ?? ReaderSettings.defaults;
+    final body = Theme.of(context).textTheme.bodyLarge!.copyWith(
+      fontFamily: settings.font.family,
+      fontSize: settings.fontSize,
+      height: settings.lineHeight,
+    );
+    final size = settings.fontSize;
     final (style, padding) = switch (block.type) {
       BlockType.heading => (
-        switch (block.level ?? 2) {
-          1 => theme.headlineSmall!,
-          2 => theme.titleLarge!,
-          _ => theme.titleMedium!,
-        },
-        const EdgeInsets.only(top: 20, bottom: 8),
+        body.copyWith(
+          fontSize: switch (block.level ?? 2) {
+            1 => size * 1.45,
+            2 => size * 1.25,
+            _ => size * 1.1,
+          },
+          fontWeight: FontWeight.w700,
+          height: 1.25,
+        ),
+        EdgeInsets.only(top: size, bottom: size * 0.4),
       ),
-      BlockType.listItem => (body, const EdgeInsets.only(left: 16, bottom: 6)),
+      BlockType.listItem => (
+        body,
+        EdgeInsets.only(left: size, bottom: size * 0.35),
+      ),
       BlockType.caption => (
-        theme.bodyMedium!.copyWith(fontStyle: FontStyle.italic),
-        const EdgeInsets.only(bottom: 16),
+        body.copyWith(fontSize: size * 0.85, fontStyle: FontStyle.italic),
+        EdgeInsets.only(bottom: size * 0.9),
       ),
-      _ => (body, const EdgeInsets.only(bottom: 12)),
+      _ => (body, EdgeInsets.only(bottom: size * 0.7)),
     };
     return Padding(
       padding: padding,

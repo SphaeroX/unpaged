@@ -60,6 +60,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 ## Offene Fragen / Annahmen
 
+- Aus Task_08: aktuelle `schemaVersion` ist 2 → neue Tabelle mit Version 3 und `if (from < 3)`-Schritt; `tests/app/core/database/migration_test.dart` erweitern.
 - Aus Task_05: Datenbank `lib/core/database/app_database.dart` hat `schemaVersion` 1; neue Tabelle → Version erhöhen, `onUpgrade`-Schritt, Migrationstest. Widget-Tests: `TestEnv`/`settleIo` (siehe `docs/testing.md`).
 
 ## Notizen zu diesem Task

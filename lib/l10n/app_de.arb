@@ -18,5 +18,20 @@
   "switchToEbook": "eBook-Ansicht",
   "switchToOriginal": "Originalansicht",
   "ebookNotReady": "Die eBook-Fassung ist noch nicht fertig.",
-  "zoomClose": "Schließen"
+  "zoomClose": "Schließen",
+  "readingSettings": "Lese-Einstellungen",
+  "font": "Schrift",
+  "fontSerif": "Serifen",
+  "fontSans": "Serifenlos",
+  "fontSystem": "System",
+  "textSize": "Schriftgröße",
+  "largerText": "Größere Schrift",
+  "smallerText": "Kleinere Schrift",
+  "lineSpacing": "Zeilenabstand",
+  "widerLines": "Mehr Zeilenabstand",
+  "tighterLines": "Weniger Zeilenabstand",
+  "theme": "Design",
+  "themeLight": "Hell",
+  "themeDark": "Dunkel",
+  "themeSepia": "Sepia"
 }

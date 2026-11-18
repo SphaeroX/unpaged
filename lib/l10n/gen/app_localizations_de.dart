@@ -80,4 +80,49 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get zoomClose => 'Schließen';
+
+  @override
+  String get readingSettings => 'Lese-Einstellungen';
+
+  @override
+  String get font => 'Schrift';
+
+  @override
+  String get fontSerif => 'Serifen';
+
+  @override
+  String get fontSans => 'Serifenlos';
+
+  @override
+  String get fontSystem => 'System';
+
+  @override
+  String get textSize => 'Schriftgröße';
+
+  @override
+  String get largerText => 'Größere Schrift';
+
+  @override
+  String get smallerText => 'Kleinere Schrift';
+
+  @override
+  String get lineSpacing => 'Zeilenabstand';
+
+  @override
+  String get widerLines => 'Mehr Zeilenabstand';
+
+  @override
+  String get tighterLines => 'Weniger Zeilenabstand';
+
+  @override
+  String get theme => 'Design';
+
+  @override
+  String get themeLight => 'Hell';
+
+  @override
+  String get themeDark => 'Dunkel';
+
+  @override
+  String get themeSepia => 'Sepia';
 }

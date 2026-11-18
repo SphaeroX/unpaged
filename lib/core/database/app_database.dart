@@ -23,20 +23,31 @@ class Books extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [Books])
+/// Small key/value settings (reading settings, …).
+class Preferences extends Table {
+  TextColumn get key => text()();
+  TextColumn get value => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {key};
+}
+
+@DriftDatabase(tables: [Books, Preferences])
 class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   new defaults() : super(driftDatabase(name: 'paperflow'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     // Schema changes add steps here, one `if (from < n)` block per version.
-    onUpgrade: (m, from, to) async {},
+    onUpgrade: (m, from, to) async {
+      if (from < 2) await m.createTable(preferences);
+    },
   );
 
   /// All books, newest import first.

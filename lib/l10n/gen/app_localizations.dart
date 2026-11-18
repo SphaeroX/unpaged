@@ -211,6 +211,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get zoomClose;
+
+  /// No description provided for @readingSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading settings'**
+  String get readingSettings;
+
+  /// No description provided for @font.
+  ///
+  /// In en, this message translates to:
+  /// **'Font'**
+  String get font;
+
+  /// No description provided for @fontSerif.
+  ///
+  /// In en, this message translates to:
+  /// **'Serif'**
+  String get fontSerif;
+
+  /// No description provided for @fontSans.
+  ///
+  /// In en, this message translates to:
+  /// **'Sans'**
+  String get fontSans;
+
+  /// No description provided for @fontSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get fontSystem;
+
+  /// No description provided for @textSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get textSize;
+
+  /// No description provided for @largerText.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger text'**
+  String get largerText;
+
+  /// No description provided for @smallerText.
+  ///
+  /// In en, this message translates to:
+  /// **'Smaller text'**
+  String get smallerText;
+
+  /// No description provided for @lineSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Line spacing'**
+  String get lineSpacing;
+
+  /// No description provided for @widerLines.
+  ///
+  /// In en, this message translates to:
+  /// **'More line spacing'**
+  String get widerLines;
+
+  /// No description provided for @tighterLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Less line spacing'**
+  String get tighterLines;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeSepia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sepia'**
+  String get themeSepia;
 }
 
 class _AppLocalizationsDelegate
