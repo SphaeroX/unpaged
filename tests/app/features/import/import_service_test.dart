@@ -10,7 +10,10 @@ import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
+import 'package:paperflow/features/annotations/data/annotation_repository.dart';
+import 'package:paperflow/features/annotations/domain/annotation.dart';
 import 'package:paperflow/features/import/domain/import_service.dart';
+import 'package:paperflow/features/progress/domain/reading_position.dart';
 import 'package:paperflow/features/reflow/data/reflow_store.dart';
 
 class _MockAdapter extends Mock implements PdfAdapter;
@@ -119,6 +122,27 @@ void main() {
     await withCache.deleteBook(sha);
 
     expect(Directory('${dir.path}/reflow/$sha').existsSync(), isFalse);
+  });
+
+  test('delete also removes the highlights of the book', () async {
+    await service.importPdf(_BytesSource('a.pdf', pdfBytes));
+    await AnnotationRepository(db).add(
+      sha,
+      const AnnotationDraft(
+        view: ReadingView.original,
+        page: 1,
+        start: 0,
+        end: 3,
+        quote: 'abc',
+      ),
+    );
+
+    await service.deleteBook(sha);
+
+    expect(
+      await AnnotationRepository(db).watch(sha, ReadingView.original).first,
+      isEmpty,
+    );
   });
 
   test('delete tolerates a missing file', () async {

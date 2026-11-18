@@ -85,6 +85,7 @@ class ImportService {
     await (db.delete(
       db.readingPositions,
     )..where((p) => p.bookId.equals(id))).go();
+    await (db.delete(db.annotations)..where((a) => a.bookId.equals(id))).go();
     await store.delete(id);
     await reflowStore?.delete(id);
   }

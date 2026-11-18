@@ -128,4 +128,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String readProgress(int percent) {
     return '$percent % read';
   }
+
+  @override
+  String get highlight => 'Highlight';
+
+  @override
+  String get addNote => 'Add note';
+
+  @override
+  String get note => 'Note';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get highlights => 'Highlights';
+
+  @override
+  String get noHighlights => 'No highlights yet.';
+
+  @override
+  String pageLabel(int page) {
+    return 'Page $page';
+  }
 }

@@ -114,4 +114,34 @@ void main() {
       expect(header.getUint32(4), 100);
     });
   });
+
+  group('PdfrxAdapter.textRects', () {
+    const pdf = 'tests/reflow_engine/corpus/synthetic_single_column.pdf';
+
+    test('returns one box per line of a character range, top-down', () async {
+      // "Reading long technical documents" sits on the first line.
+      final boxes = await PdfrxAdapter().textRects(
+        pdf,
+        page: 1,
+        start: 0,
+        end: 7,
+      );
+
+      expect(boxes, hasLength(1));
+      expect(boxes.single.top, lessThan(100));
+      expect(boxes.single.right, greaterThan(boxes.single.left));
+    });
+
+    test('a range across a line break yields a box per line', () async {
+      final boxes = await PdfrxAdapter().textRects(
+        pdf,
+        page: 1,
+        start: 0,
+        end: 120,
+      );
+
+      expect(boxes.length, greaterThanOrEqualTo(2));
+      expect(boxes[1].top, greaterThan(boxes[0].top));
+    });
+  });
 }

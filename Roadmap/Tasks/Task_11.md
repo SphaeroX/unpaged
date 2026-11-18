@@ -58,6 +58,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 ## Offene Fragen / Annahmen
 
+- Aus Task_10: Tabelle `Annotations` hat bereits `blockId`, `prefix`, `suffix`, `engineVersion`, `orphaned` (Schema v4, keine Migration nötig); `AnnotationRepository.add/update/delete/watch(bookId, ReadingView.ebook)`; Sheets/Liste in `lib/features/annotations/presentation/annotation_sheets.dart`. Im Widget-Test drift-Streams nur über `tester.runAsync` lesen.
 - Annahme: Markierungen über Blockgrenzen hinweg werden auf einen Block begrenzt oder in mehrere Teile zerlegt; der Task entscheidet und dokumentiert.
 
 ## Notizen zu diesem Task

@@ -68,5 +68,19 @@
         "type": "int"
       }
     }
+  },
+  "highlight": "Highlight",
+  "addNote": "Add note",
+  "note": "Note",
+  "save": "Save",
+  "highlights": "Highlights",
+  "noHighlights": "No highlights yet.",
+  "pageLabel": "Page {page}",
+  "@pageLabel": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      }
+    }
   }
 }

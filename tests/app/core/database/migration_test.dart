@@ -33,7 +33,8 @@ void main() {
     expect(books.single.reflowStatus, ReflowStatus.done);
     expect(await db.select(db.preferences).get(), isEmpty);
     expect(await db.select(db.readingPositions).get(), isEmpty);
-    expect(db.schemaVersion, greaterThanOrEqualTo(3));
+    expect(await db.select(db.annotations).get(), isEmpty);
+    expect(db.schemaVersion, greaterThanOrEqualTo(4));
   });
 
   test('upgrading from version 2 keeps settings', () async {

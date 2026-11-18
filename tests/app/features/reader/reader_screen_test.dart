@@ -75,6 +75,9 @@ void main() {
         any(),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
+        highlights: any(named: 'highlights'),
+        selectionActions: any(named: 'selectionActions'),
+        onHighlightTap: any(named: 'onHighlightTap'),
       ),
     ).thenAnswer((_) => const Text('ORIGINAL'));
     await env.db

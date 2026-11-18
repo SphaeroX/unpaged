@@ -35,6 +35,47 @@ class RegionRequest {
   final BBox box;
 }
 
+/// Selected text on one page: PDFium character range [start]..[end).
+@immutable
+class PdfSelection {
+  const new({
+    required this.page,
+    required this.start,
+    required this.end,
+    required this.text,
+  });
+
+  final int page;
+  final int start;
+  final int end;
+  final String text;
+}
+
+/// A highlight to draw: boxes in top-down page points.
+@immutable
+class PageHighlight {
+  const new({
+    required this.id,
+    required this.page,
+    required this.rects,
+    required this.argb,
+  });
+
+  final int id;
+  final int page;
+  final List<BBox> rects;
+  final int argb;
+}
+
+/// An entry of the selection context menu.
+@immutable
+class SelectionAction {
+  const new({required this.label, required this.onSelected});
+
+  final String label;
+  final void Function(List<PdfSelection> selection) onSelected;
+}
+
 /// The only gateway to the PDF engine. Features never import pdfrx directly.
 abstract class PdfAdapter {
   /// Opens the PDF at [path] and returns basic facts.
@@ -61,6 +102,18 @@ abstract class PdfAdapter {
     String path, {
     int initialPage = 1,
     ValueChanged<int>? onPageChanged,
+    List<PageHighlight> highlights = const [],
+    List<SelectionAction> selectionActions = const [],
+    ValueChanged<int>? onHighlightTap,
+  });
+
+  /// Boxes (one per line, top-down page points) covering the characters
+  /// [start]..[end) of [page].
+  Future<List<BBox>> textRects(
+    String path, {
+    required int page,
+    required int start,
+    required int end,
   });
 }
 

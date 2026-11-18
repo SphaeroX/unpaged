@@ -34,5 +34,12 @@
   "themeLight": "Hell",
   "themeDark": "Dunkel",
   "themeSepia": "Sepia",
-  "readProgress": "{percent} % gelesen"
+  "readProgress": "{percent} % gelesen",
+  "highlight": "Markieren",
+  "addNote": "Notiz hinzufügen",
+  "note": "Notiz",
+  "save": "Speichern",
+  "highlights": "Markierungen",
+  "noHighlights": "Noch keine Markierungen.",
+  "pageLabel": "Seite {page}"
 }

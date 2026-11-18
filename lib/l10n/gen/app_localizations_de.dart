@@ -130,4 +130,27 @@ class AppLocalizationsDe extends AppLocalizations {
   String readProgress(int percent) {
     return '$percent % gelesen';
   }
+
+  @override
+  String get highlight => 'Markieren';
+
+  @override
+  String get addNote => 'Notiz hinzufügen';
+
+  @override
+  String get note => 'Notiz';
+
+  @override
+  String get save => 'Speichern';
+
+  @override
+  String get highlights => 'Markierungen';
+
+  @override
+  String get noHighlights => 'Noch keine Markierungen.';
+
+  @override
+  String pageLabel(int page) {
+    return 'Seite $page';
+  }
 }

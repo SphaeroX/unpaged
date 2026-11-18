@@ -91,6 +91,12 @@
 - Zuordnung (`lib/features/progress/domain/reading_position.dart`): Seite → erster Block dieser Seite bzw. nächster danach; Block → Quellseite; fehlt die gespeicherte Block-ID (neue Engine-Version), gilt die gespeicherte Seite.
 - Bibliothek: Antippen öffnet die zuletzt genutzte Ansicht an der gespeicherten Stelle (eBook nur bei `done`), Fortschritt „· 25 % gelesen“. Löschen entfernt auch die Positionen.
 
+### Markierungen im Original (Task 10)
+
+- Tabelle `Annotations` (Schema v4; für beide Ansichten): Buch, Ansicht, Seite, Zeichenbereich `start`/`end`, Zitat, Farbe (`HighlightColor`), Notiz; für das eBook zusätzlich `blockId`, `prefix`/`suffix` (Kontext), `engineVersion`, `orphaned`. `AnnotationRepository` (`lib/features/annotations/`).
+- Original: Die Auswahl kommt aus pdfrx (`buildContextMenu` → `getSelectedTextRanges()`, Zeichenindizes in `PdfPageText.fullText` von `loadStructuredText`). Der Adapter liefert `PdfSelection`s an `SelectionAction`s („Markieren“, „Notiz hinzufügen“), berechnet mit `textRects(path, page, start, end)` die Rechtecke je Zeile und zeichnet `PageHighlight`s als Overlays (`pageOverlaysBuilder`, Tippen über `PdfOverlayInteractionRegion`).
+- Antippen einer Markierung öffnet ein Sheet (Zitat, Farbe, Notiz, Löschen); die Liste „Markierungen“ springt zur Seite. Die PDF-Datei wird nie verändert; Löschen eines Buchs entfernt seine Markierungen.
+
 ### Markierungen und Lesestand
 
 - Original: verankert an Seite + Zeichenbereich.

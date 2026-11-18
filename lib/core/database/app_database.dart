@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
+import 'package:paperflow/features/annotations/domain/annotation.dart';
 import 'package:paperflow/features/progress/domain/reading_position.dart';
 
 part 'app_database.g.dart';
@@ -47,14 +48,34 @@ class ReadingPositions extends Table {
   Set<Column<Object>> get primaryKey => {bookId, view};
 }
 
-@DriftDatabase(tables: [Books, Preferences, ReadingPositions])
+/// Highlights and notes (only in the app, never written into the PDF).
+@DataClassName('AnnotationRow')
+class Annotations extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get bookId => text()();
+  TextColumn get view => textEnum<ReadingView>()();
+  IntColumn get page => integer()();
+  IntColumn get start => integer()();
+  IntColumn get end => integer()();
+  TextColumn get quote => text()();
+  TextColumn get color => textEnum<HighlightColor>()();
+  TextColumn get note => text().nullable()();
+  TextColumn get blockId => text().nullable()();
+  TextColumn get prefix => text().withDefault(const Constant(''))();
+  TextColumn get suffix => text().withDefault(const Constant(''))();
+  IntColumn get engineVersion => integer().nullable()();
+  BoolColumn get orphaned => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get createdAt => dateTime()();
+}
+
+@DriftDatabase(tables: [Books, Preferences, ReadingPositions, Annotations])
 class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   new defaults() : super(driftDatabase(name: 'paperflow'));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -63,6 +84,7 @@ class AppDatabase extends _$AppDatabase {
     onUpgrade: (m, from, to) async {
       if (from < 2) await m.createTable(preferences);
       if (from < 3) await m.createTable(readingPositions);
+      if (from < 4) await m.createTable(annotations);
     },
   );
 
