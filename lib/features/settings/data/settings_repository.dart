@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart' show InsertMode;
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 const _prefix = 'reader.';
 

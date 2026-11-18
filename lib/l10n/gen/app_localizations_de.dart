@@ -10,7 +10,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get appTitle => 'paperflow';
+  String get appTitle => 'Unpaged';
 
   @override
   String get openPdf => 'PDF öffnen';

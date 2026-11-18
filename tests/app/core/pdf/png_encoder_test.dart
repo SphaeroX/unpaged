@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/pdf/png_encoder.dart';
+import 'package:unpaged/core/pdf/png_encoder.dart';
 
 void main() {
   // 2×1 image: blue pixel, then red pixel (BGRA input).

@@ -4,7 +4,7 @@
 
 ## Ziel und Zielgruppe
 
-paperflow ist ein Open-Source-PDF-Reader für Android. Er öffnet PDFs im Original-Layout und bietet zusätzlich einen **eBook-Modus**, der den Text wie ein EPUB neu umbricht (Reflow), damit er sich auf dem Handy bequem lesen lässt. Alles läuft komplett offline auf dem Gerät.
+Unpaged ist ein Open-Source-PDF-Reader für Android. Er öffnet PDFs im Original-Layout und bietet zusätzlich einen **eBook-Modus**, der den Text wie ein EPUB neu umbricht (Reflow), damit er sich auf dem Handy bequem lesen lässt. Alles läuft komplett offline auf dem Gerät.
 
 Zielgruppe: Leser von Fachbüchern, wissenschaftlichen Papern und technischer Dokumentation, auch mit mehrspaltigem Layout.
 
@@ -41,8 +41,7 @@ Die Reflow-Qualität bei mehrspaltigen Fachtexten. Abgesichert durch die isolier
 
 ## Offene Entscheidungen
 
-- Android-`applicationId` (Platzhalter `dev.paperflow`), festzulegen vor dem ersten Store-Upload
-- Copyright-Inhaber der MIT-Lizenz: entschieden – „The paperflow authors“
+- Copyright-Inhaber der MIT-Lizenz: entschieden – „The Unpaged authors“
 - URL des Datenschutzhinweises für den Play Store
 
 ---

@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/pdfrx_adapter.dart';
 
 /// Basic facts about an opened PDF.
 @immutable

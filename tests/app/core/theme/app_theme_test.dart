@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/theme/app_theme.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/core/theme/app_theme.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 void main() {
   test('light, dark and sepia differ in brightness and background', () {

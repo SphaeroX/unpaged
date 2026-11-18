@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/files/pdf_picker.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/files/pdf_picker.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
 
 import '../app/helpers/test_app.dart';
 
@@ -31,7 +31,7 @@ void main() {
   testWidgets('imports a PDF, shows its pages and deletes it again', (
     tester,
   ) async {
-    final tmp = Directory.systemTemp.createTempSync('paperflow_it');
+    final tmp = Directory.systemTemp.createTempSync('unpaged_it');
     final file = File('${tmp.path}/three_pages.pdf');
     await file.writeAsBytes(base64Decode(_threePagesPdf));
 

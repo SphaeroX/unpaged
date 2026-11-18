@@ -5,12 +5,12 @@ import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
-import 'package:paperflow/features/reflow/domain/reflow_pipeline.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/features/reflow/domain/reflow_pipeline.dart';
 
 class _MockAdapter extends Mock implements PdfAdapter;
 
@@ -67,7 +67,7 @@ void main() {
 
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
-    dir = Directory.systemTemp.createTempSync('paperflow_pipe');
+    dir = Directory.systemTemp.createTempSync('unpaged_pipe');
     reflowStore = ReflowStore(dir);
     books = BookFileStore(dir);
     adapter = _MockAdapter();

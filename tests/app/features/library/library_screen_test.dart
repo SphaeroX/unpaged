@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart' show LinearProgressIndicator;
 import 'package:mocktail/mocktail.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
-import 'package:paperflow/features/progress/data/reading_position_repository.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/features/progress/data/reading_position_repository.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';

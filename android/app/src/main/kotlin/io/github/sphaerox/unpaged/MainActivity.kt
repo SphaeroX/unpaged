@@ -1,4 +1,4 @@
-package dev.paperflow
+package io.github.sphaerox.unpaged
 
 import android.content.Intent
 import android.net.Uri
@@ -75,6 +75,6 @@ class MainActivity : FlutterActivity() {
     }
 
     companion object {
-        private const val CHANNEL = "dev.paperflow/incoming_pdf"
+        private const val CHANNEL = "io.github.sphaerox.unpaged/incoming_pdf"
     }
 }

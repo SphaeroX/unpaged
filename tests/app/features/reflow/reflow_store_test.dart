@@ -2,15 +2,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
 
 void main() {
   late Directory dir;
   late ReflowStore store;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('paperflow_reflow');
+    dir = Directory.systemTemp.createTempSync('unpaged_reflow');
     store = ReflowStore(dir);
   });
   tearDown(() => dir.deleteSync(recursive: true));

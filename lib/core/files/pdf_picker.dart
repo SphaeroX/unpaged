@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
 
 /// Lets the user choose a PDF from the device.
 abstract class PdfPicker {

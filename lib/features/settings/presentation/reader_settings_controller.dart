@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/features/settings/data/settings_repository.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/features/settings/data/settings_repository.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
 /// Current reading settings; every change is applied at once and saved.
 class ReaderSettingsController extends AsyncNotifier<ReaderSettings> {

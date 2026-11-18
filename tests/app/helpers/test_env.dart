@@ -6,17 +6,17 @@ import 'dart:typed_data';
 import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
-import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
 
 /// In-memory database and a temporary book directory for widget tests.
 class TestEnv {
   new()
     : db = AppDatabase(NativeDatabase.memory()),
-      dir = Directory.systemTemp.createTempSync('paperflow_test') {
+      dir = Directory.systemTemp.createTempSync('unpaged_test') {
     store = BookFileStore(dir);
     reflow = ReflowStore(dir);
   }

@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'paperflow'**
+  /// **'Unpaged'**
   String get appTitle;
 
   /// Button that opens the system file picker for a PDF

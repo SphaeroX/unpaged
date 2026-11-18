@@ -1,4 +1,4 @@
-# paperflow
+# Unpaged
 
 Open-source PDF reader for Android with an offline eBook mode that reflows PDFs with a text layer. Licensed under MIT.
 

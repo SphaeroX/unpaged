@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
-import 'package:paperflow/features/settings/presentation/reader_settings_controller.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/features/settings/presentation/reader_settings_controller.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 /// Bottom sheet with font, size, line spacing and theme; changes show
 /// immediately in the reader behind it.

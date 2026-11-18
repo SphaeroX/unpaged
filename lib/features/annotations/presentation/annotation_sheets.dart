@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/features/annotations/data/annotation_repository.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
+import 'package:unpaged/features/annotations/data/annotation_repository.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 /// Asks for a note; returns `null` if cancelled.
 Future<String?> askForNote(BuildContext context, {String initial = ''}) {

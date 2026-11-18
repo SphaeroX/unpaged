@@ -2,8 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
 
 part 'app_database.g.dart';
 
@@ -72,7 +72,7 @@ class Annotations extends Table {
 class AppDatabase extends _$AppDatabase {
   new(super.e);
 
-  new defaults() : super(driftDatabase(name: 'paperflow'));
+  new defaults() : super(driftDatabase(name: 'unpaged'));
 
   @override
   int get schemaVersion => 4;

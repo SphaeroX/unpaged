@@ -2,8 +2,8 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:paperflow/core/files/pdf_picker.dart';
-import 'package:paperflow/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/core/files/pdf_picker.dart';
+import 'package:unpaged/core/pdf/pdf_adapter.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';

@@ -1,7 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:paperflow/core/database/app_database.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
+import 'package:unpaged/core/database/app_database.dart';
 
 /// A database file as written by schema version 1 (Task 05).
 sqlite.Database _version1() {

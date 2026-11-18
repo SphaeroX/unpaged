@@ -6,22 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart'
     show FutureProviderFamily, StreamProviderFamily;
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/database/app_database.dart';
-import 'package:paperflow/core/files/book_file_store.dart';
-import 'package:paperflow/features/annotations/data/annotation_repository.dart';
-import 'package:paperflow/features/annotations/domain/annotation.dart';
-import 'package:paperflow/features/annotations/domain/reanchor.dart';
-import 'package:paperflow/features/annotations/presentation/annotation_sheets.dart';
-import 'package:paperflow/features/progress/data/reading_position_repository.dart';
-import 'package:paperflow/features/progress/domain/reading_position.dart';
-import 'package:paperflow/features/reflow/data/reflow_store.dart';
-import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
-import 'package:paperflow/features/settings/presentation/reader_settings_controller.dart';
-import 'package:paperflow/features/settings/presentation/reader_settings_sheet.dart';
-import 'package:paperflow/features/viewer/presentation/viewer_screen.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/database/app_database.dart';
+import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/features/annotations/data/annotation_repository.dart';
+import 'package:unpaged/features/annotations/domain/annotation.dart';
+import 'package:unpaged/features/annotations/domain/reanchor.dart';
+import 'package:unpaged/features/annotations/presentation/annotation_sheets.dart';
+import 'package:unpaged/features/progress/data/reading_position_repository.dart';
+import 'package:unpaged/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/reflow/data/reflow_store.dart';
+import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/features/settings/presentation/reader_settings_controller.dart';
+import 'package:unpaged/features/settings/presentation/reader_settings_sheet.dart';
+import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
 /// The stored reflow document of a book; `null` if missing or damaged.
 final FutureProviderFamily<ReflowDocument?, String> reflowDocumentProvider =

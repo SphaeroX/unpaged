@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paperflow/core/files/pdf_source.dart';
+import 'package:unpaged/core/files/pdf_source.dart';
 
 /// PDFs handed to the app by Android ("Open with", "Share").
 ///
@@ -19,7 +19,7 @@ class IncomingPdfChannel {
     });
   }
 
-  static const channelName = 'dev.paperflow/incoming_pdf';
+  static const channelName = 'io.github.sphaerox.unpaged/incoming_pdf';
 
   final MethodChannel _channel;
   final _received = StreamController<PdfSource>.broadcast();

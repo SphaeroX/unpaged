@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:paperflow/core/theme/app_theme.dart';
-import 'package:paperflow/features/library/presentation/library_screen.dart';
-import 'package:paperflow/features/settings/domain/reader_settings.dart';
-import 'package:paperflow/features/settings/presentation/reader_settings_controller.dart';
-import 'package:paperflow/l10n/gen/app_localizations.dart';
+import 'package:unpaged/core/theme/app_theme.dart';
+import 'package:unpaged/features/library/presentation/library_screen.dart';
+import 'package:unpaged/features/settings/domain/reader_settings.dart';
+import 'package:unpaged/features/settings/presentation/reader_settings_controller.dart';
+import 'package:unpaged/l10n/gen/app_localizations.dart';
 
-class PaperflowApp extends ConsumerWidget {
+class UnpagedApp extends ConsumerWidget {
   const new({super.key, this.locale, this.home});
 
   /// Forces a locale (tests); `null` follows the device language.

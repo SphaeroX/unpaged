@@ -59,10 +59,10 @@
 
 ### Bibliothek und Import (Task 05)
 
-- Datenbank `lib/core/database/app_database.dart` (drift, Datei `paperflow` im App-Speicher; im Test `AppDatabase(NativeDatabase.memory())`). Tabelle `Books`: `id` (SHA-256, Primärschlüssel), `title` (aus dem Dateinamen; pdfrx bietet keine Metadaten), `pageCount`, `importedAt`, `reflowStatus` (`ReflowStatus`), `reflowProgress`. `schemaVersion` 1; jede Schemaänderung erhöht sie und bekommt einen `onUpgrade`-Schritt plus Migrationstest.
+- Datenbank `lib/core/database/app_database.dart` (drift, Datei `unpaged` im App-Speicher; im Test `AppDatabase(NativeDatabase.memory())`). Tabelle `Books`: `id` (SHA-256, Primärschlüssel), `title` (aus dem Dateinamen; pdfrx bietet keine Metadaten), `pageCount`, `importedAt`, `reflowStatus` (`ReflowStatus`), `reflowProgress`. `schemaVersion` 1; jede Schemaänderung erhöht sie und bekommt einen `onUpgrade`-Schritt plus Migrationstest.
 - Dateiablage `BookFileStore` (`<App-Support-Verzeichnis>/books/<sha256>.pdf`); der Provider wird in `main()` mit dem echten Verzeichnis überschrieben.
 - `ImportService` (`lib/features/import/domain/`): Bytes lesen → `%PDF`-Prüfung → SHA-256 → Duplikat? → Kopie schreiben → `PdfAdapter.inspect` (bei Fehler Kopie löschen) → Eintrag. Ergebnis `ImportSuccess` / `ImportDuplicate` / `ImportFailure`.
-- Quellen sind `PdfSource`s: Dateiauswahl (`PdfPicker`, liest über `PlatformFile.xFile`, funktioniert auch mit `content://`) und Android-Intents (`IncomingPdfChannel`, MethodChannel `dev.paperflow/incoming_pdf`; `MainActivity.kt` kopiert geteilte Inhalte nach `cacheDir/incoming/` und meldet Pfad + Name; Intent-Filter für `VIEW` und `SEND` mit `application/pdf`).
+- Quellen sind `PdfSource`s: Dateiauswahl (`PdfPicker`, liest über `PlatformFile.xFile`, funktioniert auch mit `content://`) und Android-Intents (`IncomingPdfChannel`, MethodChannel `io.github.sphaerox.unpaged/incoming_pdf`; `MainActivity.kt` kopiert geteilte Inhalte nach `cacheDir/incoming/` und meldet Pfad + Name; Intent-Filter für `VIEW` und `SEND` mit `application/pdf`).
 - Startbildschirm ist `LibraryScreen` (Liste, Leerzustand, Import-Button, Löschen mit Rückfrage); Antippen öffnet `ViewerScreen` mit der gespeicherten Kopie.
 
 ### Reflow-Pipeline in der App (Task 06)
@@ -113,15 +113,14 @@
 ## Umgebung
 
 - Flutter-SDK vom Kanal `stable` (eingerichtet mit Flutter 3.50.0 / Dart 3.14); die SDK-Untergrenze steht in `pubspec.yaml` (`environment`).
-- Android: `applicationId`/`namespace` `dev.paperflow` (Platzhalter), `minSdk = 24` in `android/app/build.gradle.kts`.
+- Android: `applicationId`/`namespace` `io.github.sphaerox.unpaged` (festgelegt bei der Umbenennung in Unpaged, 2026-11-18), `minSdk = 24` in `android/app/build.gradle.kts`.
 - Material-Widgets immer aus `package:material_ui/material_ui.dart` importieren. Lokalisierung: `AppLocalizations.delegate` plus `GlobalMaterialLocalizations.delegates` aus `material_ui` (die Delegates aus `flutter_localizations` reichen für Material-Widgets nicht).
 - pdfrx in der App vor direkter Dokument-API mit `pdfrxFlutterInitialize()` initialisieren; in Host-Tests (`flutter test`) stattdessen `pdfrxInitialize(tmpPath: ...)` aus pdfrx_engine, da dort keine Flutter-Plugins laufen.
 - Abhängigkeiten nur mit `flutter pub add` / `flutter pub get` (im Engine-Paket `dart pub`). `pubspec.lock` der App wird versioniert.
 
 ## Offene Entscheidungen
 
-- Android-`applicationId`: bis zur Release-Vorbereitung gilt der Platzhalter `dev.paperflow`.
-- Copyright-Inhaber der MIT-Lizenz: „The paperflow authors“ (entschieden, LICENSE folgt in Task 12).
+- Copyright-Inhaber der MIT-Lizenz: „The Unpaged authors“ (entschieden, LICENSE folgt in Task 12).
 
 ---
 Pflege: Bei Änderungen an Stack oder Architektur diese Datei sofort aktualisieren.
