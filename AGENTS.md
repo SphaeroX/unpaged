@@ -43,3 +43,7 @@ Lies nur die Dateien, die für deine aktuelle Aufgabe relevant sind:
 - `packages/reflow_engine/` importiert nie Flutter oder pdfrx.
 - Keine Signing-Schlüssel, `key.properties` oder Keystores committen.
 - Keine Funktionen aus den Nicht-Zielen in `docs/project-brief.md` umsetzen (z. B. OCR, Cloud, Markierungen in die PDF schreiben).
+
+## Roadmap
+
+Arbeit an Roadmap-Tasks richtet sich nach [Roadmap/AGENTS.md](Roadmap/AGENTS.md); aktuelle Task-Dateien liegen in `Roadmap/Tasks/`.
