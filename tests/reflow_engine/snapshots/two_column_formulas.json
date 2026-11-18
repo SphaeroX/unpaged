@@ -1,32 +1,21 @@
 {
-  "engineVersion": 2,
+  "engineVersion": 3,
   "blocks": [
     {
       "id": "p1b0",
-      "type": "paragraph",
-      "text": "Quadrature-Induced Local Minima in Structure-Preserving",
+      "type": "heading",
+      "level": 1,
+      "text": "Quadrature-Induced Local Minima in Structure-Preserving Lotka–Volterra Control",
       "page": 1,
       "box": [
         97.67,
         78.63,
         514.72,
-        91.51
-      ]
-    },
-    {
-      "id": "p1b1",
-      "type": "paragraph",
-      "text": "Lotka–Volterra Control",
-      "page": 1,
-      "box": [
-        224.2,
-        94.57,
-        387.82,
         104.74
       ]
     },
     {
-      "id": "p1b2",
+      "id": "p1b1",
       "type": "paragraph",
       "text": "Alexandre Autran Department of Mathematics",
       "page": 1,
@@ -38,7 +27,7 @@
       ]
     },
     {
-      "id": "p1b3",
+      "id": "p1b2",
       "type": "paragraph",
       "text": "´",
       "page": 1,
@@ -50,32 +39,21 @@
       ]
     },
     {
-      "id": "p1b4",
+      "id": "p1b3",
       "type": "paragraph",
-      "text": "Ecole normale supe´rieure de Rennes, France",
+      "text": "Ecole normale supe´rieure de Rennes, France alexandre.autran@ens-rennes.fr",
       "page": 1,
       "box": [
         210.26,
         181.29,
         401.6,
-        190.17
-      ]
-    },
-    {
-      "id": "p1b5",
-      "type": "paragraph",
-      "text": "alexandre.autran@ens-rennes.fr",
-      "page": 1,
-      "box": [
-        238.61,
-        193.18,
-        373.59,
         200.3
       ]
     },
     {
-      "id": "p1b6",
-      "type": "paragraph",
+      "id": "p1b4",
+      "type": "heading",
+      "level": 2,
       "text": "Abstract",
       "page": 1,
       "box": [
@@ -86,7 +64,7 @@
       ]
     },
     {
-      "id": "p1b7",
+      "id": "p1b5",
       "type": "paragraph",
       "text": "Harvest quadrature can change a discrete optimal control problem even when the state scheme stays fixed. We study this effect for a positivity-preserving Lotka– Volterra scheme. The difference appears in a model with harvesting alone: rewarding the scheme’s removal flux gives a strictly convex reduced cost, whereas using prey density at the start of each step overestimates harvest and can create negative curvature and a strict local minimum that is not global. Rational root isolation certifies the two-step global minimizers. With diffusion in one space dimension, nonnegative bounded H1 initial data and positive diffusivities, the costs, weighted gradients and Hessians differ by O(τ ) uniformly in the spatial mesh, where τ is the time step. A uniform positive lower bound on the reduced Hessian gives the same order for the distance between nearby controls. A large enough effort penalty gives unique global discrete minimizers. We also prove positivity, exact population balance and a common variational limit, and derive exact discrete adjoints and Hessian actions. Numerical tests trace changes in curvature and stationary controls across parameters and grids, with costs evaluated on a common reference using adaptive time stepping. The construction extends to weighted production–destruction systems, giving exact harvest accounting and smooth derivatives on fixed grids.",
       "page": 1,
@@ -98,7 +76,7 @@
       ]
     },
     {
-      "id": "p1b8",
+      "id": "p1b6",
       "type": "paragraph",
       "text": "Keywords: reaction–diffusion, optimal harvesting, positive scheme, exact discrete adjoint, reduced Hessian, variational convergence, forward–backward sweep.",
       "page": 1,
@@ -110,8 +88,9 @@
       ]
     },
     {
-      "id": "p1b9",
-      "type": "paragraph",
+      "id": "p1b7",
+      "type": "heading",
+      "level": 2,
       "text": "1 Introduction",
       "page": 1,
       "box": [
@@ -122,7 +101,7 @@
       ]
     },
     {
-      "id": "p1b10",
+      "id": "p1b8",
       "type": "paragraph",
       "text": "Harvesting removes prey and leaves less food for predators, while dif fusion spreads both effects in space [2, 3, 4, 5, 37]. At position x and time t, we write v1 (x, t) and v2(x, t) for predator and prey densities, and u(x, t) for fishing effort. The objective balances population tracking, effort costs and harvest reward. Discretizing this problem means choosing how to approximate both the dynamics and the reward [32, 31, 29, 34, 30].",
       "page": 1,
@@ -134,7 +113,7 @@
       ]
     },
     {
-      "id": "p1b11",
+      "id": "p1b9",
       "type": "paragraph",
       "text": "Implicit–explicit (IMEX) Euler treats diffusion implicitly and reactions explicitly, preserving nonnegativity under a time-step restriction [6, 7] . A Patankar production– destruction step preserves positivity for every time step [8]. How, then, should harvest be counted over a step? To separate the effects of the state scheme and the reward, we compare three discrete problems. I uses IMEX and the prey density at the start of the step. P0 and P1 share the same triangular positive scheme but use prey density at the start and end of the step, respectively. These are the old-state and new-state rules. Comparing I with P0 isolates the state scheme, and comparing P0 with P1 isolates harvest quadrature.",
       "page": 1,
@@ -146,7 +125,7 @@
       ]
     },
     {
-      "id": "p1b12",
+      "id": "p1b10",
       "type": "paragraph",
       "text": "The new-state rule rewards exactly the removal flux in the population balance. In the model with harvesting alone, the old-state rule overestimates removal. That extra reward can create negative curvature in directions that redistribute effort between time steps, add a strict local minimum, and favor extreme allocations at fixed total effort. For the full discrete problem, we derive state bounds uniform in the control and mesh, exact discrete adjoints, and Hessian-vector products that require no assembled Hessian matrix [10, 11]. Because the reward depends on the final prey state, its derivative enters the terminal adjoint condition.",
       "page": 1,
@@ -158,7 +137,7 @@
       ]
     },
     {
-      "id": "p1b13",
+      "id": "p1b11",
       "type": "paragraph",
       "text": "For the positive scheme with diffusion in one dimension, we bound the gradient and Hessian differences uniformly in the mesh. Under coercivity, these bounds control the change in the optimal control. On Ω = (0, 1), with nonnegative bounded H1 initial data, all three problems have the same weak-∗ variational limit. Discrete controls whose costs approach the discrete global minimum have subsequences converging strongly in L 2 to continuous global minimizers, and discrete local minimizers approximate every strict L 2 local minimizer.",
       "page": 1,
@@ -170,7 +149,7 @@
       ]
     },
     {
-      "id": "p1b14",
+      "id": "p1b12",
       "type": "paragraph",
       "text": "The numerical tests check the derivatives and compare four optimizers on a common reference. Parameter continuation and grid refinement then trace the effects of quadrature on temporal switching, sensitivity to the initial control and reduced curvature. For relaxed forward– backward sweep (FBS), we give an exact local contraction criterion: under strict complementarity and a positive definite Hessian on the free coordinates, the criterion depends on that Hessian’s smallest and largest eigenvalues.",
       "page": 1,
@@ -184,7 +163,7 @@
     {
       "id": "p2b0",
       "type": "paragraph",
-      "text": "This analysis builds on consistent discrete adjoints and second derivatives [12, 13, 14, 15], together with the positivity, conservation and accuracy of Patankar schemes [8, 16, 9]. Cacace et al. study production–destruction control by dynamic programming with a modified Patankar semi-Lagrangian scheme [17]. Here we examine how harvest quadrature changes curvature, derivatives and controls.",
+      "text": "This analysis builds on consistent discrete adjoints and second derivatives [12, 13, 14, 15], together with the positivity, conservation and accuracy of Patankar schemes [8, 16, 9]. Cacace et al. study production–destruction control by dynamic programming with a modified Patankar semi-Lagrangian scheme [17] . Here we examine how harvest quadrature changes curvature, derivatives and controls.",
       "page": 2,
       "box": [
         56.69,
@@ -195,7 +174,8 @@
     },
     {
       "id": "p2b1",
-      "type": "paragraph",
+      "type": "heading",
+      "level": 2,
       "text": "2 Continuous problem",
       "page": 2,
       "box": [
@@ -219,66 +199,18 @@
     },
     {
       "id": "p2b3",
-      "type": "paragraph",
-      "text": "∂tv1 − µ1∆v1 = v1(−m + αv2),",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         103.16,
         381.29,
-        237.83,
-        391.24
-      ]
-    },
-    {
-      "id": "p2b4",
-      "type": "paragraph",
-      "text": "∂tv2 − µ2∆v2 = v2(r − βv1) − quv2,",
-      "page": 2,
-      "box": [
-        103.16,
-        396.24,
-        257.85,
-        406.19
-      ]
-    },
-    {
-      "id": "p2b5",
-      "type": "paragraph",
-      "text": "(1)",
-      "page": 2,
-      "box": [
-        285.26,
-        404.43,
         296.0,
-        414.38
-      ]
-    },
-    {
-      "id": "p2b6",
-      "type": "paragraph",
-      "text": "∂nv1 = ∂nv2 = 0,",
-      "page": 2,
-      "box": [
-        108.2,
-        411.52,
-        181.39,
-        420.56
-      ]
-    },
-    {
-      "id": "p2b7",
-      "type": "paragraph",
-      "text": "vi(0) = v i 0 .",
-      "page": 2,
-      "box": [
-        140.52,
-        426.09,
-        185.96,
         437.36
       ]
     },
     {
-      "id": "p2b8",
+      "id": "p2b4",
       "type": "paragraph",
       "text": "Here ∂Ω is the boundary, ∂t is the time derivative, ∆ is the spatial Laplacian and ∂n the outward normal derivative. We write vi(t) for the spatial profile vi(·, t) and v i 0 for its initial value. The model has positive diffusivities µi , mortality m, growth rate r, interaction coeiffcients α, β, catchability q, and effort bound Umax. We assume µi , m, r, α, β, q, Umax > 0. The weights γi ≥ 0, λ > 0, and η ≥ 0 determine the penalties for tracking and effort, and the reward for harvest. For a domain D, L p (D), 1 ≤ p < ∞, consists of measurable functions with finite norm",
       "page": 2,
@@ -290,9 +222,9 @@
       ]
     },
     {
-      "id": "p2b9",
-      "type": "paragraph",
-      "text": "∥f∥Lp(D) := \u0012Z D |f| p \u00131/p .",
+      "id": "p2b5",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         119.83,
@@ -302,7 +234,7 @@
       ]
     },
     {
-      "id": "p2b10",
+      "id": "p2b6",
       "type": "paragraph",
       "text": "Thus L 1 means integrable and L 2 square-integrable. The space L∞(D) contains essentially bounded functions, with norm equal to the essential supremum of |f|. Functions equal almost everywhere are identified. The abbreviation “a.e.” means outside a set of measure zero. We write |D| for the measure of D. We constrain effort to the admissible set",
       "page": 2,
@@ -314,9 +246,9 @@
       ]
     },
     {
-      "id": "p2b11",
-      "type": "paragraph",
-      "text": "Uad := {u ∈ L ∞(Q) : 0 ≤ u ≤ Umax a.e.}.",
+      "id": "p2b7",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         86.7,
@@ -326,104 +258,33 @@
       ]
     },
     {
-      "id": "p2b12",
+      "id": "p2b8",
       "type": "paragraph",
-      "text": "For target proifles v i d ∈ L 2 (Q), write v := (v1, v2) and",
+      "text": "For target proifles v i d ∈ L 2 (Q), write v := (v1, v2) and define the cost functional",
       "page": 2,
       "box": [
         315.34,
         58.2,
         555.0,
-        69.31
-      ]
-    },
-    {
-      "id": "p2b13",
-      "type": "paragraph",
-      "text": "define the cost functional",
-      "page": 2,
-      "box": [
-        315.34,
-        71.59,
-        424.75,
         80.64
       ]
     },
     {
-      "id": "p2b14",
-      "type": "paragraph",
-      "text": "J : L 2 (Q) 2 × L 2 (Q) −→ R",
-      "page": 2,
-      "box": [
-        378.18,
-        90.08,
-        492.76,
-        101.3
-      ]
-    },
-    {
-      "id": "p2b15",
-      "type": "paragraph",
-      "text": "2",
-      "page": 2,
-      "box": [
-        410.14,
-        109.25,
-        413.22,
-        113.88
-      ]
-    },
-    {
-      "id": "p2b16",
-      "type": "paragraph",
-      "text": "(v, u) 7−→ 2 1 X γi∥vi − v i d ∥ 2 L2(Q)",
+      "id": "p2b9",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         351.79,
-        112.95,
-        490.17,
-        133.16
-      ]
-    },
-    {
-      "id": "p2b17",
-      "type": "paragraph",
-      "text": "i=1",
-      "page": 2,
-      "box": [
-        405.56,
-        133.45,
-        417.47,
-        138.15
-      ]
-    },
-    {
-      "id": "p2b18",
-      "type": "paragraph",
-      "text": "+",
-      "page": 2,
-      "box": [
-        408.19,
-        150.91,
-        414.82,
-        157.54
-      ]
-    },
-    {
-      "id": "p2b19",
-      "type": "paragraph",
-      "text": "λ 2 ∥u∥ 2 L2(Q) − ηq Z Q uv2.",
-      "page": 2,
-      "box": [
-        419.32,
-        143.07,
+        90.08,
         518.65,
         167.15
       ]
     },
     {
-      "id": "p2b20",
-      "type": "paragraph",
+      "id": "p2b10",
+      "type": "heading",
+      "level": 3,
       "text": "2.1 Spaces, bounds, and existence",
       "page": 2,
       "box": [
@@ -434,33 +295,21 @@
       ]
     },
     {
-      "id": "p2b21",
+      "id": "p2b11",
       "type": "paragraph",
-      "text": "All spaces are real. The Sobolev space H1 (D) consists of L 2 (D) functions whose first weak derivatives also lie",
+      "text": "All spaces are real. The Sobolev space H1 (D) consists of L 2 (D) functions whose first weak derivatives also lie in L 2 (D), with",
       "page": 2,
       "box": [
         314.95,
         209.06,
         554.92,
-        231.74
-      ]
-    },
-    {
-      "id": "p2b22",
-      "type": "paragraph",
-      "text": "in L 2 (D), with",
-      "page": 2,
-      "box": [
-        315.33,
-        232.97,
-        379.35,
         243.69
       ]
     },
     {
-      "id": "p2b23",
-      "type": "paragraph",
-      "text": "∥f∥ 2 H1(D) = ∥f∥ 2 L2(D) + ∥∇f∥ 2 L2(D) .",
+      "id": "p2b12",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         359.33,
@@ -470,7 +319,7 @@
       ]
     },
     {
-      "id": "p2b24",
+      "id": "p2b13",
       "type": "paragraph",
       "text": "Here ∇f is the spatial gradient. Weak derivatives are defined by integration by parts against smooth test functions. For a Banach space X, L p (0, T; X) denotes strongly measurable X-valued functions whose norm lies in scalar L p (0, T). The space H1 (0, T; X) also requires a weak time derivative in L 2 (0, T; X). The continuous dual X∗ consists of continuous linear functionals, with pairing ⟨ℓ, x⟩X∗,X := ℓ(x). We write Xm for the product of m copies of X. Set",
       "page": 2,
@@ -482,9 +331,9 @@
       ]
     },
     {
-      "id": "p2b25",
-      "type": "paragraph",
-      "text": "W := L 2 (0, T; H1 (Ω)) ∩ H1 (0, T; H1 (Ω)∗ ), Y := W ∩ L ∞(Q),",
+      "id": "p2b14",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         343.56,
@@ -494,7 +343,7 @@
       ]
     },
     {
-      "id": "p2b26",
+      "id": "p2b15",
       "type": "paragraph",
       "text": "with norm",
       "page": 2,
@@ -506,9 +355,9 @@
       ]
     },
     {
-      "id": "p2b27",
-      "type": "paragraph",
-      "text": "∥y∥Y := ∥y∥L2(0,T;H1) + ∥∂ty∥L2(0,T;H1∗) + ∥y∥L∞(Q) .",
+      "id": "p2b16",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         320.32,
@@ -518,7 +367,7 @@
       ]
     },
     {
-      "id": "p2b28",
+      "id": "p2b17",
       "type": "paragraph",
       "text": "The control-to-state map and reduced objective are",
       "page": 2,
@@ -530,31 +379,19 @@
       ]
     },
     {
-      "id": "p2b29",
-      "type": "paragraph",
-      "text": "S : Uad −→ Y 2",
+      "id": "p2b18",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         381.18,
         486.4,
-        447.01,
-        496.2
-      ]
-    },
-    {
-      "id": "p2b30",
-      "type": "paragraph",
-      "text": "u 7−→ v solving (1)",
-      "page": 2,
-      "box": [
-        401.9,
-        501.12,
         488.59,
         511.08
       ]
     },
     {
-      "id": "p2b31",
+      "id": "p2b19",
       "type": "paragraph",
       "text": "and",
       "page": 2,
@@ -566,81 +403,81 @@
       ]
     },
     {
-      "id": "p2b32",
-      "type": "paragraph",
-      "text": "j : Uad −→ R",
+      "id": "p2b20",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         385.3,
         530.99,
-        446.16,
-        540.16
-      ]
-    },
-    {
-      "id": "p2b33",
-      "type": "paragraph",
-      "text": "u 7−→ J(S(u), u) .",
-      "page": 2,
-      "box": [
-        404.65,
-        544.15,
         484.03,
         554.56
       ]
     },
     {
-      "id": "p2b34",
+      "id": "p2b21",
       "type": "paragraph",
-      "text": "We write Si(u) for the ith component of S(u). The space C([0, T]; X) consists of functions continuous in the norm of X. C(D) denotes continuous scalar functions. The symbol ,→ denotes a continuous embedding. Thus",
+      "text": "We write Si(u) for the ith component of S(u). The space C([0, T]; X) consists of functions continuous in the norm of X. C(D) denotes continuous scalar functions. The symbol ,→ denotes a continuous embedding. Thus W ,→ C([0, T]; L 2 (Ω)) gives an L 2 (Ω)-continuous representative and well-deifned values at each time. We use the standard product norm on products of Hilbert spaces and the sum norm on Y 2 . Write (a, b)D := R D ab, using the Euclidean dot product for vectors. An ordinary arrow",
       "page": 2,
       "box": [
         314.67,
         561.42,
-        556.2,
-        606.8
-      ]
-    },
-    {
-      "id": "p2b35",
-      "type": "paragraph",
-      "text": "W ,→ C([0, T];L 2 (Ω)) gives an L 2 (Ω)-continuous repre-",
-      "page": 2,
-      "box": [
-        315.04,
-        608.47,
         556.3,
-        619.19
-      ]
-    },
-    {
-      "id": "p2b36",
-      "type": "paragraph",
-      "text": "sentative and well-deifned values at each time. We use the standard product norm on products of Hilbert spaces and the sum norm on Y 2 . Write (a, b)D := R D ab, using the Euclidean dot product for vectors. An ordinary arrow",
-      "page": 2,
-      "box": [
-        315.19,
-        621.64,
-        555.25,
         666.57
       ]
     },
     {
-      "id": "p2b37",
+      "id": "p2b22",
       "type": "paragraph",
-      "text": "2 (D−→) f means denotes convergence in norm. Thus fk − L−− ∥fk − f∥L2(D) → 0. The half-arrow denotes weak conver-",
+      "text": "denotes convergence in norm. Thus fk − L−−",
       "page": 2,
       "box": [
         315.34,
+        669.92,
+        503.36,
+        683.23
+      ]
+    },
+    {
+      "id": "p2b23",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        495.53,
         668.36,
+        554.95,
+        683.22
+      ]
+    },
+    {
+      "id": "p2b24",
+      "type": "paragraph",
+      "text": "∥fk − f∥L2(D) → 0. The half-arrow denotes weak conver-",
+      "page": 2,
+      "box": [
+        316.32,
+        685.67,
         556.28,
         696.67
       ]
     },
     {
-      "id": "p2b38",
+      "id": "p2b25",
       "type": "paragraph",
-      "text": "gence: fk − L−−−",
+      "text": "2 (D⇀) f means that, for every ϕ ∈ L 2 (D), we",
+      "page": 2,
+      "box": [
+        366.36,
+        698.57,
+        555.0,
+        713.88
+      ]
+    },
+    {
+      "id": "p2b26",
+      "type": "formula",
+      "text": "",
       "page": 2,
       "box": [
         315.27,
@@ -650,19 +487,20 @@
       ]
     },
     {
-      "id": "p2b39",
-      "type": "paragraph",
-      "text": "2 (D⇀) f means that, for every ϕ ∈ L 2 (D), we have R D fkϕ → R D fϕ. In a general normed space, weak",
+      "id": "p2b27",
+      "type": "heading",
+      "level": 2,
+      "text": "have R D fkϕ → R D fϕ. In a general normed space, weak",
       "page": 2,
       "box": [
         315.31,
-        698.57,
+        715.33,
         555.3,
         726.89
       ]
     },
     {
-      "id": "p2b40",
+      "id": "p2b28",
       "type": "paragraph",
       "text": "convergence is tested against every continuous linear functional. In L∞(D), fk ⇀∗ f denotes weak-∗ conver-",
       "page": 2,
@@ -688,43 +526,19 @@
     {
       "id": "p3b1",
       "type": "paragraph",
-      "text": "The symbols lim inf and lim sup denote lower and upper",
-      "page": 3,
-      "box": [
-        56.69,
-        83.54,
-        296.85,
-        92.6
-      ]
-    },
-    {
-      "id": "p3b2",
-      "type": "paragraph",
-      "text": "limits. For ϕ ∈ H1 (Ω) and almost every t ∈ (0, T), the",
-      "page": 3,
-      "box": [
-        57.03,
-        94.28,
-        296.67,
-        105.0
-      ]
-    },
-    {
-      "id": "p3b3",
-      "type": "paragraph",
-      "text": "weak equation is",
+      "text": "The symbols lim inf and lim sup denote lower and upper limits. For ϕ ∈ H1 (Ω) and almost every t ∈ (0, T), the weak equation is",
       "page": 3,
       "box": [
         56.51,
-        107.56,
-        128.21,
+        83.54,
+        296.85,
         116.4
       ]
     },
     {
-      "id": "p3b4",
-      "type": "paragraph",
-      "text": "⟨∂tvi , ϕ⟩H1∗,H1 + µi(∇vi , ∇ϕ)Ω = (fi(v, u), ϕ)Ω, (2)",
+      "id": "p3b2",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         68.51,
@@ -734,8 +548,9 @@
       ]
     },
     {
-      "id": "p3b5",
-      "type": "paragraph",
+      "id": "p3b3",
+      "type": "heading",
+      "level": 2,
       "text": "where the reaction map f := (f1, f2) is",
       "page": 3,
       "box": [
@@ -746,55 +561,19 @@
       ]
     },
     {
-      "id": "p3b6",
-      "type": "paragraph",
-      "text": "f : R2 × R −→ R2",
+      "id": "p3b4",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         97.75,
         165.25,
-        179.01,
-        175.53
-      ]
-    },
-    {
-      "id": "p3b7",
-      "type": "paragraph",
-      "text": ".",
-      "page": 3,
-      "box": [
-        254.56,
-        185.49,
         255.61,
-        186.55
-      ]
-    },
-    {
-      "id": "p3b8",
-      "type": "paragraph",
-      "text": "(−m + αv2) (v, u) 7−→ \u0012 v1",
-      "page": 3,
-      "box": [
-        117.85,
-        179.08,
-        240.02,
         202.97
       ]
     },
     {
-      "id": "p3b9",
-      "type": "paragraph",
-      "text": "v2(r − βv1 − qu) \u0013",
-      "page": 3,
-      "box": [
-        174.52,
-        179.08,
-        251.62,
-        202.97
-      ]
-    },
-    {
-      "id": "p3b10",
+      "id": "p3b5",
       "type": "paragraph",
       "text": "This weak equation includes the homogeneous Neumann conditions. We omit the domain in ∥ · ∥p when the context fixes it, and allow constants C to change between estimates. Each result states what these constants depend on. For bε > 0, as ε → 0, O(bε) denotes a quantity bounded in the relevant norm by Cbε, and o(bε) one whose norm divided by bε tends to zero. Set",
       "page": 3,
@@ -806,9 +585,9 @@
       ]
     },
     {
-      "id": "p3b11",
-      "type": "paragraph",
-      "text": "V i 0 := ∥v i 0 ∥L∞(Ω).",
+      "id": "p3b6",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         57.25,
@@ -818,7 +597,7 @@
       ]
     },
     {
-      "id": "p3b12",
+      "id": "p3b7",
       "type": "paragraph",
       "text": "Theorem 2.1 (State bounds). For u ∈ Uad and 0 ≤",
       "page": 3,
@@ -830,7 +609,7 @@
       ]
     },
     {
-      "id": "p3b13",
+      "id": "p3b8",
       "type": "paragraph",
       "text": "0",
       "page": 3,
@@ -842,33 +621,21 @@
       ]
     },
     {
-      "id": "p3b14",
+      "id": "p3b9",
       "type": "paragraph",
-      "text": "v i ∈ L∞(Ω), (1) has a unique weak solution in Y 2 . For",
+      "text": "v i ∈ L∞(Ω), (1) has a unique weak solution in Y 2 . For almost every (x, t) ∈ Ω × (0, T), we have",
       "page": 3,
       "box": [
         56.98,
         324.76,
         297.48,
-        335.66
-      ]
-    },
-    {
-      "id": "p3b15",
-      "type": "paragraph",
-      "text": "almost every (x, t) ∈ Ω × (0, T), we have",
-      "page": 3,
-      "box": [
-        57.0,
-        337.49,
-        232.17,
         347.44
       ]
     },
     {
-      "id": "p3b16",
-      "type": "paragraph",
-      "text": "0 ≤ v2(x, t) ≤ V 2 0 e rt ,",
+      "id": "p3b10",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         132.42,
@@ -878,7 +645,7 @@
       ]
     },
     {
-      "id": "p3b17",
+      "id": "p3b11",
       "type": "paragraph",
       "text": "and",
       "page": 3,
@@ -890,9 +657,9 @@
       ]
     },
     {
-      "id": "p3b18",
-      "type": "paragraph",
-      "text": "V 2 0 (e rt − 1)\u0013 . 0 ≤ v1(x, t) ≤ V 1 0 exp\u0012 −mt + α r",
+      "id": "p3b12",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         76.58,
@@ -902,7 +669,7 @@
       ]
     },
     {
-      "id": "p3b19",
+      "id": "p3b13",
       "type": "paragraph",
       "text": "Define the weighted population by",
       "page": 3,
@@ -914,9 +681,9 @@
       ]
     },
     {
-      "id": "p3b20",
-      "type": "paragraph",
-      "text": "M(t) := β Z Ω v1(t) + α Z Ω v2(t).",
+      "id": "p3b14",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         108.56,
@@ -926,7 +693,7 @@
       ]
     },
     {
-      "id": "p3b21",
+      "id": "p3b15",
       "type": "paragraph",
       "text": "For almost every t ∈ (0, T), it satisfies",
       "page": 3,
@@ -938,9 +705,9 @@
       ]
     },
     {
-      "id": "p3b22",
-      "type": "paragraph",
-      "text": "M′ (t) = −βm Z v1 + αr Z Ω v2 − αq Z Ω uv2.",
+      "id": "p3b16",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         82.21,
@@ -950,19 +717,7 @@
       ]
     },
     {
-      "id": "p3b23",
-      "type": "paragraph",
-      "text": "Ω",
-      "page": 3,
-      "box": [
-        150.87,
-        511.62,
-        155.75,
-        516.52
-      ]
-    },
-    {
-      "id": "p3b24",
+      "id": "p3b17",
       "type": "paragraph",
       "text": "Thus, for every t ∈ [0, T],",
       "page": 3,
@@ -974,9 +729,9 @@
       ]
     },
     {
-      "id": "p3b25",
-      "type": "paragraph",
-      "text": "M(t) ≤ e rtM(0).",
+      "id": "p3b18",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         139.77,
@@ -986,55 +741,31 @@
       ]
     },
     {
-      "id": "p3b26",
+      "id": "p3b19",
       "type": "paragraph",
-      "text": "If µ1 = µ2, then for almost every (x, t) ∈ Ω × (0, T), we",
+      "text": "If µ1 = µ2, then for almost every (x, t) ∈ Ω × (0, T), we also have",
       "page": 3,
       "box": [
         56.71,
         564.68,
         297.06,
-        574.63
-      ]
-    },
-    {
-      "id": "p3b27",
-      "type": "paragraph",
-      "text": "also have",
-      "page": 3,
-      "box": [
-        57.0,
-        577.19,
-        95.71,
         584.21
       ]
     },
     {
-      "id": "p3b28",
-      "type": "paragraph",
-      "text": "βv1 + αv2 ≤ e rt∥βv0 1 + αv 20∥∞.",
+      "id": "p3b20",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         110.18,
         595.07,
-        242.95,
-        606.29
-      ]
-    },
-    {
-      "id": "p3b29",
-      "type": "paragraph",
-      "text": "(3)",
-      "page": 3,
-      "box": [
-        285.25,
-        596.34,
         295.99,
         606.29
       ]
     },
     {
-      "id": "p3b30",
+      "id": "p3b21",
       "type": "paragraph",
       "text": "Theorem 2.2 (Existence of an optimal control). Under the assumptions above, minu∈Uad j(u) has a solution.",
       "page": 3,
@@ -1046,7 +777,7 @@
       ]
     },
     {
-      "id": "p3b31",
+      "id": "p3b22",
       "type": "paragraph",
       "text": "Appendix A proves both results.",
       "page": 3,
@@ -1058,8 +789,9 @@
       ]
     },
     {
-      "id": "p3b32",
-      "type": "paragraph",
+      "id": "p3b23",
+      "type": "heading",
+      "level": 3,
       "text": "2.2 First and second derivatives",
       "page": 3,
       "box": [
@@ -1070,9 +802,9 @@
       ]
     },
     {
-      "id": "p3b33",
+      "id": "p3b24",
       "type": "paragraph",
-      "text": "For a differentiable map F, DF(u) [d] is its derivative at u applied to direction d, and D2F(u) [d, e] its second derivative in directions d, e. We also use F ′ (u) and F ′′(u). Subscripts specify the variable being differentiated. The notation C k means that derivatives through order k are continuous, and C∞ that derivatives of every order are continuous. For maps between Banach spaces, derivatives are understood in the Fre´chet sense. The state map has a C 2 extension S : L∞(Q) → Y 2 (Appendix A). The same formula extends j to this space.",
+      "text": "For a differentiable map F, DF(u) [d] is its derivative at u applied to direction d, and D2F(u) [d, e] its second derivative in directions d, e. We also use F ′ (u) and F ′′(u). Subscripts specify the variable being differentiated. The notation C k means that derivatives through order k are continuous, and C∞ that derivatives of every order are continuous. For maps between Banach spaces, derivatives are understood in the Fre´chet sense. The state map has a C 2 extension S : L∞(Q) → Y 2 (Appendix A). The same formula extends j to this space. With the adjoint p := (p1, p2) ∈ W2 defined by (38) in Appendix A.3, the gradient map",
       "page": 3,
       "box": [
         56.97,
@@ -1082,67 +814,19 @@
       ]
     },
     {
-      "id": "p3b34",
-      "type": "paragraph",
-      "text": "With the adjoint p := (p1, p2) ∈ W2 defined by (38) in",
-      "page": 3,
-      "box": [
-        314.67,
-        142.1,
-        555.09,
-        152.82
-      ]
-    },
-    {
-      "id": "p3b35",
-      "type": "paragraph",
-      "text": "Appendix A.3, the gradient map",
-      "page": 3,
-      "box": [
-        314.94,
-        155.16,
-        455.53,
-        164.33
-      ]
-    },
-    {
-      "id": "p3b36",
-      "type": "paragraph",
-      "text": "g : L∞(Q) −→ L 2 (Q)",
+      "id": "p3b25",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         352.04,
         171.69,
-        443.6,
-        182.42
-      ]
-    },
-    {
-      "id": "p3b37",
-      "type": "paragraph",
-      "text": "u",
-      "page": 3,
-      "box": [
-        378.16,
-        189.48,
-        383.28,
-        193.98
-      ]
-    },
-    {
-      "id": "p3b38",
-      "type": "paragraph",
-      "text": "7−→ λu − qS2(u)(η + p2(u))",
-      "page": 3,
-      "box": [
-        399.46,
-        186.41,
         517.4,
         196.37
       ]
     },
     {
-      "id": "p3b39",
+      "id": "p3b26",
       "type": "paragraph",
       "text": "gives",
       "page": 3,
@@ -1154,31 +838,19 @@
       ]
     },
     {
-      "id": "p3b40",
-      "type": "paragraph",
-      "text": "j ′ (u) : L∞(Q) −→ R",
+      "id": "p3b27",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         374.15,
         215.25,
-        464.44,
-        225.24
-      ]
-    },
-    {
-      "id": "p3b41",
-      "type": "paragraph",
-      "text": "(4) ξ 7−→ Z Q g(u)ξ .",
-      "page": 3,
-      "box": [
-        416.74,
-        228.34,
         554.3,
         252.32
       ]
     },
     {
-      "id": "p3b42",
+      "id": "p3b28",
       "type": "paragraph",
       "text": "The scalar projection",
       "page": 3,
@@ -1190,31 +862,19 @@
       ]
     },
     {
-      "id": "p3b43",
-      "type": "paragraph",
-      "text": "Π[0,Umax] : R −→ [0, Umax]",
+      "id": "p3b29",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         349.87,
         273.43,
-        460.95,
-        284.44
-      ]
-    },
-    {
-      "id": "p3b44",
-      "type": "paragraph",
-      "text": "s 7−→ min{Umax, max{0, s}}",
-      "page": 3,
-      "box": [
-        397.49,
-        287.38,
         520.0,
         297.33
       ]
     },
     {
-      "id": "p3b45",
+      "id": "p3b30",
       "type": "paragraph",
       "text": "acts pointwise on functions and componentwise on arrays. At a local minimizer u ∗ , for every u ∈ Uad,",
       "page": 3,
@@ -1226,9 +886,9 @@
       ]
     },
     {
-      "id": "p3b46",
-      "type": "paragraph",
-      "text": "Z Q g(u ∗ )(u − u ∗ ) ≥ 0.",
+      "id": "p3b31",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         388.68,
@@ -1238,7 +898,7 @@
       ]
     },
     {
-      "id": "p3b47",
+      "id": "p3b32",
       "type": "paragraph",
       "text": "Equivalently, for almost every (x, t) ∈ Ω × (0, T),",
       "page": 3,
@@ -1250,9 +910,9 @@
       ]
     },
     {
-      "id": "p3b48",
-      "type": "paragraph",
-      "text": "u ∗ = Π[0,Umax] \u0010 λ q S2(u ∗ )(η + p2(u ∗ ))\u0011 .",
+      "id": "p3b33",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         352.14,
@@ -1262,7 +922,7 @@
       ]
     },
     {
-      "id": "p3b49",
+      "id": "p3b34",
       "type": "paragraph",
       "text": "For second-order sufifcient conditions in PDEconstrained optimization, see [18, 35].",
       "page": 3,
@@ -1274,8 +934,9 @@
       ]
     },
     {
-      "id": "p3b50",
-      "type": "paragraph",
+      "id": "p3b35",
+      "type": "heading",
+      "level": 2,
       "text": "3 Two state schemes and three discrete",
       "page": 3,
       "box": [
@@ -1286,8 +947,9 @@
       ]
     },
     {
-      "id": "p3b51",
-      "type": "paragraph",
+      "id": "p3b36",
+      "type": "heading",
+      "level": 2,
       "text": "objectives",
       "page": 3,
       "box": [
@@ -1298,8 +960,9 @@
       ]
     },
     {
-      "id": "p3b52",
-      "type": "paragraph",
+      "id": "p3b37",
+      "type": "heading",
+      "level": 3,
       "text": "3.1 Spatial operator and quadrature",
       "page": 3,
       "box": [
@@ -1310,117 +973,33 @@
       ]
     },
     {
-      "id": "p3b53",
+      "id": "p3b38",
       "type": "paragraph",
-      "text": "For the convergence analysis and experiments, take Ω =",
-      "page": 3,
-      "box": [
-        315.32,
-        514.7,
-        554.53,
-        523.76
-      ]
-    },
-    {
-      "id": "p3b54",
-      "type": "paragraph",
-      "text": "(0, 1). For M, N ∈ N, set h := 1/M and τ := T /N.",
+      "text": "For the convergence analysis and experiments, take Ω = (0, 1). For M, N ∈ N, set h := 1/M and τ := T /N. For 0 ≤ j ≤ M and 0 ≤ n ≤ N, define xj := jh and tn := nτ , respectively. We identify arrays with their coordinate vectors. The entry v i n,j is the discrete density of species i at node xj and time tn. v i n collects its nodal values, and u j n is the fishing effort. State trajectories lie in Yh,τ := R2(N+1)(M+1) , the adjoints (p n i )1≤n≤N in R2N(M+1) , and the controls in RN(M+1) . Define the discrete Neumann Laplacian by",
       "page": 3,
       "box": [
         314.84,
-        526.21,
+        514.7,
         556.37,
-        536.16
-      ]
-    },
-    {
-      "id": "p3b55",
-      "type": "paragraph",
-      "text": "For 0 ≤ j ≤ M and 0 ≤ n ≤ N, define xj := jh and tn := nτ , respectively. We identify arrays with their coordinate vectors. The entry v i n,j is the discrete density of species i at node xj and time tn. v i n collects its nodal values, and u j n is the fishing effort. State trajectories lie in Yh,τ := R2(N+1)(M+1) , the adjoints (p n i )1≤n≤N in R2N(M+1) , and the controls in RN(M+1) . Define the discrete Neumann Laplacian by",
-      "page": 3,
-      "box": [
-        314.93,
-        538.61,
-        555.37,
         633.19
       ]
     },
     {
-      "id": "p3b56",
-      "type": "paragraph",
-      "text": "Lh : RM+1 −→ RM+1",
+      "id": "p3b39",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         324.92,
         640.43,
-        420.24,
-        650.36
-      ]
-    },
-    {
-      "id": "p3b57",
-      "type": "paragraph",
-      "text": "2(y1 − y0)",
-      "page": 3,
-      "box": [
-        456.19,
-        655.28,
-        498.31,
-        665.24
-      ]
-    },
-    {
-      "id": "p3b58",
-      "type": "paragraph",
-      "text": "",
-      "page": 3,
-      "box": [
-        534.6,
-        654.4,
-        540.09,
-        672.41
-      ]
-    },
-    {
-      "id": "p3b59",
-      "type": "paragraph",
-      "text": "y 7−→ h −2 ",
-      "page": 3,
-      "box": [
-        356.21,
-        654.4,
-        420.37,
-        676.84
-      ]
-    },
-    {
-      "id": "p3b60",
-      "type": "paragraph",
-      "text": " (yj−1 − 2yj + yj+1)1≤j<M  .",
-      "page": 3,
-      "box": [
-        414.89,
-        666.77,
         544.92,
         690.23
       ]
     },
     {
-      "id": "p3b61",
+      "id": "p3b40",
       "type": "paragraph",
-      "text": "2(yM−1 − yM)",
-      "page": 3,
-      "box": [
-        446.71,
-        679.19,
-        507.78,
-        689.15
-      ]
-    },
-    {
-      "id": "p3b62",
-      "type": "paragraph",
-      "text": "The dual cells are C0 := [0, h/2), CM := (1−h/2, 1], and",
+      "text": "The dual cells are C0 := [0, h/2), CM := (1 − h/2, 1], and",
       "page": 3,
       "box": [
         314.99,
@@ -1430,25 +1009,13 @@
       ]
     },
     {
-      "id": "p3b63",
-      "type": "paragraph",
-      "text": "for 1 ≤ j < M,",
+      "id": "p3b41",
+      "type": "formula",
+      "text": "",
       "page": 3,
       "box": [
         315.33,
         709.99,
-        379.21,
-        719.05
-      ]
-    },
-    {
-      "id": "p3b64",
-      "type": "paragraph",
-      "text": "Cj := (xj − h/2, xj + h/2).",
-      "page": 3,
-      "box": [
-        377.06,
-        727.84,
         492.87,
         738.22
       ]

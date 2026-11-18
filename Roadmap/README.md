@@ -14,14 +14,14 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 bis Task_03 erledigt.
+Stand: 2026-11-18 – Task_01 bis Task_04 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
 | 01 | Durchstich: Flutter-Gerüst, DE/EN, PDF öffnen und im Original anzeigen | erledigt |
 | 02 | Reflow-Spike & Engine-Basis | erledigt |
 | 03 | Spalten & Lesereihenfolge | erledigt |
-| 04 | Blocktypen & Nicht-Text-Bereiche | offen |
+| 04 | Blocktypen & Nicht-Text-Bereiche | erledigt |
 | 05 | Bibliothek & Import | offen |
 | 06 | Reflow-Pipeline in der App | offen |
 | 07 | eBook-Leseansicht | offen |
@@ -44,6 +44,8 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Isolate-Frage geklärt: Extraktion und Engine laufen in `Isolate.run` (Host belegt). *(Task_02)*
 - Engine-Pipeline und Zuständigkeit der Dateien: `docs/architecture.md` (Abschnitt Architektur). *(Task_03)*
 - Der Nutzer hat Snapshot-Änderungen, die aus den geplanten Verbesserungen von Task 03/04 folgen, pauschal freigegeben (von Hand prüfen, im Commit begründen, im Abschlussbericht auflisten). Für spätere Tasks gilt wieder die Einzelfreigabe. *(Task_03)*
+- Liste der freigegebenen Snapshot-Änderungen für den Abschlussbericht: Task 03 (`single_column_text`: Seitenzahlen entfernt, Absatz über Seite 2→3; `synthetic_single_column`: nur Version), Task 04 (alle Snapshots: Blocktypen/Ebenen/Bereiche, Version 3). *(Task_04)*
+- Engine-Ausgabe ist ab `engineVersion` 3 inhaltlich vollständig: Blocktypen inkl. Bereiche (Tabelle/Abbildung/Formel mit leerem Text, Seite + Box). *(Task_04)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details

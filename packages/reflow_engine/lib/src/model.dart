@@ -154,7 +154,19 @@ class DocumentInput {
   int get hashCode => pages.length.hashCode;
 }
 
-enum BlockType { paragraph }
+enum BlockType {
+  heading,
+  paragraph,
+  listItem,
+  caption,
+
+  /// Non-text regions, shown as an image crop of the original page.
+  table,
+  figure,
+  formula;
+
+  bool get isRegion => this == table || this == figure || this == formula;
+}
 
 /// One reflowable unit of the document.
 @immutable
@@ -165,6 +177,7 @@ class ReflowBlock {
     required this.text,
     required this.page,
     required this.box,
+    this.level,
   });
 
   factory fromJson(Map<String, dynamic> json) => ReflowBlock(
@@ -173,6 +186,7 @@ class ReflowBlock {
     text: json['text'] as String,
     page: json['page'] as int,
     box: BBox.fromJson(json['box'] as List<dynamic>),
+    level: json['level'] as int?,
   );
 
   /// Stable id, unique within the document (e.g. `p3b12`).
@@ -186,9 +200,13 @@ class ReflowBlock {
   /// Area of the block on its page.
   final BBox box;
 
+  /// Heading level (1 = most prominent); `null` for other block types.
+  final int? level;
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'type': type.name,
+    if (level != null) 'level': level,
     'text': text,
     'page': page,
     'box': box.toJson(),
@@ -201,10 +219,11 @@ class ReflowBlock {
       other.type == type &&
       other.text == text &&
       other.page == page &&
-      other.box == box;
+      other.box == box &&
+      other.level == level;
 
   @override
-  int get hashCode => Object.hash(id, type, text, page, box);
+  int get hashCode => Object.hash(id, type, text, page, box, level);
 
   @override
   String toString() => 'ReflowBlock($id, $type, "$text")';

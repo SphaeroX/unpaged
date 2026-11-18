@@ -165,6 +165,21 @@ void main() {
       expect(buildLines(chars).single.text, 'ultraviolet (UV).1–3 For');
     });
 
+    test('estimates the font size from letters, not tall brackets', () {
+      // Brackets and parentheses are taller than the letters.
+      const chars = [
+        TextChar(text: '[', box: BBox(0, -2, 2, 9), wordStart: true),
+        TextChar(text: 'F', box: BBox(2, 0, 6, 7)),
+        TextChar(text: 'i', box: BBox(6, 0, 8, 7)),
+        TextChar(text: ']', box: BBox(8, -2, 10, 9)),
+        TextChar(text: '(', box: BBox(12, -2, 14, 9), wordStart: true),
+        TextChar(text: 'b', box: BBox(14, 0, 18, 7)),
+        TextChar(text: ')', box: BBox(18, -2, 20, 9)),
+      ];
+
+      expect(buildLines(chars).single.fontSize, closeTo(7, 0.01));
+    });
+
     test('returns no lines for an empty page', () {
       expect(buildLines(const []), isEmpty);
     });

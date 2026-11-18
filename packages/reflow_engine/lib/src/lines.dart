@@ -44,13 +44,16 @@ class TextLine {
   static const _xHeightLetters = 'acemnorsuvwxz';
 
   double _estimateFontSize() {
-    final raw = percentile(chars.map((c) => c.box.height), 0.9);
+    // Brackets, parentheses and math symbols are taller than letters.
     final letters = chars.where((c) => _isAlphanumeric(c.text)).toList();
-    if (letters.isEmpty) return raw;
-    if (letters.every((c) => _xHeightLetters.contains(c.text))) {
-      return percentile(letters.map((c) => c.box.height), 0.9) * 1.45;
+    if (letters.isEmpty) {
+      return percentile(chars.map((c) => c.box.height), 0.9);
     }
-    return raw;
+    final size = percentile(letters.map((c) => c.box.height), 0.9);
+    if (letters.every((c) => _xHeightLetters.contains(c.text))) {
+      return size * 1.45;
+    }
+    return size;
   }
 
   static bool _isAlphanumeric(String s) =>

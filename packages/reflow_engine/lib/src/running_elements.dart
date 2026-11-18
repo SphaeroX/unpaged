@@ -10,8 +10,8 @@ final _pageNumber = RegExp(r'^(page\s*)?(#+|[ivxlcdm]+)(\s*(of|/)\s*#+)?$');
 /// in the top or bottom margin zone (9 % of the page height), a line is
 /// removed if it is a bare page number, or if its text (digits ignored)
 /// appears in the same zone on at least two pages and at least half of all
-/// pages, or if it repeats text from the first two pages (alternating
-/// title/author heads).
+/// pages, or if it repeats text from the first page (alternating
+/// title/author heads on later pages).
 List<List<TextLine>> removeRunningElements(
   List<PageInput> pages,
   List<List<TextLine>> linesPerPage,
@@ -34,18 +34,16 @@ List<List<TextLine>> removeRunningElements(
     }
   }
 
-  // Title and author lines live on the first pages; alternating running
-  // heads repeat them.
-  String frontText(TextLine except) => [
-    for (var i = 0; i < pages.length && i < 2; i++)
-      for (final line in linesPerPage[i])
-        if (!identical(line, except)) _normalize(line.text),
-  ].join(' ');
+  // Title and author lines live on the first page; alternating running
+  // heads on later pages repeat them.
+  final frontText = pages.isEmpty
+      ? ''
+      : [for (final line in linesPerPage[0]) _normalize(line.text)].join(' ');
 
   bool repeatsFrontMatter(TextLine line) {
     final text = _normalize(line.text);
     if (text.length < 8 || !text.contains(' ')) return false;
-    return frontText(line).contains(text);
+    return frontText.contains(text);
   }
 
   return [
@@ -54,7 +52,9 @@ List<List<TextLine>> removeRunningElements(
         for (final line in linesPerPage[i])
           if (!_inSideMargin(pages[i], line) &&
               !_isRunning(zoneKey(pages[i], line), pageCounts, pages.length) &&
-              !(zoneKey(pages[i], line) != null && repeatsFrontMatter(line)))
+              !(i > 0 &&
+                  zoneKey(pages[i], line) != null &&
+                  repeatsFrontMatter(line)))
             line,
       ],
   ];

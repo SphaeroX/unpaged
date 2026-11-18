@@ -18,6 +18,8 @@ const snapshotDocuments = [
   'single_column_text',
   'two_column_tables',
   'two_column_formulas',
+  'two_column_figures',
+  'single_column_tables',
 ];
 
 void main() {

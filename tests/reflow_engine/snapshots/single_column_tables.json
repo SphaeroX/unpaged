@@ -1,0 +1,381 @@
+{
+  "engineVersion": 3,
+  "blocks": [
+    {
+      "id": "p1b0",
+      "type": "heading",
+      "level": 1,
+      "text": "Adaptive Precision Cholesky with Error Guarantees",
+      "page": 1,
+      "box": [
+        73.26,
+        94.99,
+        353.19,
+        106.15
+      ]
+    },
+    {
+      "id": "p1b1",
+      "type": "heading",
+      "level": 2,
+      "text": "SUDHANVA VIJAYA KULKARNI, Arith Inc, USA, USA JAMES W. DEMMEL, University of California, Berkeley, USA",
+      "page": 1,
+      "box": [
+        72.83,
+        120.51,
+        314.87,
+        145.95
+      ]
+    },
+    {
+      "id": "p1b2",
+      "type": "paragraph",
+      "text": "LAURA GRIGORI, PSI Center for Scientific Computing, Theory and Data and Institute of Mathematics, EPF Lausanne, Switzerland, Switzerland",
+      "page": 1,
+      "box": [
+        73.68,
+        152.89,
+        502.39,
+        177.44
+      ]
+    },
+    {
+      "id": "p1b3",
+      "type": "paragraph",
+      "text": "Recent hardware accelerators increasingly support low-precision numerics such as 8-bit floats and ints that are used to speed up machine learning applications. In this paper, we show that a Cholesky factorization in which both GEMM and TRSM are implemented using the fixed-point Ozaki 1 scheme [26] satisfies the same backward error bounds as the standard floating-point Cholesky factorization [8]. We also show that a Cholesky factorization computed using a low-precision MicroScaled GEMM [28] satisfies the same bound as [8]. We then use our error analyses to construct an adaptive precision Cholesky factorization that can exploit low-precision formats while respecting a prescribed element-wise error bound threshold, as long as the factorization is successful. We test our factorization in two settings. First, we use it to choose the number of Ozaki 1 slices at each iteration of the Cholesky factorization, with SYRK/GEMM and TRSM emulated in low-precision (INT8) i fxed-point arithmetic to attain double-precision accuracy. Second, we use it to build a low-precision Cholesky preconditioner for the conjugate gradient method (PCG), in which SYRK/GEMM take low-precision inputs and accumulate in high precision, and the input format is selected adaptively for each panel. If the factorization breaks down due to loss of positive deifniteness, we use diagonal perturbation to ensure we still construct a valid preconditioner, but lose error bound guarantees. We test the adaptive precision Ozaki 1-based factorization on an NVIDIA GH200, and compare it against a right-looking Cholesky implemented using two kinds of BLAS: first using cuBLAS’ Automatic Dynamic Precision (ADP), and then using a fixed slice count of 7 for all Ozaki 1 BLAS operations. We report speedups of up to 29% over the latter and up to 69% over the former, while still maintaining the same error guarantees. For PCG, we show that with a diagonal perturbation, FP8 factorizations form effective preconditioners on the 13 tested SuiteSparse matrices, reducing the number of PCG iterations by up to 12× over CG on the same matrix diagonally scaled by powers of two. For synthetic matrices with arithmetic spectra, and geometric spectra with condition numbers \udf05 \ud835 ≤ 104 , FP8 is able to bring down the number of CG iterations.",
+      "page": 1,
+      "box": [
+        73.19,
+        190.01,
+        501.82,
+        409.17
+      ]
+    },
+    {
+      "id": "p1b4",
+      "type": "paragraph",
+      "text": "CCS Concepts: • Mathematics of computing → Numerical analysis; • Computer systems organization → Embedded systems.",
+      "page": 1,
+      "box": [
+        73.74,
+        418.96,
+        502.61,
+        426.41
+      ]
+    },
+    {
+      "id": "p1b5",
+      "type": "paragraph",
+      "text": "Additional Key Words and Phrases: Mixed-Precision Algorithms, Cholesky Decomposition, Low-precision Floating Point, Conjugate Gradient",
+      "page": 1,
+      "box": [
+        73.17,
+        436.21,
+        501.52,
+        454.32
+      ]
+    },
+    {
+      "id": "p1b6",
+      "type": "heading",
+      "level": 2,
+      "text": "1 Introduction and Related Work",
+      "page": 1,
+      "box": [
+        74.36,
+        471.25,
+        214.46,
+        477.59
+      ]
+    },
+    {
+      "id": "p1b7",
+      "type": "paragraph",
+      "text": "Many recent studies have shown that mixed-precision hardware can significantly accelerate the solution of linear systems (see [17] for a survey). We consider two approaches that have been used to achieve these speedups. The first approach combines a low-precision factorization with iterative refinement to recover a higher accuracy solution of the linear system. For example Haidar et al. [12] achieve significant speedups by combining a mixed-precision LU factorization that exploits half-precision NVIDIA Tensor Cores with GMRES-based iterative reifnement (GMRES-IR). In addition, GMRES-IR was accelerated using multiple precisions in [4]. The strategy in both these works is to use an FP16/TF32/BF16 LU factorization and then use it to precondition the \"correction\" equation, which is solved with GMRES. Iterative refinement is required to compensate for the fact that FP16 and BF16 both have many fewer mantissa bits than FP64. This implies a larger machine epsilon and hence a less accurate solution. In this work, since we are only",
+      "page": 1,
+      "box": [
+        73.49,
+        488.38,
+        502.71,
+        606.35
+      ]
+    },
+    {
+      "id": "p1b8",
+      "type": "paragraph",
+      "text": "Authors’ Contact Information: Sudhanva Vijaya Kulkarni, Arith Inc, USA, Berkeley, CA, USA, sudhanvakulkarni@berkeley.edu; James W. Demmel, University of California, Berkeley, Berkeley, CA, USA, demmel@berkeley.edu; Laura Grigori, PSI Center for Scientific Computing, Theory and Data and Institute of Mathematics, EPF Lausanne, Switzerland, Lausanne, Switzerland, laura.grigori@epfl.ch.",
+      "page": 1,
+      "box": [
+        73.45,
+        614.46,
+        502.25,
+        640.91
+      ]
+    },
+    {
+      "id": "p1b9",
+      "type": "paragraph",
+      "text": "1 2",
+      "page": 1,
+      "box": [
+        498.84,
+        660.06,
+        501.17,
+        664.91
+      ]
+    },
+    {
+      "id": "p2b0",
+      "type": "paragraph",
+      "text": "Sudhanva Vijaya Kulkarni, James W. Demmel, and Laura Grigori",
+      "page": 2,
+      "box": [
+        301.94,
+        71.55,
+        538.45,
+        79.93
+      ]
+    },
+    {
+      "id": "p2b1",
+      "type": "paragraph",
+      "text": "concerned with symmetric positive definite systems, we use the mixed-precision factorization as a preconditioner for a preconditioned conjugate gradient (PCG) rather than GMRES. Mixed-precision PCG with low-precision incomplete Cholesky preconditioners has been analyzed in [5]. Low-precision formats like FP16 also provide a much smaller range of representable numbers. Methods to mitigate the effect of the smaller range of available FP16 numbers have been studied in [15]. Sahraneshinsamani et al. [32] show how pre-pivoting with low-precision GEMMs can eliminate the pivoting bottleneck on GPU-like architectures. Other approaches include using custom data structures such as those described in [3], where a mixed-precision SVD is used to store different blocks of a Block-Low-Rank matrix in different precisions. This has the effect of storing \"less significant\" (smaller singular value) parts of the blocks in lower precision. Another example is [1], where of f-diagonal blocks beyond some user-speciifed distance away from the diagonal are stored in FP32, and the rest are stored in FP64. A similar idea is applied in [31] where the precision to which the off-diagonal blocks are rounded is decided by the magnitude of their Frobenius norm (blocks with a smaller Frobenius norm are stored in lower precision). This idea is further extended in [2] while also applying MicroScaling. The Cholesky factorizations described in [1, 31] have the problem of not providing error-bound guarantees, and not accounting for problems such as factorization failure and underflow, which become common in the world of low-precision floats. The concurrent work [6] solves this issue by picking the precision of each tile using the ratio between the norm of the tile and the norm of the input matrix. Our work differs from that work in that it also considers emulated GEMMs and can provide either an element-wise or norm-wise error bound rather than only a norm-wise bound. Our algorithm also uses a different precision selection criterion. More recently, FP8/6/4 formats have also become popular due to their utility in machine learning [23]. Many FP8 (and shorter) formats are available [28], [25], [35], [11], [20], including the emerging IEEE 3109 standard for low-precision floats [30]. When using these low precisions, the Cholesky factorization can break down. We avoid this by using diagonal perturbation, but lose error guaranties in the process.",
+      "page": 2,
+      "box": [
+        109.86,
+        98.75,
+        539.44,
+        216.68
+      ]
+    },
+    {
+      "id": "p2b2",
+      "type": "paragraph",
+      "text": "The second approach relies on emulation, which splits a higher precision GEMM into a sum of many scaled low-precision fixed-point or floating-point GEMMs. Ozaki schemes [26, 29] use lower-precision GEMMs to decompose a floating-point matrix into a sum of matrices whose products can be calculated exactly using low precision and then accumulated using higher precision. This allows FP64 matrix products to be computed using INT8 Tensor Cores, albeit with a weaker roundoff error bound [9]. The error bound of a GEMM implementation can receive a grade \udc34 \ud835, \udc35 \ud835 or 𝐶, where the meaning of these grades is displayed in Table 1. In this paper, we show that using Ozaki (or any \"grade B\" GEMM as def ined in [9]) gives you the same backward error guarantees as the regular floating-point Cholesky [8]. Hence, when using emulation, we can simply replace DGEMM or DTRSM with their emulated equivalents, and we do not need an extra refinement phase. Luszczek et al. [21] used the Ozaki scheme for the BLAS in an LU decomposition, but did not present an error analysis. Kouya [19] also uses Ozaki 2 in an LU decomposition. The Ozaki scheme has also been extended to FP8 [24] and FP4 [13] tensor cores. NVIDIA recently added a i fxed-point INT8 emulation of DGEMM [33] to cuBLAS. Other implementations include ozIMMU [27] and also the Ozaki 2 implementation [29]. We use the cuBLAS implementation for our experiments.",
+      "page": 2,
+      "box": [
+        109.87,
+        386.42,
+        539.71,
+        474.97
+      ]
+    },
+    {
+      "id": "p2b3",
+      "type": "heading",
+      "level": 2,
+      "text": "2 Contributions",
+      "page": 2,
+      "box": [
+        110.5,
+        574.77,
+        180.65,
+        581.12
+      ]
+    },
+    {
+      "id": "p2b4",
+      "type": "paragraph",
+      "text": "Our contributions may be summarized as follows.",
+      "page": 2,
+      "box": [
+        110.49,
+        591.9,
+        291.89,
+        600.23
+      ]
+    },
+    {
+      "id": "p2b5",
+      "type": "listItem",
+      "text": "• Our main contribution is an adaptive-precision Cholesky factorization that selects the number of Ozaki 1 slices, or the l foating-point precision (FP8, FP16, etc.) for GEMM/SYRK and the number of Ozaki 1 slices for TRSM per iteration of Cholesky adaptively to reach a prescribed accuracy.",
+      "page": 2,
+      "box": [
+        129.91,
+        607.99,
+        539.11,
+        643.74
+      ]
+    },
+    {
+      "id": "p3b0",
+      "type": "paragraph",
+      "text": "Adaptive Precision Cholesky with Error Guarantees \udf16 is machine epsilon and 𝐴,\udc53 \ud835𝐵,\udc53 \ud835𝐶 are at most low degree polynomial",
+      "page": 3,
+      "box": [
+        73.14,
+        71.55,
+        262.95,
+        79.9
+      ]
+    },
+    {
+      "id": "p3b1",
+      "type": "caption",
+      "text": "Table 1. GEMM error bound grades for \udc36 \ud835ˆ = fl(𝐴\udc35\ud835), where \ud835 3",
+      "page": 3,
+      "box": [
+        73.35,
+        95.01,
+        273.52,
+        104.16
+      ]
+    },
+    {
+      "id": "p3b2",
+      "type": "paragraph",
+      "text": "\udc53\ud835",
+      "page": 3,
+      "box": [
+        353.67,
+        96.72,
+        361.56,
+        104.17
+      ]
+    },
+    {
+      "id": "p3b3",
+      "type": "paragraph",
+      "text": "functions of 𝑛, where for simplicity we assume \ud835 \udc34, \udc35 \ud835 and 𝐶 are 𝑛 × 𝑛 matrices.",
+      "page": 3,
+      "box": [
+        73.59,
+        106.68,
+        233.58,
+        114.12
+      ]
+    },
+    {
+      "id": "p3b4",
+      "type": "table",
+      "text": "",
+      "page": 3,
+      "box": [
+        203.1,
+        132.07,
+        371.41,
+        208.96
+      ]
+    },
+    {
+      "id": "p3b5",
+      "type": "caption",
+      "text": "Table 2. TRSM error bound grades for solving \udc3f \ud835𝑋 = \udc35 \ud835, with computed solution \ud835, where 𝜖 is machine epsilon and 𝑔\ud835",
+      "page": 3,
+      "box": [
+        73.35,
+        203.39,
+        457.0,
+        210.83
+      ]
+    },
+    {
+      "id": "p3b6",
+      "type": "paragraph",
+      "text": "\udc34, \udc54 \ud835𝐵, \udc54 𝐶\ud835 are at most low degree polynomial functions of \udc5b \ud835, where for simplicity we assume 𝐿, \udc4b \ud835 and \udc35 \ud835 are \ud835",
+      "page": 3,
+      "box": [
+        74.02,
+        204.29,
+        501.5,
+        220.79
+      ]
+    },
+    {
+      "id": "p3b7",
+      "type": "paragraph",
+      "text": "\udc5b × \udc5b \ud835 matrices.",
+      "page": 3,
+      "box": [
+        373.53,
+        213.75,
+        422.79,
+        218.98
+      ]
+    },
+    {
+      "id": "p3b8",
+      "type": "table",
+      "text": "",
+      "page": 3,
+      "box": [
+        199.9,
+        238.74,
+        374.62,
+        293.52
+      ]
+    },
+    {
+      "id": "p3b9",
+      "type": "paragraph",
+      "text": "In the appendix, we also give an adaptive algorithm for Ozaki 2 that selects the number of moduli for a prescribed accuracy, based on only a i frst-order error analysis (we keep only the dominant i frst-order terms of the GEMM error bound).",
+      "page": 3,
+      "box": [
+        102.18,
+        315.07,
+        501.81,
+        350.54
+      ]
+    },
+    {
+      "id": "p3b10",
+      "type": "listItem",
+      "text": "• The adaptive algorithm is enabled by our error analysis: we present an error analysis of Cholesky using emulated BLAS for GEMM/SYRK and TRSM, and an error analysis of Cholesky that uses mixed-precision floating-point Tensor Cores for GEMM/SYRK. We show that an emulated Cholesky obeys the same classical backward error bound as the classical l foating-point Cholesky.",
+      "page": 3,
+      "box": [
+        93.19,
+        356.17,
+        501.89,
+        405.65
+      ]
+    },
+    {
+      "id": "p3b11",
+      "type": "listItem",
+      "text": "• We evaluate the emulation algorithm on NVIDIA GH200 GPUs using cuBLAS FP64 fixed-point emulation. We compare 3 strategies, using 1) our adaptive algorithm, 2) static slice counts (7 and 8 slices), and 3) cuBLAS’ automatic dynamic precision scheme [33] which decides the number of slices by looking at each GEMM without the context of Cholesky factorization. Our adaptive algorithm is up to 29% faster than the static 7-slice strategy and up to 69% faster than cuBLAS ADP while meeting the same backward error bound. Our success criterion for all three implementations is the double precision backward error bound described in [8, 14]. This means that if Cholesky returns a factor 𝐿, we check that |\ud835 \udc4e𝑗 , where the subscript 𝑖 𝑗 denotes the",
+      "page": 3,
+      "box": [
+        93.19,
+        410.96,
+        502.13,
+        501.48
+      ]
+    },
+    {
+      "id": "p3b12",
+      "type": "formula",
+      "text": "",
+      "page": 3,
+      "box": [
+        268.28,
+        493.07,
+        372.63,
+        502.69
+      ]
+    },
+    {
+      "id": "p3b13",
+      "type": "paragraph",
+      "text": "(𝑖, 𝑗)-th element of the corresponding matrix. We also evaluate the Ozaki 2 variant on synthetic matrices against fixed 12-, 13- and 14-moduli implementations. We test on synthetic matrices and matrices from SuiteSparse [7, 18].",
+      "page": 3,
+      "box": [
+        102.26,
+        506.68,
+        502.38,
+        542.22
+      ]
+    },
+    {
+      "id": "p3b14",
+      "type": "listItem",
+      "text": "• We use the mixed-precision floating-point version of the algorithm to generate preconditioners (for PCG) with varying tolerances, using a diagonal perturbation to handle factorization failures, and evaluate their effectiveness in reducing the number of CG iterations. If the algorithm is given a higher tolerance, the adaptive Cholesky will use more low-precision GEMMs. On the 13 SuiteSparse matrices we tested, and on synthetic matrices with arithmetic and random spectra, an FP8 preconditioner reduces the number of PCG iterations by up to 12× compared to CG on the power-of-two equilibrated matrix. On synthetic matrices with geometric spectra, the FP8 preconditioner improves the convergence of CG for 𝜅 ≤ 104 . However, the convergence of CG is not improved much on synthetic matrices with 𝜅 ≥ 108 .",
+      "page": 3,
+      "box": [
+        93.19,
+        547.86,
+        502.02,
+        652.18
+      ]
+    }
+  ]
+}

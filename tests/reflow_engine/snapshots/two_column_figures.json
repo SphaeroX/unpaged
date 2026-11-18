@@ -1,0 +1,462 @@
+{
+  "engineVersion": 3,
+  "blocks": [
+    {
+      "id": "p1b0",
+      "type": "heading",
+      "level": 1,
+      "text": "Predicting local electric field in AlxGa1−xN p–i–n photodiodes using exciton Franz–Keldysh photocurrent spectroscopy",
+      "page": 1,
+      "box": [
+        54.46,
+        51.84,
+        514.08,
+        83.06
+      ]
+    },
+    {
+      "id": "p1b1",
+      "type": "paragraph",
+      "text": "Himel Kundu Utsha,1, a) iD Manjur Muntasir,1, a) iD and Md. Mohsinur Rahman Adnan1, * iD Department of Electrical and Electronic Engineering, Bangladesh University of Engineering and Technology (BUET), Dhaka 1000, Bangladesh",
+      "page": 1,
+      "box": [
+        89.94,
+        86.91,
+        561.07,
+        118.52
+      ]
+    },
+    {
+      "id": "p1b2",
+      "type": "paragraph",
+      "text": "(*Electronic mail: mmradnan@eee.buet.ac.bd)",
+      "page": 1,
+      "box": [
+        90.43,
+        126.0,
+        257.8,
+        133.71
+      ]
+    },
+    {
+      "id": "p1b3",
+      "type": "paragraph",
+      "text": "In AlGaN p–i–n photodiodes, reverse bias redshifts and broadens the sub-bandgap photocurrent responsivity through the eXciton Franz–Keldysh (XFK) effect, and this spectral line shape encodes the local electric i feld inside the device. Fitting the photocurrent spectra of two such photodiodes, with 5% and 40% Al, to an XFK absorption model at each bias yields the local voltage, Vl , a single parameter that sets the line shape and uniquely determines the electric-field proifle inside the device. In both devices, Vl varies linearly with the applied bias (R 2 = 0.994 and 0.998) but changes far more slowly than the bias itself, revealing a strong local reduction of the electric field that points to non-uniform electrostatics. The slopes show that only 12.4% of the applied bias in the 5% Al device, and 45.8% in the 40% Al device, drops across the junction at the probed location. Extrapolated to zero bias, Vl gives built-in voltages of 3.39 and 4.29 V, within 0.02 V of the 3.41 and 4.28 V obtained from technology computer-aided design (TCAD) simulation, which validates the extracted local voltages at equilibrium. These results extend sub-bandgap photocurrent spectroscopy to AlGaN devices as an optical probe of local electrostatics, relevant to ultraviolet photodetectors and high-voltage electronics.",
+      "page": 1,
+      "box": [
+        90.12,
+        142.26,
+        561.97,
+        265.8
+      ]
+    },
+    {
+      "id": "p1b4",
+      "type": "paragraph",
+      "text": "AlxGa1−xN is a direct-bandgap III-nitride alloy whose bandgap can be tuned from 3.4 eV (GaN) to 6.2 eV (AlN) through the Al content x, placing the absorption edge anywhere from the near to the deep ultraviolet (UV).1–3 For x ≳ 0.4 the edge falls below the 280-nm solar-blind cutoff,3 enabling intrinsically solar-blind detection without the bulky optical filters needed by Si-based detectors.4,5 AlGaN has thus yielded solar-blind photodiodes,6,7 including low-noise p–i–n devices with very low dark current,4 and avalanche photodiodes (APDs) with high gain,3,8 exceeding 105 in Al0.05Ga0.95N APDs on GaN substrates.5 Because the critical electric field rises steeply with bandgap, AlGaN is also an ultrawide-bandgap platform for high-voltage electronics.9 In both device classes, the internal field governs carrier collection, gain, dark current, and breakdown.",
+      "page": 1,
+      "box": [
+        53.74,
+        288.38,
+        299.1,
+        457.74
+      ]
+    },
+    {
+      "id": "p1b5",
+      "type": "paragraph",
+      "text": "Yet the field inside an operating device is rarely measured. Designers instead rely on simulations that usually assume laterally uniform, one-dimensional (1D) electrostatics.10 In vertical GaN p–n diodes, the i feld peaks at the outer mesa edge, where destructive breakdown usually starts, so edge terminations such as guard rings are needed to relieve field crowding.11 In AlGaN APDs, dislocations and dry-etched sidewall features disturb the i feld distribution and trigger premature microplasma breakdown.3,5 In solar-blind AlGaN photodiodes, two-dimensional simulations indicate possible field crowding beneath the p contact, and the resistive Al-rich ptype layer makes the transient response depend on the illumination position.4 Electroreflectance and photorelfectance spectroscopy quantify built-in i felds in nitride layers and",
+      "page": 1,
+      "box": [
+        54.13,
+        460.46,
+        299.06,
+        618.37
+      ]
+    },
+    {
+      "id": "p1b6",
+      "type": "paragraph",
+      "text": "12,13 bu",
+      "page": 1,
+      "box": [
+        120.94,
+        619.07,
+        149.04,
+        627.76
+      ]
+    },
+    {
+      "id": "p1b7",
+      "type": "paragraph",
+      "text": "heterostructures, t their oscillations decay at high fields and their analysis assumes a homogeneous field.10 Electricf ield-induced second-harmonic generation maps i felds in GaN devices with submicrometer resolution and shows that devices with similar terminal characteristics can have very different",
+      "page": 1,
+      "box": [
+        54.09,
+        620.86,
+        119.57,
+        629.06
+      ]
+    },
+    {
+      "id": "p1b8",
+      "type": "paragraph",
+      "text": "a)H. K. Utsha and M. Muntasir contributed equally to this work.",
+      "page": 1,
+      "box": [
+        54.22,
+        713.29,
+        257.59,
+        721.95
+      ]
+    },
+    {
+      "id": "p1b9",
+      "type": "paragraph",
+      "text": "internal i felds, with crowding wherever the edge-termination charge is uneven.14,15 Directly mapping the field inside an active device region thus remains challenging,14 and a local field probe for operating AlGaN devices is needed.",
+      "page": 1,
+      "box": [
+        317.06,
+        288.38,
+        562.0,
+        331.71
+      ]
+    },
+    {
+      "id": "p1b10",
+      "type": "paragraph",
+      "text": "Photocurrent spectroscopy offers such a probe through the Franz–Keldysh (FK) effect. An electric field tilts the band edges, so the electron and hole wave functions overlap inside the gap and photons below the bandgap are absorbed, and the absorption edge redshifts and broadens as the field grows.16–18 In wide-bandgap semiconductors, the electron–hole Coulomb interaction strongly enhances this sub-bandgap absorption and changes its i feld dependence. This eXciton Franz–Keldysh (XFK) effect19–22 has been observed in the electroabsorption of GaN.23 Because the sub-bandgap absorption follows the local field, the bias-dependent responsivity of a reverse-biased junction encodes the i feld where the light is absorbed. FK photocurrent has been modeled in GaN p–n diodes24 and β-Ga2O3 Schottky diodes25 under high reverse bias and used to extract built-in fields in an AlGaN/GaN heterostructure,26 and Li et al. attributed the bias-induced redshift of an Al0.4Ga0.6N photodiode to the FK effect, assuming a uniform field.4 Myers and co-workers developed the XFK effect into a quantitative local probe.10,27,28 Verma et al. showed that the XFK line shape of the responsivity of a GaN p–n diode is fit with a single parameter, the local voltage Vl , which i fxes the i feld profile at the illuminated position, and found a large local field reduction that they attributed to electrostatic non-uniformity.10 Adnan et al. then identified the onset of dielectric breakdown in β-Ga2O3 Schottky diodes, near 6 MV/cm, from the saturation of the XFK redshift,27 and Verma et al. resolved the anisotropic excitonic photocurrent of β-Ga2O3. 28",
+      "page": 1,
+      "box": [
+        316.33,
+        336.19,
+        562.1,
+        643.08
+      ]
+    },
+    {
+      "id": "p1b11",
+      "type": "paragraph",
+      "text": "Here, we extend XFK photocurrent spectroscopy to AlGaN and establish an XFK-based model of the internal electric-field profile of AlGaN p–i–n photodiodes. Two changes are needed. First, the bandgap, exciton binding energy, Bohr radius, and permittivity in the XFK model depend on Al content. Second, practical AlGaN photodiodes are p–i–n structures with an unintentionally doped (UID) absorber, so the ile is trapezoidal rather than the triangular profile of an abrupt p–n junction. We apply the model to the published responsivity spectra of two previously fabricated photodiodes, with 5% and 40% Al, validate it against technology computer-aided design (TCAD) simulation at zero bias, and show that the field at the probed location under reverse bias is far smaller than the 1D simulation predicts. To our knowledge, this is the f irst use of the XFK line shape to determine local fields in AlGaN devices. Because the method needs only the spectral responsivity, which is routinely measured for UV photodetectors, it can be applied across the AlGaN composition range.",
+      "page": 1,
+      "box": [
+        317.14,
+        647.51,
+        561.94,
+        725.22
+      ]
+    },
+    {
+      "id": "p2b0",
+      "type": "paragraph",
+      "text": "The sub-bandgap photocurrent spectra of the two AlGaN p–i–n photodiodes shown in Fig. 1 were reported by Kim et al.5 and Sood et al.29 (Device 1) and by Li et al.4,7 (Device 2) Here they are reanalyzed with the XFK model generalized to the p–i–n i feld profile, from which the local voltage is obtained at each bias. Device 1 [Fig. 1(a)] is a topilluminated Al0.05Ga0.95N p–i–n avalanche photodiode grown by metalorganic chemical vapor deposition (MOCVD) on a free-standing n-GaN substrate. Its 300-nm UID absorber lies between a 100-nm p-Al0.05Ga0.95N:Mg layer (hole concentration ∼5 × 1017 cm−3 ), capped by 20 nm of p +-Al0.05Ga0.95N ([Mg] ∼ 1 × 1020 cm−3 ), and a 150-nm n-Al0.02Ga0.98N:Si layer (∼4 × 1018 cm−3 ). The mesas were formed by inductively coupled plasma etching, with Ni/Ag/Ni/Au anodes and Ti/Al/Ti/Au cathodes. Device 2 [Fig. 1(c)] is a backilluminated Al0.4Ga0.6N/Al0.6Ga0.4N solar-blind p–i–n photodiode grown by low-pressure MOCVD on double-polished sapphire. Its 150-nm UID absorber lies between a 200-nm n +-Al0.4Ga0.6N layer and a 200-nm p-Al0.4Ga0.6N:Mg layer. The p layer is topped by a 10-nm compositionally graded layer of the kind used for polarization-induced hole doping30 and a 10-nm p +-GaN contact layer, and a 700-nm Al0.6Ga0.4N layer below the n side serves as the optical window. Its mesas were defined by reactive ion etching, with Ni/Au anodes and Ti/Al cathodes. The zero-bias band diagrams [Figs. 1(b) and 1(d)] were computed with Silvaco ATLAS31 and give built-in voltages Vbi = 3.41 V (Device 1) and 4.28 V (Device 2).",
+      "page": 2,
+      "box": [
+        54.01,
+        181.26,
+        299.58,
+        488.11
+      ]
+    },
+    {
+      "id": "p2b1",
+      "type": "paragraph",
+      "text": "The responsivity spectra R(Eph) were acquired with a xenon lamp, a monochromator, and lock-in detection. For Device 1, the spectra are those of a 70-µm-diameter mesa under frontside illumination.29,32 For Device 2, a ∼25-µm beam was focused through the sapphire substrate onto the center of the mesa.4 Spectra are analyzed at reverse biases from −10 to −90 V for Device 1 and −10 to −60 V for Device 2, in −10 V steps, together with the zero-bias spectrum of each device.",
+      "page": 2,
+      "box": [
+        54.13,
+        489.93,
+        298.93,
+        579.77
+      ]
+    },
+    {
+      "id": "p2b2",
+      "type": "paragraph",
+      "text": "The p–n photocurrent responsivity model10 is generalized to p–i–n structures:",
+      "page": 2,
+      "box": [
+        54.13,
+        580.46,
+        298.99,
+        602.55
+      ]
+    },
+    {
+      "id": "p2b3",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        95.8,
+        612.18,
+        298.6,
+        636.43
+      ]
+    },
+    {
+      "id": "p2b4",
+      "type": "paragraph",
+      "text": "where q is the elementary charge, r the surface relfectance, Eph the photon energy, apn = e −(αpLp+αnLn) the transmittance of the undepleted p and n portions of the collection region, of widths Lp and Ln and field-independent absorption coefficients αp and αn. The layer-by-layer attenuation of the incident flux for the front-illuminated Device 1 and the backilluminated Device 2 is given in Sec. S1 of the supplementary material.",
+      "page": 2,
+      "box": [
+        54.0,
+        646.02,
+        298.88,
+        723.73
+      ]
+    },
+    {
+      "id": "p2b5",
+      "type": "paragraph",
+      "text": "Here, α(F(z)) is the field-dependent absorption coefficient of the depleted material, whose integral gives the total sub-bandgap attenuation along the optical path. The integral spans the depleted stack: Wp on the p side, the UID layer of thickness d, and Wn on the n side, with the depletion widths (Wp, Wn) given by Eq. (5).",
+      "page": 2,
+      "box": [
+        317.04,
+        66.02,
+        562.07,
+        132.94
+      ]
+    },
+    {
+      "id": "p2b6",
+      "type": "paragraph",
+      "text": "Because the band-to-band Franz–Keldysh–Aspnes model18 underestimates absorption within a few exciton binding energies of the gap,10,19,20 the XFK absorption coefficient of Merkulov22 was used,",
+      "page": 2,
+      "box": [
+        317.1,
+        133.64,
+        562.59,
+        178.0
+      ]
+    },
+    {
+      "id": "p2b7",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        341.28,
+        183.99,
+        561.62,
+        269.05
+      ]
+    },
+    {
+      "id": "p2b8",
+      "type": "paragraph",
+      "text": "where C is the exciton wave-function normalization coefficient, f is the field in dimensionless units, a is the exciton Bohr radius, and EX = E X 0 + bF(z) 2 is the Stark-shifted exciton binding energy with polarizability b = 9q 2a 2/(8E X 0 ). 33 Bandgaps of Eg = 3.50 eV and 4.40 eV were used for Device 1 and Device 2, respectively, taken from reported values.4,29 The static dielectric constant and the electron and hole masses are interpolated linearly between GaN and AlN.34–37 The exciton Bohr radius a = 4πεsh¯ 2 /(µq 2 ), with µ the reduced",
+      "page": 2,
+      "box": [
+        317.18,
+        274.99,
+        562.0,
+        378.11
+      ]
+    },
+    {
+      "id": "p2b9",
+      "type": "paragraph",
+      "text": "X = h¯ 2 /(2µa 2 ) then folmass,38 and the binding energy E 0 low from the same hydrogenic model, so that a and E X 0 are mutually consistent. The coefifcient C is found from a twoparameter fit of C and Vl to the highest-bias spectrum of each device and is then held fixed. Table I lists the values, and the supplementary material (Sec. S3) gives the interpolation formulas.",
+      "page": 2,
+      "box": [
+        317.06,
+        378.09,
+        561.97,
+        455.93
+      ]
+    },
+    {
+      "id": "p2b10",
+      "type": "paragraph",
+      "text": "The field enters Eq. (1) through F(z). We take z = 0 at the p/UID interface and z = d at the UID/n interface, with d the UID thickness. Integrating Poisson’s equation from the p-side depletion edge gives",
+      "page": 2,
+      "box": [
+        317.02,
+        459.82,
+        561.89,
+        503.82
+      ]
+    },
+    {
+      "id": "p2b11",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        389.27,
+        509.85,
+        561.61,
+        532.77
+      ]
+    },
+    {
+      "id": "p2b12",
+      "type": "paragraph",
+      "text": "for −Wp ≤ z ≤ d + Wn, where N(z) is the net ionized dopant density. The depletion edges follow from charge neutrality and from the requirement that the i feld integrates to the local voltage,",
+      "page": 2,
+      "box": [
+        317.2,
+        538.76,
+        562.08,
+        582.77
+      ]
+    },
+    {
+      "id": "p2b13",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        348.88,
+        588.79,
+        561.61,
+        613.59
+      ]
+    },
+    {
+      "id": "p2b14",
+      "type": "paragraph",
+      "text": "For uniform acceptor density NA in the p layer, net density Ni in the UID layer, and donor density ND in the n layer, Eqs. (3) and (4) give",
+      "page": 2,
+      "box": [
+        317.13,
+        619.53,
+        561.62,
+        651.41
+      ]
+    },
+    {
+      "id": "p2b15",
+      "type": "formula",
+      "text": "",
+      "page": 2,
+      "box": [
+        328.46,
+        657.77,
+        561.62,
+        725.52
+      ]
+    },
+    {
+      "id": "p3b0",
+      "type": "figure",
+      "text": "",
+      "page": 3,
+      "box": [
+        54.11,
+        54.98,
+        561.77,
+        390.11
+      ]
+    },
+    {
+      "id": "p3b1",
+      "type": "caption",
+      "text": "FIG. 1. Device structures and equilibrium band diagrams. (a) Device 1: p +-Al0.05Ga0.95N:Mg (20 nm)/p-Al0.05Ga0.95N:Mg (100 nm)/UID Al0.05Ga0.95N:Mg (300 nm)/n-Al0.02Ga0.98N:Si (150 nm)/GaN:Si (450 nm) on bulk GaN, with Ni/Ag/Ni/Au anode and Ti/Al/Ti/Au cathode. (b) Simulated zero-bias band diagram of Device 1 (qVbi = 3.41 eV). (c) Device 2: p +-GaN:Mg (10 nm)/p-AlxGa1−xN:Mg graded from x = 0 to 0.4 (10 nm)/p-Al0.4Ga0.6N:Mg (200 nm)/UID Al0.4Ga0.6N:Mg (150 nm)/n-Al0.4Ga0.6N:Si (200 nm)/AlxGa1−xN graded from x = 0.4 to 0.6 (36 nm)/Al0.6Ga0.4N (700 nm)/AlN (20 nm) on sapphire, with Ni/Au anode and Ti/Al cathode. (d) Simulated zero-bias band diagram of Device 2 (qVbi = 4.28 eV). EC, EV , and EF are the conduction-band edge, valence-band edge, and Fermi level. The shaded bars mark the p, i, and n regions.",
+      "page": 3,
+      "box": [
+        54.11,
+        391.65,
+        562.54,
+        463.69
+      ]
+    },
+    {
+      "id": "p3b2",
+      "type": "paragraph",
+      "text": "At the doping levels of both devices the UID layer is fully depleted at zero bias, so the i feld profile is trapezoidal at all biases considered and the integral in Eq. (1) spans the whole UID thickness. Equation (5) further assumes depletion edges inside the p and n layers. In practice we solve Eq. (4) numerically for the interface field, which reproduces Eq. (5) and also covers full depletion of the p or n layer. In that case the layer is taken as depleted across its whole thickness, with the residual field terminating in the adjacent, more heavily doped layer. The doping densities are listed in Table I. With the doping fixed, Vl uniquely sets Wp, Wn, and F(z).",
+      "page": 3,
+      "box": [
+        54.03,
+        488.76,
+        298.99,
+        613.13
+      ]
+    },
+    {
+      "id": "p3b3",
+      "type": "paragraph",
+      "text": "Neither the surface relfectance nor the absolute photon flux is known independently, and both vary with position on the device. Both are removed by dividing each spectrum by the zero-bias responsivity at a reference energy Eref above the gap, where αL ≫ 1 and essentially all light entering the collection region is absorbed. The same zero-bias spectrum also fixes pn at every photon energy, since the i feld-dependent absorpa tion integral is negligible at V = 0 over the fitting range, leaving Vl as the only free parameter. This gives the normalized responsivity,10 which is derived step by step in Sec. S2 of the supplementary material,",
+      "page": 3,
+      "box": [
+        54.05,
+        623.1,
+        298.99,
+        723.73
+      ]
+    },
+    {
+      "id": "p3b4",
+      "type": "paragraph",
+      "text": "R N (Eph) = E Erpehf h 1 − apn e",
+      "page": 3,
+      "box": [
+        362.3,
+        521.08,
+        464.19,
+        544.37
+      ]
+    },
+    {
+      "id": "p3b5",
+      "type": "formula",
+      "text": "",
+      "page": 3,
+      "box": [
+        465.12,
+        522.87,
+        561.6,
+        540.78
+      ]
+    },
+    {
+      "id": "p3b6",
+      "type": "paragraph",
+      "text": "Because the i feld-dependent absorption is taken as negligible at zero bias, the zero-bias spectrum then fixes",
+      "page": 3,
+      "box": [
+        317.18,
+        556.27,
+        561.89,
+        576.68
+      ]
+    },
+    {
+      "id": "p3b7",
+      "type": "formula",
+      "text": "",
+      "page": 3,
+      "box": [
+        367.08,
+        588.59,
+        561.59,
+        610.7
+      ]
+    },
+    {
+      "id": "p3b8",
+      "type": "paragraph",
+      "text": "We use Eref = 4.40 eV for Device 1 and 4.60 eV for Device 2.",
+      "page": 3,
+      "box": [
+        317.06,
+        622.6,
+        561.39,
+        631.09
+      ]
+    },
+    {
+      "id": "p3b9",
+      "type": "paragraph",
+      "text": "Figures 2(a) and 2(c) show the responsivity spectra. In both devices, the sub-bandgap absorption edge shifts to lower photon energy and broadens as the reverse bias increases, the signature of field-assisted absorption. With C i fxed, each spectrum is i ft to Eq. (6) by minimizing the mean squared difference between the measured and modeled log10 R N, with Vl as the only parameter that controls the line shape. Excellent agreement between the i ftted and measured line shapes",
+      "page": 3,
+      "box": [
+        317.14,
+        634.56,
+        561.97,
+        723.73
+      ]
+    }
+  ]
+}

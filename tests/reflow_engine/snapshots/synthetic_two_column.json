@@ -1,9 +1,10 @@
 {
-  "engineVersion": 2,
+  "engineVersion": 3,
   "blocks": [
     {
       "id": "p1b0",
-      "type": "paragraph",
+      "type": "heading",
+      "level": 1,
       "text": "A Synthetic Two Column Paper",
       "page": 1,
       "box": [
