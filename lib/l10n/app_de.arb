@@ -41,5 +41,6 @@
   "save": "Speichern",
   "highlights": "Markierungen",
   "noHighlights": "Noch keine Markierungen.",
-  "pageLabel": "Seite {page}"
+  "pageLabel": "Seite {page}",
+  "orphanedHighlight": "In der aktuellen Fassung nicht gefunden"
 }

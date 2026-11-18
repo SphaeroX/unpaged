@@ -349,6 +349,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page {page}'**
   String pageLabel(int page);
+
+  /// No description provided for @orphanedHighlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found in the current version'**
+  String get orphanedHighlight;
 }
 
 class _AppLocalizationsDelegate

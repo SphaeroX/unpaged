@@ -82,5 +82,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "orphanedHighlight": "Not found in the current version"
 }

@@ -97,6 +97,12 @@
 - Original: Die Auswahl kommt aus pdfrx (`buildContextMenu` → `getSelectedTextRanges()`, Zeichenindizes in `PdfPageText.fullText` von `loadStructuredText`). Der Adapter liefert `PdfSelection`s an `SelectionAction`s („Markieren“, „Notiz hinzufügen“), berechnet mit `textRects(path, page, start, end)` die Rechtecke je Zeile und zeichnet `PageHighlight`s als Overlays (`pageOverlaysBuilder`, Tippen über `PdfOverlayInteractionRegion`).
 - Antippen einer Markierung öffnet ein Sheet (Zitat, Farbe, Notiz, Löschen); die Liste „Markierungen“ springt zur Seite. Die PDF-Datei wird nie verändert; Löschen eines Buchs entfernt seine Markierungen.
 
+### Markierungen im eBook-Modus (Task 11)
+
+- Reader-Blöcke sind `SelectableText.rich`; Markierungen erscheinen als farbige Spans. Das Kontextmenü ergänzt „Markieren“ und „Notiz hinzufügen“; Antippen innerhalb einer Markierung öffnet das Bearbeiten-Sheet. Eine Markierung liegt immer in genau einem Block (Auswahl über Blockgrenzen ist nicht möglich).
+- Verankerung (`lib/features/annotations/domain/reanchor.dart`): Block-ID + Offsets im Blocktext + Zitat mit je 30 Zeichen Kontext davor/danach + `engineVersion`. Beim Öffnen des Readers werden Markierungen mit anderer Engine-Version (oder verwaiste) neu verankert: gleiche Block-ID mit gleichem Zitat → bleibt; sonst Suche nach dem Zitat im ganzen Dokument, bei mehreren Treffern entscheidet der Kontext; nicht gefunden → `orphaned` (bleibt erhalten, erscheint in der Liste als „In der aktuellen Fassung nicht gefunden“).
+- Die Liste „Markierungen“ im Reader springt zum Block (`ReaderScreen.initialBlockId`).
+
 ### Markierungen und Lesestand
 
 - Original: verankert an Seite + Zeichenbereich.

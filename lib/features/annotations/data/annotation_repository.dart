@@ -54,6 +54,35 @@ class AnnotationRepository {
     ),
   );
 
+  Future<List<Annotation>> list(String bookId, ReadingView view) async =>
+      (await (db.select(db.annotations)..where(
+                (a) => a.bookId.equals(bookId) & a.view.equalsValue(view),
+              ))
+              .get())
+          .map(_toAnnotation)
+          .toList();
+
+  /// Moves an eBook highlight after re-anchoring; [orphaned] if its quote
+  /// was not found in the recomputed document.
+  Future<void> updateAnchor(
+    int id, {
+    required int engineVersion,
+    required bool orphaned,
+    String? blockId,
+    int? page,
+    int? start,
+    int? end,
+  }) => (db.update(db.annotations)..where((a) => a.id.equals(id))).write(
+    AnnotationsCompanion(
+      blockId: Value.absentIfNull(blockId),
+      page: Value.absentIfNull(page),
+      start: Value.absentIfNull(start),
+      end: Value.absentIfNull(end),
+      engineVersion: Value(engineVersion),
+      orphaned: Value(orphaned),
+    ),
+  );
+
   Future<void> delete(int id) =>
       (db.delete(db.annotations)..where((a) => a.id.equals(id))).go();
 

@@ -161,7 +161,13 @@ Future<void> showAnnotationList(
             ),
             title: Text(a.quote, maxLines: 2, overflow: TextOverflow.ellipsis),
             subtitle: Text(
-              [l10n.pageLabel(a.page), ?a.note].join(' · '),
+              [
+                if (a.orphaned)
+                  l10n.orphanedHighlight
+                else
+                  l10n.pageLabel(a.page),
+                ?a.note,
+              ].join(' · '),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

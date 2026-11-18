@@ -11,6 +11,7 @@ import 'package:reflow_engine/reflow_engine.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
+import '../../helpers/text_style.dart';
 
 const _doc = ReflowDocument(
   engineVersion: ReflowEngine.version,
@@ -55,8 +56,9 @@ void main() {
     await settleIo(tester);
   }
 
+  // Reader text is selectable since Task 11 (approved test adaptation).
   TextStyle bodyStyle(WidgetTester tester) =>
-      tester.widget<Text>(find.text('Body text here.')).style!;
+      readerTextStyle(tester, 'Body text here.');
 
   testWidgets('the reader uses the stored settings', (tester) async {
     await SettingsRepository(env.db).save(

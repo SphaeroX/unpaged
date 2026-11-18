@@ -3,10 +3,15 @@ import 'dart:io';
 
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart' show FutureProviderFamily;
+import 'package:flutter_riverpod/misc.dart'
+    show FutureProviderFamily, StreamProviderFamily;
 import 'package:material_ui/material_ui.dart';
 import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
+import 'package:paperflow/features/annotations/data/annotation_repository.dart';
+import 'package:paperflow/features/annotations/domain/annotation.dart';
+import 'package:paperflow/features/annotations/domain/reanchor.dart';
+import 'package:paperflow/features/annotations/presentation/annotation_sheets.dart';
 import 'package:paperflow/features/progress/data/reading_position_repository.dart';
 import 'package:paperflow/features/progress/domain/reading_position.dart';
 import 'package:paperflow/features/reflow/data/reflow_store.dart';
@@ -24,6 +29,14 @@ final FutureProviderFamily<ReflowDocument?, String> reflowDocumentProvider =
       (ref, bookId) => ref.watch(reflowStoreProvider).readDocument(bookId),
     );
 
+/// eBook highlights of a book.
+final StreamProviderFamily<List<Annotation>, String> _ebookHighlightsProvider =
+    StreamProvider.autoDispose.family<List<Annotation>, String>(
+      (ref, bookId) => ref
+          .watch(annotationRepositoryProvider)
+          .watch(bookId, ReadingView.ebook),
+    );
+
 /// The saved eBook position of a book, if any.
 final FutureProviderFamily<ReadingPosition?, String> _savedEbookPosition =
     FutureProvider.autoDispose.family<ReadingPosition?, String>(
@@ -38,11 +51,15 @@ class ReaderScreen extends ConsumerWidget {
     required this.bookId,
     required this.title,
     this.initialPage,
+    this.initialBlockId,
     super.key,
   });
 
   final String bookId;
   final String title;
+
+  /// Start at this block (from the highlights list); wins over the page.
+  final String? initialBlockId;
 
   /// Start at the first block of this page (switching from the original);
   /// `null` resumes at the saved position.
@@ -63,7 +80,7 @@ class ReaderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final doc = ref.watch(reflowDocumentProvider(bookId));
-    final saved = initialPage == null
+    final saved = initialPage == null && initialBlockId == null
         ? ref.watch(_savedEbookPosition(bookId))
         : const AsyncData<ReadingPosition?>(null);
     final current = _CurrentBlock();
@@ -71,6 +88,35 @@ class ReaderScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(title),
         actions: [
+          IconButton(
+            tooltip: l10n.highlights,
+            icon: const Icon(Icons.bookmarks_outlined),
+            onPressed: () async {
+              final list = await ref
+                  .read(annotationRepositoryProvider)
+                  .list(bookId, ReadingView.ebook);
+              if (!context.mounted) return;
+              await showAnnotationList(
+                context,
+                list,
+                onOpen: (a) {
+                  if (a.orphaned) {
+                    unawaited(showAnnotationSheet(context, ref, a));
+                    return;
+                  }
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(
+                      builder: (_) => ReaderScreen(
+                        bookId: bookId,
+                        title: title,
+                        initialBlockId: a.blockId,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           IconButton(
             tooltip: l10n.readingSettings,
             icon: const Icon(Icons.text_fields),
@@ -98,7 +144,13 @@ class ReaderScreen extends ConsumerWidget {
             bookId: bookId,
             doc: doc,
             current: current,
-            initialIndex: initialPage != null
+            initialIndex: initialBlockId != null
+                ? resolveBlockIndex(
+                    doc,
+                    blockId: initialBlockId,
+                    page: initialPage ?? 1,
+                  )
+                : initialPage != null
                 ? blockIndexForPage(doc, initialPage!)
                 : position == null
                 ? 0
@@ -174,6 +226,39 @@ class _BlockListState extends ConsumerState<_BlockList> {
   void initState() {
     super.initState();
     widget.current.page = pageOfBlock(widget.doc, widget.initialIndex);
+    unawaited(_reanchorHighlights());
+  }
+
+  /// Moves eBook highlights made with another engine version to where
+  /// their quote is now; unknown quotes are kept as orphaned.
+  Future<void> _reanchorHighlights() async {
+    final repository = ref.read(annotationRepositoryProvider);
+    final doc = widget.doc;
+    for (final a in await repository.list(widget.bookId, ReadingView.ebook)) {
+      if (a.engineVersion == doc.engineVersion && !a.orphaned) continue;
+      final found = reanchor(
+        doc,
+        Anchor(
+          blockId: a.blockId ?? '',
+          start: a.start,
+          end: a.end,
+          quote: a.quote,
+          prefix: a.prefix,
+          suffix: a.suffix,
+        ),
+      );
+      await repository.updateAnchor(
+        a.id,
+        engineVersion: doc.engineVersion,
+        orphaned: found == null,
+        blockId: found?.blockId,
+        page: found == null
+            ? null
+            : doc.blocks.firstWhere((b) => b.id == found.blockId).page,
+        start: found?.start,
+        end: found?.end,
+      );
+    }
   }
 
   /// After the next layout, saves the block at the top of the viewport.
@@ -236,7 +321,11 @@ class _BlockListState extends ConsumerState<_BlockList> {
               key: ValueKey('crop-${block.id}'),
               file: store.cropFile(widget.bookId, block.id),
             )
-          : _TextBlock(block: block),
+          : _TextBlock(
+              block: block,
+              bookId: widget.bookId,
+              engineVersion: widget.doc.engineVersion,
+            ),
     );
   }
 
@@ -274,9 +363,77 @@ class _BlockListState extends ConsumerState<_BlockList> {
 }
 
 class _TextBlock extends ConsumerWidget {
-  const new({required this.block});
+  const new({
+    required this.block,
+    required this.bookId,
+    required this.engineVersion,
+  });
 
   final ReflowBlock block;
+  final String bookId;
+  final int engineVersion;
+
+  Future<void> _highlight(
+    BuildContext context,
+    WidgetRef ref,
+    TextSelection selection, {
+    bool note = false,
+  }) async {
+    if (selection.isCollapsed) return;
+    String? text;
+    if (note) {
+      text = await askForNote(context);
+      if (text == null) return;
+    }
+    final anchor = anchorFromSelection(
+      blockId: block.id,
+      text: block.text,
+      start: selection.start,
+      end: selection.end,
+    );
+    await ref
+        .read(annotationRepositoryProvider)
+        .add(
+          bookId,
+          AnnotationDraft(
+            view: ReadingView.ebook,
+            page: block.page,
+            blockId: block.id,
+            start: anchor.start,
+            end: anchor.end,
+            quote: anchor.quote,
+            prefix: anchor.prefix,
+            suffix: anchor.suffix,
+            engineVersion: engineVersion,
+            note: text == null || text.trim().isEmpty ? null : text.trim(),
+          ),
+        );
+  }
+
+  /// The block text with highlighted ranges as coloured spans.
+  static TextSpan _spans(String text, List<Annotation> marks, TextStyle style) {
+    final sorted = [...marks]..sort((a, b) => a.start.compareTo(b.start));
+    final children = <TextSpan>[];
+    var pos = 0;
+    for (final m in sorted) {
+      final start = m.start.clamp(pos, text.length);
+      final end = m.end.clamp(start, text.length);
+      if (start > pos) children.add(TextSpan(text: text.substring(pos, start)));
+      if (end > start) {
+        children.add(
+          TextSpan(
+            text: text.substring(start, end),
+            style: TextStyle(
+              backgroundColor: Color(m.color.argb).withValues(alpha: 0.55),
+            ),
+          ),
+        );
+      }
+      pos = end;
+    }
+    if (pos < text.length) children.add(TextSpan(text: text.substring(pos)));
+    return TextSpan(style: style, children: children);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -311,9 +468,54 @@ class _TextBlock extends ConsumerWidget {
       ),
       _ => (body, EdgeInsets.only(bottom: size * 0.7)),
     };
+    final l10n = AppLocalizations.of(context);
+    final all =
+        ref.watch(_ebookHighlightsProvider(bookId)).value ??
+        const <Annotation>[];
+    final marks = [
+      for (final a in all)
+        if (a.blockId == block.id && !a.orphaned) a,
+    ];
     return Padding(
       padding: padding,
-      child: Text(block.text, style: style),
+      child: SelectableText.rich(
+        _spans(block.text, marks, style),
+        onSelectionChanged: (selection, cause) {
+          if (cause != SelectionChangedCause.tap || !selection.isCollapsed) {
+            return;
+          }
+          for (final m in marks) {
+            if (selection.baseOffset >= m.start &&
+                selection.baseOffset < m.end) {
+              unawaited(showAnnotationSheet(context, ref, m));
+              return;
+            }
+          }
+        },
+        contextMenuBuilder: (context, state) {
+          final selection = state.textEditingValue.selection;
+          return AdaptiveTextSelectionToolbar.buttonItems(
+            anchors: state.contextMenuAnchors,
+            buttonItems: [
+              ...state.contextMenuButtonItems,
+              ContextMenuButtonItem(
+                label: l10n.highlight,
+                onPressed: () {
+                  state.hideToolbar();
+                  unawaited(_highlight(context, ref, selection));
+                },
+              ),
+              ContextMenuButtonItem(
+                label: l10n.addNote,
+                onPressed: () {
+                  state.hideToolbar();
+                  unawaited(_highlight(context, ref, selection, note: true));
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

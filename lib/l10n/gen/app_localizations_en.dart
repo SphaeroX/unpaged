@@ -151,4 +151,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String pageLabel(int page) {
     return 'Page $page';
   }
+
+  @override
+  String get orphanedHighlight => 'Not found in the current version';
 }

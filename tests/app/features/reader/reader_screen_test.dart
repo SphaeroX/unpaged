@@ -12,6 +12,7 @@ import 'package:reflow_engine/reflow_engine.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
+import '../../helpers/text_style.dart';
 
 class _MockAdapter extends Mock implements PdfAdapter;
 
@@ -110,8 +111,9 @@ void main() {
     await settleIo(tester);
   }
 
+  // Reader text is selectable since Task 11 (approved test adaptation).
   double fontSizeOf(WidgetTester tester, String text) =>
-      tester.widget<Text>(find.text(text)).style!.fontSize!;
+      readerTextStyle(tester, text).fontSize!;
 
   testWidgets('shows each block type with its own style', (tester) async {
     await tester.runAsync(() => store.writeDocument('abc', _doc));
@@ -125,7 +127,7 @@ void main() {
       greaterThan(fontSizeOf(tester, 'Body text here.')),
     );
     expect(
-      tester.widget<Text>(find.text('Figure 1: A caption.')).style!.fontStyle,
+      readerTextStyle(tester, 'Figure 1: A caption.').fontStyle,
       FontStyle.italic,
     );
     await env.unmount(tester);
