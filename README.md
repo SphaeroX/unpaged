@@ -18,6 +18,16 @@ PDFs are made for paper. On a phone that means tiny fonts, two columns and endle
 
 Everything happens on the device. Unpaged has no network access, no analytics and no crash reporter.
 
+## Demo
+
+<!-- 23-second launch video recorded from the release build. Click the image to play it. -->
+
+<div align="center">
+<a href="docs/media/unpaged-demo.mp4"><img src="docs/media/unpaged-demo.jpg" alt="Unpaged demo video: open a PDF, switch to eBook mode with one tap, figures stay crisp" width="720"></a>
+
+▶ [Watch the 23-second demo](docs/media/unpaged-demo.mp4)
+</div>
+
 ## Screenshots
 
 <!-- The images are recaptured by .github/workflows/screenshots.yml on every app change. -->
