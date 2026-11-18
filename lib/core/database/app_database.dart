@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
+import 'package:paperflow/features/progress/domain/reading_position.dart';
 
 part 'app_database.g.dart';
 
@@ -32,14 +33,28 @@ class Preferences extends Table {
   Set<Column<Object>> get primaryKey => {key};
 }
 
-@DriftDatabase(tables: [Books, Preferences])
+/// Where reading stopped, per book and view.
+@DataClassName('ReadingPositionRow')
+class ReadingPositions extends Table {
+  TextColumn get bookId => text()();
+  TextColumn get view => textEnum<ReadingView>()();
+  IntColumn get page => integer()();
+  TextColumn get blockId => text().nullable()();
+  RealColumn get progress => real()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {bookId, view};
+}
+
+@DriftDatabase(tables: [Books, Preferences, ReadingPositions])
 class AppDatabase extends _$AppDatabase {
   new(super.e);
 
   new defaults() : super(driftDatabase(name: 'paperflow'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -47,6 +62,7 @@ class AppDatabase extends _$AppDatabase {
     // Schema changes add steps here, one `if (from < n)` block per version.
     onUpgrade: (m, from, to) async {
       if (from < 2) await m.createTable(preferences);
+      if (from < 3) await m.createTable(readingPositions);
     },
   );
 

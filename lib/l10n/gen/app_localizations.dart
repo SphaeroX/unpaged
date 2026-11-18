@@ -301,6 +301,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sepia'**
   String get themeSepia;
+
+  /// No description provided for @readProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent} % read'**
+  String readProgress(int percent);
 }
 
 class _AppLocalizationsDelegate

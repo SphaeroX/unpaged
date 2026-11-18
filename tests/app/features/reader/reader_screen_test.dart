@@ -70,8 +70,13 @@ void main() {
     store = env.reflow;
     adapter = _MockAdapter();
     queue = _MockQueue();
-    when(() => adapter.pageView(any()))
-        .thenAnswer((_) => const Text('ORIGINAL'));
+    when(
+      () => adapter.pageView(
+        any(),
+        initialPage: any(named: 'initialPage'),
+        onPageChanged: any(named: 'onPageChanged'),
+      ),
+    ).thenAnswer((_) => const Text('ORIGINAL'));
     await env.db
         .into(env.db.books)
         .insert(

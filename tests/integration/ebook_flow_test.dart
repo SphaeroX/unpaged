@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
@@ -59,5 +60,38 @@ void main() {
       find.textContaining('Reading long technical documents'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('continue reading reopens the last used view', (tester) async {
+    await pdfrxFlutterInitialize();
+    final tmp = Directory.systemTemp.createTempSync('paperflow_it_resume');
+    final file = File('${tmp.path}/synthetic.pdf');
+    await file.writeAsBytes(base64Decode(_pdf));
+
+    await tester.pumpWidget(
+      buildTestApp(
+        overrides: [
+          pdfPickerProvider.overrideWithValue(_FixedPicker(file.path)),
+          bookFileStoreProvider.overrideWithValue(BookFileStore(tmp)),
+          reflowStoreProvider.overrideWithValue(ReflowStore(tmp)),
+        ],
+      ),
+    );
+    await tester.tap(find.text('Open PDF'));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    for (var i = 0; i < 50; i++) {
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+    await tester.tap(find.byTooltip('eBook view'));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
+    await tester.pumpAndSettle();
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('synthetic'));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip('Original view'), findsOneWidget);
   });
 }

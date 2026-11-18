@@ -33,5 +33,6 @@
   "theme": "Design",
   "themeLight": "Hell",
   "themeDark": "Dunkel",
-  "themeSepia": "Sepia"
+  "themeSepia": "Sepia",
+  "readProgress": "{percent} % gelesen"
 }

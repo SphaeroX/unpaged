@@ -32,6 +32,22 @@ void main() {
     expect(books.single.title, 'Paper');
     expect(books.single.reflowStatus, ReflowStatus.done);
     expect(await db.select(db.preferences).get(), isEmpty);
-    expect(db.schemaVersion, greaterThanOrEqualTo(2));
+    expect(await db.select(db.readingPositions).get(), isEmpty);
+    expect(db.schemaVersion, greaterThanOrEqualTo(3));
+  });
+
+  test('upgrading from version 2 keeps settings', () async {
+    final raw = _version1()
+      ..execute(
+        'CREATE TABLE preferences (key TEXT NOT NULL PRIMARY KEY, '
+        'value TEXT NOT NULL);',
+      )
+      ..execute("INSERT INTO preferences VALUES ('reader.theme', 'dark');")
+      ..userVersion = 2;
+    final db = AppDatabase(NativeDatabase.opened(raw));
+    addTearDown(db.close);
+
+    expect((await db.select(db.preferences).get()).single.value, 'dark');
+    expect(await db.select(db.readingPositions).get(), isEmpty);
   });
 }

@@ -123,4 +123,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeSepia => 'Sepia';
+
+  @override
+  String readProgress(int percent) {
+    return '$percent % read';
+  }
 }

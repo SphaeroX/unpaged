@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/drift.dart' show Value;
@@ -6,6 +7,8 @@ import 'package:flutter_riverpod/misc.dart' show FutureProviderFamily;
 import 'package:material_ui/material_ui.dart';
 import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/files/book_file_store.dart';
+import 'package:paperflow/features/progress/data/reading_position_repository.dart';
+import 'package:paperflow/features/progress/domain/reading_position.dart';
 import 'package:paperflow/features/reflow/data/reflow_store.dart';
 import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
 import 'package:paperflow/features/settings/domain/reader_settings.dart';
@@ -21,12 +24,29 @@ final FutureProviderFamily<ReflowDocument?, String> reflowDocumentProvider =
       (ref, bookId) => ref.watch(reflowStoreProvider).readDocument(bookId),
     );
 
+/// The saved eBook position of a book, if any.
+final FutureProviderFamily<ReadingPosition?, String> _savedEbookPosition =
+    FutureProvider.autoDispose.family<ReadingPosition?, String>(
+      (ref, bookId) => ref
+          .watch(readingPositionRepositoryProvider)
+          .load(bookId, ReadingView.ebook),
+    );
+
 /// eBook mode: the reflowed text with zoomable crops for non-text regions.
 class ReaderScreen extends ConsumerWidget {
-  const new({required this.bookId, required this.title, super.key});
+  const new({
+    required this.bookId,
+    required this.title,
+    this.initialPage,
+    super.key,
+  });
 
   final String bookId;
   final String title;
+
+  /// Start at the first block of this page (switching from the original);
+  /// `null` resumes at the saved position.
+  final int? initialPage;
 
   Future<void> _prepareAgain(WidgetRef ref) async {
     final db = ref.read(databaseProvider);
@@ -43,6 +63,10 @@ class ReaderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final doc = ref.watch(reflowDocumentProvider(bookId));
+    final saved = initialPage == null
+        ? ref.watch(_savedEbookPosition(bookId))
+        : const AsyncData<ReadingPosition?>(null);
+    final current = _CurrentBlock();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -61,21 +85,41 @@ class ReaderScreen extends ConsumerWidget {
                   path: ref.read(bookFileStoreProvider).fileFor(bookId).path,
                   title: title,
                   bookId: bookId,
+                  initialPage: current.page ?? initialPage ?? 1,
                 ),
               ),
             ),
           ),
         ],
       ),
-      body: doc.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, _) => _Unavailable(onPrepare: () => _prepareAgain(ref)),
-        data: (doc) => doc == null
-            ? _Unavailable(onPrepare: () => _prepareAgain(ref))
-            : _BlockList(bookId: bookId, blocks: doc.blocks),
-      ),
+      body: switch ((doc, saved)) {
+        (AsyncData(value: final doc?), AsyncData(value: final position)) =>
+          _BlockList(
+            bookId: bookId,
+            doc: doc,
+            current: current,
+            initialIndex: initialPage != null
+                ? blockIndexForPage(doc, initialPage!)
+                : position == null
+                ? 0
+                : resolveBlockIndex(
+                    doc,
+                    blockId: position.blockId,
+                    page: position.page,
+                  ),
+          ),
+        (AsyncData(value: null), _) ||
+        (AsyncError(), _) => _Unavailable(onPrepare: () => _prepareAgain(ref)),
+        _ => const Center(child: CircularProgressIndicator()),
+      },
     );
   }
+}
+
+/// The block currently at the top of the reader (shared with the app bar
+/// action that switches to the original view).
+class _CurrentBlock {
+  int? page;
 }
 
 class _Unavailable extends StatelessWidget {
@@ -102,28 +146,129 @@ class _Unavailable extends StatelessWidget {
   }
 }
 
-class _BlockList extends ConsumerWidget {
-  const new({required this.bookId, required this.blocks});
+class _BlockList extends ConsumerStatefulWidget {
+  const new({
+    required this.bookId,
+    required this.doc,
+    required this.current,
+    required this.initialIndex,
+  });
 
   final String bookId;
-  final List<ReflowBlock> blocks;
+  final ReflowDocument doc;
+  final _CurrentBlock current;
+  final int initialIndex;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(reflowStoreProvider);
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      itemCount: blocks.length,
-      itemBuilder: (context, i) {
-        final block = blocks[i];
-        if (block.type.isRegion) {
-          return _Crop(
-            key: ValueKey('crop-${block.id}'),
-            file: store.cropFile(bookId, block.id),
-          );
-        }
-        return _TextBlock(block: block);
-      },
+  ConsumerState<_BlockList> createState() => _BlockListState();
+}
+
+class _BlockListState extends ConsumerState<_BlockList> {
+  final _centerKey = UniqueKey();
+  final GlobalKey<State<StatefulWidget>> _viewportKey = GlobalKey();
+  final _itemKeys = <int, GlobalKey>{};
+
+  List<ReflowBlock> get _blocks => widget.doc.blocks;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.current.page = pageOfBlock(widget.doc, widget.initialIndex);
+  }
+
+  /// After the next layout, saves the block at the top of the viewport.
+  bool _onScrollEnd(ScrollEndNotification _) {
+    WidgetsBinding.instance
+      ..addPostFrameCallback((_) => _saveTopBlock())
+      ..scheduleFrame();
+    return false;
+  }
+
+  void _saveTopBlock() {
+    if (!mounted) return;
+    final viewport = _viewportKey.currentContext?.findRenderObject();
+    if (viewport is! RenderBox) return;
+    final top = viewport.localToGlobal(Offset.zero).dy;
+    int? best;
+    var bestDistance = double.infinity;
+    for (final MapEntry(key: index, value: key) in _itemKeys.entries) {
+      final box = key.currentContext?.findRenderObject();
+      if (box is! RenderBox || !box.attached) continue;
+      final y = box.localToGlobal(Offset.zero).dy;
+      final bottom = y + box.size.height;
+      if (bottom <= top) continue;
+      final distance = (y - top).abs();
+      if (distance < bestDistance) {
+        best = index;
+        bestDistance = distance;
+      }
+    }
+    if (best != null) _save(best);
+  }
+
+  void _save(int index) {
+    final block = _blocks[index];
+    widget.current.page = block.page;
+    unawaited(
+      ref
+          .read(readingPositionRepositoryProvider)
+          .save(
+            widget.bookId,
+            ReadingPosition(
+              view: ReadingView.ebook,
+              page: block.page,
+              blockId: block.id,
+              progress: ebookProgress(index: index, count: _blocks.length),
+            ),
+          ),
+    );
+  }
+
+  Widget _item(int index) {
+    final block = _blocks[index];
+    final key = _itemKeys.putIfAbsent(index, GlobalKey.new);
+    final store = ref.read(reflowStoreProvider);
+    return Padding(
+      key: key,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: block.type.isRegion
+          ? _Crop(
+              key: ValueKey('crop-${block.id}'),
+              file: store.cropFile(widget.bookId, block.id),
+            )
+          : _TextBlock(block: block),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final start = widget.initialIndex.clamp(0, _blocks.length);
+    // Two slivers around a centre: the list starts at [start] without
+    // measuring the (variable) heights of the blocks before it.
+    return NotificationListener<ScrollEndNotification>(
+      onNotification: _onScrollEnd,
+      child: CustomScrollView(
+        key: _viewportKey,
+        center: _centerKey,
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => _item(start - 1 - i),
+              childCount: start,
+            ),
+          ),
+          SliverPadding(
+            key: _centerKey,
+            padding: const EdgeInsets.only(top: 16, bottom: 32),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => _item(start + i),
+                childCount: _blocks.length - start,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -82,6 +82,9 @@ class ImportService {
 
   Future<void> deleteBook(String id) async {
     await (db.delete(db.books)..where((b) => b.id.equals(id))).go();
+    await (db.delete(
+      db.readingPositions,
+    )..where((p) => p.bookId.equals(id))).go();
     await store.delete(id);
     await reflowStore?.delete(id);
   }

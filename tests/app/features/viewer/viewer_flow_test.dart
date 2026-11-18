@@ -23,8 +23,13 @@ void main() {
     picker = _MockPicker();
     adapter = _MockAdapter();
     env = TestEnv();
-    when(() => adapter.pageView(any()))
-        .thenAnswer((inv) => Text('pages:${inv.positionalArguments.first}'));
+    when(
+      () => adapter.pageView(
+        any(),
+        initialPage: any(named: 'initialPage'),
+        onPageChanged: any(named: 'onPageChanged'),
+      ),
+    ).thenAnswer((inv) => Text('pages:${inv.positionalArguments.first}'));
   });
 
   tearDown(() => env.dispose());
@@ -84,7 +89,13 @@ void main() {
       find.text('Diese PDF konnte nicht geöffnet werden.'),
       findsOneWidget,
     );
-    verifyNever(() => adapter.pageView(any()));
+    verifyNever(
+      () => adapter.pageView(
+        any(),
+        initialPage: any(named: 'initialPage'),
+        onPageChanged: any(named: 'onPageChanged'),
+      ),
+    );
 
     await env.unmount(tester);
   });

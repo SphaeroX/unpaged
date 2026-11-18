@@ -8,6 +8,9 @@ import 'package:paperflow/core/files/pdf_picker.dart';
 import 'package:paperflow/core/files/pdf_source.dart';
 import 'package:paperflow/core/platform/incoming_pdf_channel.dart';
 import 'package:paperflow/features/import/domain/import_service.dart';
+import 'package:paperflow/features/progress/data/reading_position_repository.dart';
+import 'package:paperflow/features/progress/domain/reading_position.dart';
+import 'package:paperflow/features/reader/presentation/reader_screen.dart';
 import 'package:paperflow/features/reflow/domain/reflow_scheduler.dart';
 import 'package:paperflow/features/viewer/presentation/viewer_screen.dart';
 import 'package:paperflow/l10n/gen/app_localizations.dart';
@@ -66,12 +69,28 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     }
   }
 
+  /// Continues where reading stopped, in the view used last.
   Future<void> _open(Book book) async {
     final path = ref.read(bookFileStoreProvider).fileFor(book.id).path;
+    final last = await ref
+        .read(readingPositionRepositoryProvider)
+        .lastUsed(book.id);
+    if (!mounted) return;
+    final ebook =
+        last?.view == ReadingView.ebook &&
+        book.reflowStatus == ReflowStatus.done;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) =>
-            ViewerScreen(path: path, title: book.title, bookId: book.id),
+        builder: (_) => ebook
+            ? ReaderScreen(bookId: book.id, title: book.title)
+            : ViewerScreen(
+                path: path,
+                title: book.title,
+                bookId: book.id,
+                initialPage: last?.view == ReadingView.original
+                    ? last!.page
+                    : 1,
+              ),
       ),
     );
   }
@@ -129,7 +148,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   return ListTile(
                     leading: const Icon(Icons.picture_as_pdf_outlined),
                     title: Text(book.title),
-                    subtitle: _BookStatus(book: book),
+                    subtitle: _BookStatus(
+                      book: book,
+                      progress: ref
+                          .watch(readingProgressProvider)
+                          .value?[book.id],
+                    ),
                     onTap: () => _open(book),
                     trailing: IconButton(
                       tooltip: l10n.deleteBook,
@@ -146,14 +170,21 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
 /// Page count plus the state of the eBook preparation.
 class _BookStatus extends StatelessWidget {
-  const new({required this.book});
+  const new({required this.book, this.progress});
 
   final Book book;
+
+  /// Reading progress 0..1, if the book was opened before.
+  final double? progress;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final pages = l10n.pageCount(book.pageCount);
+    final read = progress;
+    final pages = read == null
+        ? l10n.pageCount(book.pageCount)
+        : '${l10n.pageCount(book.pageCount)} · '
+              '${l10n.readProgress((read * 100).round())}';
     final status = switch (book.reflowStatus) {
       ReflowStatus.running => l10n.reflowRunning(
         (book.reflowProgress * 100).round(),

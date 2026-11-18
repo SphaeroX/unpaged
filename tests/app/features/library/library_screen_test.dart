@@ -5,6 +5,8 @@ import 'package:material_ui/material_ui.dart' show LinearProgressIndicator;
 import 'package:mocktail/mocktail.dart';
 import 'package:paperflow/core/database/app_database.dart';
 import 'package:paperflow/core/pdf/pdf_adapter.dart';
+import 'package:paperflow/features/progress/data/reading_position_repository.dart';
+import 'package:paperflow/features/progress/domain/reading_position.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
@@ -18,8 +20,13 @@ void main() {
   setUp(() {
     env = TestEnv();
     adapter = _MockAdapter();
-    when(() => adapter.pageView(any()))
-        .thenAnswer((inv) => Text('pages:${inv.positionalArguments.first}'));
+    when(
+      () => adapter.pageView(
+        any(),
+        initialPage: any(named: 'initialPage'),
+        onPageChanged: any(named: 'onPageChanged'),
+      ),
+    ).thenAnswer((inv) => Text('pages:${inv.positionalArguments.first}'));
     when(() => adapter.inspect(any()))
         .thenAnswer((_) async => const PdfInfo(pageCount: 3));
   });
@@ -104,6 +111,47 @@ void main() {
       find.text('3 Seiten · Kein Text – nur Originalansicht'),
       findsOneWidget,
     );
+
+    await env.unmount(tester);
+  });
+
+  testWidgets('shows the reading progress', (tester) async {
+    await addBook('a', 'Paper One', 12);
+    await ReadingPositionRepository(env.db).save(
+      'a',
+      const ReadingPosition(
+        view: ReadingView.original,
+        page: 3,
+        progress: 0.25,
+      ),
+    );
+
+    await tester.pumpWidget(buildTestApp(overrides: overrides()));
+    await settleIo(tester);
+
+    expect(find.text('12 pages · 25 % read'), findsOneWidget);
+
+    await env.unmount(tester);
+  });
+
+  testWidgets('continue reading: opens the last used eBook view', (
+    tester,
+  ) async {
+    await addBook('a', 'Paper One', 12);
+    await env.db
+        .update(env.db.books)
+        .write(const BooksCompanion(reflowStatus: Value(ReflowStatus.done)));
+    await ReadingPositionRepository(env.db).save(
+      'a',
+      const ReadingPosition(view: ReadingView.ebook, page: 1, progress: 0.1),
+    );
+
+    await tester.pumpWidget(buildTestApp(overrides: overrides()));
+    await settleIo(tester);
+    await tester.tap(find.text('Paper One'));
+    await settleIo(tester);
+
+    expect(find.byTooltip('Original view'), findsOneWidget);
 
     await env.unmount(tester);
   });

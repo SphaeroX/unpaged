@@ -55,8 +55,13 @@ abstract class PdfAdapter {
     double scale = 3,
   });
 
-  /// Widget showing the original pages of the PDF at [path].
-  Widget pageView(String path);
+  /// Widget showing the original pages of the PDF at [path], starting at
+  /// [initialPage]; [onPageChanged] reports the current page (1-based).
+  Widget pageView(
+    String path, {
+    int initialPage = 1,
+    ValueChanged<int>? onPageChanged,
+  });
 }
 
 final pdfAdapterProvider = Provider<PdfAdapter>((ref) => PdfrxAdapter());

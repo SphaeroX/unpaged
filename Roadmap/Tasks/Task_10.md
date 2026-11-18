@@ -62,6 +62,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 - Ob pdfrx eine fertige Textauswahl-UI bietet oder eine eigene nötig ist, klärt der Task.
 - Annahme: Wenige feste Markierungsfarben (z. B. 4) genügen.
+- Aus Task_09: `schemaVersion` ist 3 → Markierungstabelle mit Version 4 + Migrationstest; `ImportService.deleteBook` löscht bereits Positionen und soll auch Markierungen löschen. Die Originalansicht ist `PdfAdapter.pageView` (pdfrx `PdfViewer.file`); Textauswahl/Overlays dort über `PdfViewerParams` (z. B. `textSelectionParams`, `pageOverlaysBuilder`) prüfen.
 
 ## Notizen zu diesem Task
 

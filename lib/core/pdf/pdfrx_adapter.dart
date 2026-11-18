@@ -120,5 +120,17 @@ class PdfrxAdapter implements PdfAdapter {
   static double _clamp(double v, double max) => v.clamp(0, max).toDouble();
 
   @override
-  Widget pageView(String path) => PdfViewer.file(path);
+  Widget pageView(
+    String path, {
+    int initialPage = 1,
+    ValueChanged<int>? onPageChanged,
+  }) => PdfViewer.file(
+    path,
+    initialPageNumber: initialPage,
+    params: PdfViewerParams(
+      onPageChanged: (page) {
+        if (page != null) onPageChanged?.call(page);
+      },
+    ),
+  );
 }

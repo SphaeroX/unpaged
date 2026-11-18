@@ -60,5 +60,13 @@
   "theme": "Theme",
   "themeLight": "Light",
   "themeDark": "Dark",
-  "themeSepia": "Sepia"
+  "themeSepia": "Sepia",
+  "readProgress": "{percent} % read",
+  "@readProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

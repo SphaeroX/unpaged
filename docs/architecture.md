@@ -83,6 +83,14 @@
 - `ReaderSettings` (`lib/features/settings/domain/`): Schrift (`literata`, `atkinson`, `system`), Größe 14–30 in 2er-Schritten (Standard 18), Zeilenabstand 1,2–2,0 in 0,1-Schritten (Standard 1,5), Theme (`light`, `dark`, `sepia`). Gespeichert als Schlüssel/Wert-Zeilen (`reader.*`) in der Tabelle `Preferences` (`schemaVersion` 2, Migration 1→2 legt sie an, Test `tests/app/core/database/migration_test.dart`).
 - `readerSettingsProvider` (AsyncNotifier) wendet Änderungen sofort an und speichert sie. Das Theme gilt für die ganze App (`lib/core/theme/app_theme.dart`, Sepia mit eigenem Hintergrund `sepiaBackground`); Schrift/Größe/Zeilenabstand gelten im eBook-Modus. Bedienung über das Bottom-Sheet „Lese-Einstellungen“ im Reader.
 
+### Lesestand (Task 09)
+
+- Tabelle `ReadingPositions` (Schlüssel `bookId` + `view`, `page`, `blockId`, `progress`, `updatedAt`; Schema v3). `ReadingPositionRepository` speichert pro Ansicht, liefert `lastUsed` und den Fortschritt je Buch für die Bibliothek.
+- Original: `PdfAdapter.pageView(path, initialPage:, onPageChanged:)` (pdfrx `initialPageNumber` / `PdfViewerParams.onPageChanged`); jeder Seitenwechsel wird gespeichert.
+- eBook: Liste als `CustomScrollView` mit zwei Slivern um einen Mittel-Sliver, damit sie direkt bei einem Block startet; nach Scroll-Ende (im nächsten Frame) wird der oberste Block gespeichert.
+- Zuordnung (`lib/features/progress/domain/reading_position.dart`): Seite → erster Block dieser Seite bzw. nächster danach; Block → Quellseite; fehlt die gespeicherte Block-ID (neue Engine-Version), gilt die gespeicherte Seite.
+- Bibliothek: Antippen öffnet die zuletzt genutzte Ansicht an der gespeicherten Stelle (eBook nur bei `done`), Fortschritt „· 25 % gelesen“. Löschen entfernt auch die Positionen.
+
 ### Markierungen und Lesestand
 
 - Original: verankert an Seite + Zeichenbereich.
