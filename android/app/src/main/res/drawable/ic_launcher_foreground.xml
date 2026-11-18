@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Derived from assets/branding/unpaged_icon.svg (master coordinates, mapped into the 108dp adaptive canvas). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:scaleX="0.42" android:scaleY="0.42" android:translateX="-0.6" android:translateY="-9">
+        <path android:fillColor="#F4F1EA"
+            android:pathData="M80,95 H128 L146,113 V187 Q146,195 138,195 H80 Q72,195 72,187 V103 Q72,95 80,95Z" />
+        <path android:fillColor="#C9C3B4"
+            android:pathData="M128,95 V107 Q128,113 134,113 H146Z" />
+        <path android:strokeColor="#591F2A5C" android:strokeWidth="6" android:strokeLineCap="round"
+            android:pathData="M86,121 H116 M86,135 H132" />
+        <path android:strokeColor="#FF8A5B" android:strokeWidth="6" android:strokeLineCap="round"
+            android:pathData="M86,151 H198 M86,166 H184 M86,181 H194" />
+    </group>
+</vector>

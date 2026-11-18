@@ -114,6 +114,7 @@
 
 - Flutter-SDK vom Kanal `stable` (eingerichtet mit Flutter 3.50.0 / Dart 3.14); die SDK-Untergrenze steht in `pubspec.yaml` (`environment`).
 - Android: `applicationId`/`namespace` `io.github.sphaerox.unpaged` (festgelegt bei der Umbenennung in Unpaged, 2026-11-18), `minSdk = 24` in `android/app/build.gradle.kts`.
+- App-Icon: Master ist `assets/branding/unpaged_icon.svg` (nicht im App-Bundle, Farben `#1F2A5C`, `#F4F1EA`, `#FF8A5B`). Daraus abgeleitet, ohne Generator-Abhängigkeit: Adaptive Icon ab API 26 (`mipmap-anydpi-v26/ic_launcher.xml` mit Vector-Drawables `ic_launcher_foreground`/`ic_launcher_monochrome` und Farbe `ic_launcher_background`; die `<group>` bildet die Master-Koordinaten mit Faktor 0,42 in die 66-dp-Safe-Zone ab) und PNG-Fallbacks `mipmap-*/ic_launcher.png` für API 24/25. Bei Änderungen am Master alle drei Stellen mitziehen.
 - Material-Widgets immer aus `package:material_ui/material_ui.dart` importieren. Lokalisierung: `AppLocalizations.delegate` plus `GlobalMaterialLocalizations.delegates` aus `material_ui` (die Delegates aus `flutter_localizations` reichen für Material-Widgets nicht).
 - pdfrx in der App vor direkter Dokument-API mit `pdfrxFlutterInitialize()` initialisieren; in Host-Tests (`flutter test`) stattdessen `pdfrxInitialize(tmpPath: ...)` aus pdfrx_engine, da dort keine Flutter-Plugins laufen.
 - Abhängigkeiten nur mit `flutter pub add` / `flutter pub get` (im Engine-Paket `dart pub`). `pubspec.lock` der App wird versioniert.
