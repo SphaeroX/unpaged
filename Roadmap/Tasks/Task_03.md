@@ -64,6 +64,8 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 - Annahme: Schwellwerte für Spaltenlücken und Wiederholungserkennung werden empirisch am Korpus bestimmt und im Task dokumentiert.
 - Unklar, wie gut sich echte von Trenn-Bindestrichen ohne Wörterbuch unterscheiden lassen; ein Wörterbuch wäre eine neue Abhängigkeit und braucht Rückfrage.
+- Aus Task_02: `buildLines` verbindet Glyphen gleicher Baseline über die ganze Seitenbreite – Spalten müssen vor bzw. bei der Zeilenbildung getrennt werden. Fixtures der Zweispalter: `tests/reflow_engine/fixtures/two_column_tables.json`, `two_column_figures.json`. PDFium markiert erkannte Trennstriche am Zeilenende als U+0002; der Adapter macht daraus `-`, die Engine sieht also ein normales `-` am Zeilenende.
+- Das Entfernen der Seitenzahlen ändert den bestehenden Snapshot `single_column_text` → Änderung begründen und Freigabe einholen (Snapshot-Regeln).
 
 ## Notizen zu diesem Task
 

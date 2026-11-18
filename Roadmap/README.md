@@ -14,12 +14,12 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 erledigt.
+Stand: 2026-11-18 – Task_01 und Task_02 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
 | 01 | Durchstich: Flutter-Gerüst, DE/EN, PDF öffnen und im Original anzeigen | erledigt |
-| 02 | Reflow-Spike & Engine-Basis | offen |
+| 02 | Reflow-Spike & Engine-Basis | erledigt |
 | 03 | Spalten & Lesereihenfolge | offen |
 | 04 | Blocktypen & Nicht-Text-Bereiche | offen |
 | 05 | Bibliothek & Import | offen |
@@ -40,6 +40,8 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Projektregeln, Stack und Architektur stehen in der Root-`AGENTS.md` und in `docs/`; hier nur, was sich während der Roadmap ergibt. *(Roadmap-Anlage)*
 - Flutter 3.50 / Dart 3.14: Material kommt aus `package:material_ui/material_ui.dart`; Konstruktoren als `const new(...)`; Details in `docs/architecture.md` und `docs/code-style.md`. *(Task_01)*
 - Externe Abhängigkeiten (pdfrx, Dateiauswahl, später DB) stecken hinter Interfaces in `lib/core/` mit Riverpod-Provider; Tests ersetzen sie per `overrideWithValue`. *(Task_01)*
+- Engine-Ein-/Ausgabe, Koordinatensystem (oben links, y nach unten) und Adapter-Besonderheiten: `docs/architecture.md`. Fixture- und Snapshot-Workflow: `docs/testing.md`. *(Task_02)*
+- Isolate-Frage geklärt: Extraktion und Engine laufen in `Isolate.run` (Host belegt). *(Task_02)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details

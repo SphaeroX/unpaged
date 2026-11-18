@@ -1,0 +1,12 @@
+name: reflow_engine
+description: Pure Dart layout analysis that turns positioned PDF characters into reflowable blocks.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+
+dev_dependencies:
+  very_good_analysis: ^11.0.0
+dependencies:
+  meta: ^1.19.0

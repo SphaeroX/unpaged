@@ -54,7 +54,13 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 
 - Snapshots werden **nie** neu erzeugt, nur damit ein Test wieder grün wird.
 - Ein Snapshot darf nur geändert werden, wenn die Änderung eine bewusste, beschriebene Verbesserung der Engine ist; Grund und betroffene Dateien im Commit nennen und vorher Freigabe einholen.
-- Wie die Engine-Tests ohne pdfrx an Zeichendaten kommen (z. B. aus den Korpus-PDFs extrahierte JSON-Fixtures), legt der Reflow-Spike fest und trägt es hier ein.
+- Snapshot-Dokumente sind in `tests/reflow_engine/snapshot_test.dart` (`snapshotDocuments`) explizit aufgelistet; ein Dokument kommt erst dazu, wenn die Engine sein Layout beherrscht. Fehlende Snapshots erzeugt nur `UPDATE_SNAPSHOTS=1 flutter test tests/reflow_engine/snapshot_test.dart` (bestehende werden dabei nie überschrieben); das Ergebnis wird von Hand geprüft.
+
+## Zeichendaten für Engine-Tests (Fixtures)
+
+- Die Engine-Tests laufen ohne pdfrx. Ihre Eingabe sind JSON-Fixtures `tests/reflow_engine/fixtures/<name>.json` (`DocumentInput`), die der echte pdfrx-Adapter aus `tests/reflow_engine/corpus/<name>.pdf` erzeugt.
+- `tests/app/core/pdf/corpus_fixtures_test.dart` prüft, dass Fixtures und Adapter-Ausgabe übereinstimmen. Nach einer **bewussten** Adapter-Änderung: `UPDATE_FIXTURES=1 flutter test tests/app/core/pdf/corpus_fixtures_test.dart`, danach Engine-Tests laufen lassen. Fixtures sind Eingabedaten, keine Snapshots.
+- Neue Korpus-PDF: Datei ablegen, Quelle und Lizenz in `tests/reflow_engine/corpus/SOURCES.md` eintragen, Fixture erzeugen. Synthetische PDFs entstehen mit `tests/reflow_engine/corpus/tool/generate_synthetic.py` (fpdf2, Anleitung im Skript).
 
 ## Welche Tests wann ausführen
 

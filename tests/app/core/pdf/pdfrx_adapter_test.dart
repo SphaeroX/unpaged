@@ -32,4 +32,58 @@ void main() {
       );
     });
   });
+
+  group('PdfrxAdapter.normalizeGlyph', () {
+    test("maps PDFium's line-end hyphen marker U+0002 to '-'", () {
+      expect(PdfrxAdapter.normalizeGlyph('\u0002'), '-');
+    });
+
+    test('keeps ordinary glyphs', () {
+      expect(PdfrxAdapter.normalizeGlyph('a'), 'a');
+    });
+  });
+
+  group('PdfrxAdapter.extractText', () {
+    const synthetic = 'tests/reflow_engine/corpus/synthetic_single_column.pdf';
+
+    test('returns one input page per PDF page with its size', () async {
+      final input = await PdfrxAdapter().extractText(synthetic);
+
+      expect(input.pages.map((p) => p.number), [1, 2]);
+      expect(input.pages.first.width, closeTo(595.28, 0.01));
+      expect(input.pages.first.height, closeTo(841.89, 0.01));
+    });
+
+    test('keeps visible glyphs only, with boxes inside the page', () async {
+      final page = (await PdfrxAdapter().extractText(synthetic)).pages.first;
+
+      expect(page.chars, isNotEmpty);
+      expect(page.chars.where((c) => c.text.trim().isEmpty), isEmpty);
+      for (final c in page.chars) {
+        expect(c.box.left, inInclusiveRange(0, page.width));
+        expect(c.box.right, inInclusiveRange(0, page.width));
+        expect(c.box.top, inInclusiveRange(0, page.height));
+        expect(c.box.bottom, greaterThanOrEqualTo(c.box.top));
+      }
+    });
+
+    test('uses top-down coordinates and marks word starts', () async {
+      final page = (await PdfrxAdapter().extractText(synthetic)).pages.first;
+      final text = page.chars.map((c) => c.text).join();
+
+      // The first glyph ("R" of "Reading") sits in the top margin area.
+      expect(text, startsWith('Readinglong'));
+      expect(page.chars.first.box.top, lessThan(100));
+      expect(page.chars.first.wordStart, isTrue);
+      expect(page.chars[1].wordStart, isFalse); // "e"
+      expect(page.chars[7].wordStart, isTrue); // "l" of "long"
+    });
+
+    test('throws PdfOpenException for a broken file', () async {
+      await expectLater(
+        PdfrxAdapter().extractText('tests/fixtures/not_a_pdf.pdf'),
+        throwsA(isA<PdfOpenException>()),
+      );
+    });
+  });
 }

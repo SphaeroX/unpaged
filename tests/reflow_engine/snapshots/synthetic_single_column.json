@@ -1,0 +1,65 @@
+{
+  "engineVersion": 1,
+  "blocks": [
+    {
+      "id": "p1b0",
+      "type": "paragraph",
+      "text": "Reading long technical documents on a phone is tiring when the layout was made for paper. Small fonts, wide margins and fixed line breaks force the reader to zoom and pan all the time.",
+      "page": 1,
+      "box": [
+        73.85,
+        74.66,
+        521.13,
+        116.84
+      ]
+    },
+    {
+      "id": "p1b1",
+      "type": "paragraph",
+      "text": "A reflow engine solves this by extracting the text and laying it out again for the screen. Each paragraph becomes a block that can wrap at any width, while the original page stays available for reference.",
+      "page": 1,
+      "box": [
+        73.85,
+        142.69,
+        521.18,
+        184.87
+      ]
+    },
+    {
+      "id": "p1b2",
+      "type": "paragraph",
+      "text": "This synthetic document has three paragraphs on the first page and two on the second page. It exists so that tests can compare the engine output with a known, exact expectation.",
+      "page": 1,
+      "box": [
+        73.85,
+        210.72,
+        520.95,
+        238.15
+      ]
+    },
+    {
+      "id": "p2b0",
+      "type": "paragraph",
+      "text": "The second page starts with a new paragraph. Its lines are wrapped by the generator at a fixed width, just like a typeset paper would be.",
+      "page": 2,
+      "box": [
+        73.85,
+        74.77,
+        521.29,
+        102.02
+      ]
+    },
+    {
+      "id": "p2b1",
+      "type": "paragraph",
+      "text": "The last paragraph is short.",
+      "page": 2,
+      "box": [
+        73.85,
+        125.79,
+        206.63,
+        136.1
+      ]
+    }
+  ]
+}

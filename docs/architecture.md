@@ -25,7 +25,8 @@
 | `intl`, `flutter_localizations` | l10n | BSD-3-Clause |
 | `very_good_analysis` (dev) | Lint-Regeln | MIT |
 | `mocktail` (dev) | Mocks | MIT |
-| `integration_test`, `flutter_test` (dev) | Tests | BSD-3-Clause |
+| `integration_test`, `flutter_test`, `test` (dev) | Tests | BSD-3-Clause |
+| `meta` (Engine) | Annotationen (`@immutable`) | BSD-3-Clause |
 
 ## Verbindliche Rahmenbedingungen
 
@@ -37,7 +38,8 @@
 
 - `lib/features/<feature>/` mit `data/`, `domain/`, `presentation/`. Features: `library`, `import`, `viewer` (Original), `reader` (eBook), `annotations`, `settings`.
 - `lib/core/`: Datenbank, PDF-Adapter (einzige Stelle, die `pdfrx` importiert), Dateiablage, Theming, l10n.
-- `packages/reflow_engine/`: **reines Dart-Paket ohne Flutter und ohne pdfrx.** Enthält die gesamte Layout-Analyse. Eingabe: Zeichen mit Position und Schriftgröße pro Seite; Ausgabe: `ReflowDocument`. Die App bindet es per `path`-Abhängigkeit ein.
+- `packages/reflow_engine/`: **reines Dart-Paket ohne Flutter und ohne pdfrx** (einzige Abhängigkeit: `meta`). Enthält die gesamte Layout-Analyse. Eingabe: `DocumentInput` → `PageInput` (Nummer, Breite, Höhe) → `TextChar` (Glyph, Box, `wordStart`); Koordinaten in Punkten, Ursprung oben links, y wächst nach unten. Ausgabe: `ReflowDocument` (`engineVersion`, `ReflowBlock`s mit ID `p<Seite>b<Index>`, Typ, Text, Seite, Box). Einstieg: `const ReflowEngine().reflow(input)`; `ReflowEngine.version` wird bei jeder Ausgabeänderung erhöht. Die App bindet das Paket per `path`-Abhängigkeit ein.
+- PDF-Adapter (`lib/core/pdf/`): `PdfAdapter.extractText(path)` liefert `DocumentInput`. pdfrx gibt nur Glyph + enge Glyph-Box (keine Schriftgröße, keine Bild-/Linienobjekte); der Adapter verwirft PDFium-Leerzeichen/Zeilenumbrüche, setzt stattdessen `wordStart`, rechnet in Top-down-Koordinaten um und bildet U+0002 (PDFium-Trennstrich am Zeilenende) auf `-` ab. Schriftgrößen schätzt die Engine aus Glyph-Höhen.
 
 ### Reflow-Pipeline (beim Import, offline)
 
@@ -46,7 +48,7 @@
 3. Engine: Zeichen → Zeilen → Blöcke; Spalten und Lesereihenfolge erkennen, Kopf-/Fußzeilen und Seitenzahlen entfernen, Silbentrennung auflösen, Blocktyp bestimmen (Überschrift, Absatz, Liste, Bildunterschrift).
 4. Tabellen, Abbildungen, Formeln als Bereiche markieren und einmalig als PNG-Ausschnitt rendern.
 5. `ReflowDocument` als JSON speichern, mit `engineVersion`. Ändert sich die Engine-Version, bei Bedarf neu berechnen.
-6. Verarbeitung im Hintergrund-Isolate; Fortschritt in der Bibliothek sichtbar.
+6. Verarbeitung im Hintergrund-Isolate; Fortschritt in der Bibliothek sichtbar. Ergebnis des Spikes (Task 02): pdfrx führt PDFium-Aufrufe ohnehin in einem eigenen Worker-Isolate aus; zusätzlich funktionieren Extraktion (`pdfrxInitialize` im Isolate) und Engine in `Isolate.run` (belegt durch `tests/app/core/pdf/background_extraction_test.dart`, auf dem Host; Android in Task 06 prüfen).
 
 ### Markierungen und Lesestand
 
@@ -67,7 +69,6 @@
 
 - Android-`applicationId`: bis zur Release-Vorbereitung gilt der Platzhalter `dev.paperflow`.
 - Name des Copyright-Inhabers für die MIT-Lizenz.
-- Ob die pdfrx-Textextraktion außerhalb des Haupt-Isolates laufen kann (wird im Reflow-Spike geklärt).
 
 ---
 Pflege: Bei Änderungen an Stack oder Architektur diese Datei sofort aktualisieren.

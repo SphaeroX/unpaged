@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paperflow/core/pdf/pdfrx_adapter.dart';
+import 'package:reflow_engine/reflow_engine.dart';
 
 /// Basic facts about an opened PDF.
 @immutable
@@ -26,6 +27,12 @@ abstract class PdfAdapter {
   ///
   /// Throws [PdfOpenException] if the file cannot be read as a PDF.
   Future<PdfInfo> inspect(String path);
+
+  /// Extracts the visible glyphs of every page for the reflow engine.
+  ///
+  /// Coordinates are converted to top-down page points. Throws
+  /// [PdfOpenException] if the file cannot be read as a PDF.
+  Future<DocumentInput> extractText(String path);
 
   /// Widget showing the original pages of the PDF at [path].
   Widget pageView(String path);

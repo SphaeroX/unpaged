@@ -43,7 +43,6 @@ Die Reflow-Qualität bei mehrspaltigen Fachtexten. Abgesichert durch die isolier
 
 - Android-`applicationId` (Platzhalter `dev.paperflow`), festzulegen vor dem ersten Store-Upload
 - Name des Copyright-Inhabers für die MIT-Lizenz
-- Ob die pdfrx-Textextraktion außerhalb des Haupt-Isolates läuft
 
 ---
 Pflege: Bei Änderungen an Zielen oder Umfang diese Datei aktualisieren.
