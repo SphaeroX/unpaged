@@ -1,5 +1,6 @@
-# Checks every push and pull request; a tag "v*" (e.g. v1.0.0) also builds
-# the release APK and publishes it as a GitHub release.
+# Checks every push and pull request. A pushed tag "v*" (e.g. v1.0.0) or a
+# manual run with a version also publishes the APK as a GitHub release
+# (the manual run creates the tag v<version> on the selected commit).
 name: Android
 
 on:
@@ -9,6 +10,11 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version without "v" (e.g. 1.0.0); empty = build only'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -54,11 +60,17 @@ jobs:
       - name: Test
         run: flutter test tests/app tests/reflow_engine
 
-      - name: Version from tag
+      - name: Version from tag or input
         id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         run: |
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             echo "name=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          elif [ -n "$INPUT_VERSION" ]; then
+            echo "name=$INPUT_VERSION" >> "$GITHUB_OUTPUT"
+            echo "release=true" >> "$GITHUB_OUTPUT"
           else
             echo "name=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*//')" >> "$GITHUB_OUTPUT"
           fi
@@ -102,8 +114,11 @@ jobs:
           path: dist/*.apk
 
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: steps.version.outputs.release == 'true'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.version.outputs.name }}
+          target_commitish: ${{ github.sha }}
+          name: paperflow ${{ steps.version.outputs.name }}
           files: dist/*.apk
           generate_release_notes: true
