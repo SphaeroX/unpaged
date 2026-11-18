@@ -12,7 +12,7 @@ class ReflowEngine {
   const new();
 
   /// Increase whenever the output for the same input changes.
-  static const version = 3;
+  static const version = 4;
 
   ReflowDocument reflow(DocumentInput input) {
     final rawLines = [for (final page in input.pages) buildLines(page.chars)];

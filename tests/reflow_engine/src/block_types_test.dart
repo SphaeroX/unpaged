@@ -229,6 +229,46 @@ void main() {
       expect(blocks[1].box.top, greaterThanOrEqualTo(103));
       expect(blocks[1].box.bottom, lessThanOrEqualTo(300));
     });
+
+    // Side caption (Springer style): a narrow caption in the left margin,
+    // the figure to its right, starting at the caption's top.
+    List<List<TextChar>> sideCaptionPage({required bool proseBelow}) => [
+      ...prose(y: 60, lines: 3).take(2),
+      line('this is ordinary body text with several words', y: 84),
+      line('take place (Fig. 1.3).', y: 96),
+      line('Fig. 1.3 Scheme of', y: 150, size: 8),
+      line('formation', y: 160, size: 8),
+      line('Pore', x: 190, y: 185, size: 7),
+      line('Oxidized particle', x: 190, y: 200, size: 7),
+      line('Substrate', x: 190, y: 245, size: 7),
+      if (proseBelow) ...prose(y: 340),
+    ];
+
+    for (final proseBelow in [true, false]) {
+      test('a side caption puts the figure to its right '
+          '(prose below: $proseBelow)', () {
+        final blocks = reflow(sideCaptionPage(proseBelow: proseBelow));
+
+        expect(
+          blocks.first.text,
+          endsWith('take place (Fig. 1.3).'),
+          reason: 'the short last line of a paragraph is no figure label',
+        );
+        final caption = blocks.singleWhere((b) => b.type == BlockType.caption);
+        expect(caption.text, 'Fig. 1.3 Scheme of formation');
+        final figure = blocks.singleWhere((b) => b.type == BlockType.figure);
+        expect(figure.box.left, greaterThanOrEqualTo(caption.box.right));
+        expect(figure.box.left, lessThan(190));
+        expect(figure.box.top, greaterThanOrEqualTo(103));
+        expect(figure.box.top, lessThanOrEqualTo(150));
+        expect(figure.box.bottom, greaterThan(250));
+        if (proseBelow) expect(figure.box.bottom, lessThanOrEqualTo(340));
+        expect(
+          blocks.map((b) => b.text).join(' '),
+          isNot(contains('Substrate')),
+        );
+      });
+    }
   });
 
   group('tables', () {

@@ -44,6 +44,7 @@ PageRegions detectRegions(List<TextLine> lines, PageInput page) {
     final table = isTableCaption(caption.text);
     if (table && _hasRegionNear(regions, caption, pitch)) continue;
     final found =
+        _sideCaptionArea(lines, consumed, caption, page, pitch) ??
         _captionArea(lines, consumed, caption, page, below: table) ??
         _captionArea(lines, consumed, caption, page, below: !table);
     if (found == null) continue;
@@ -266,6 +267,105 @@ bool _hasRegionNear(List<Region> regions, TextLine caption, double pitch) =>
           _overlapsX(r.box, caption.box) &&
               (caption.box.top - r.box.bottom).abs() < 3 * pitch,
     );
+
+/// The area to the right of a side caption: a narrow caption flush with the
+/// left edge of the text column, the figure or table beside it, starting at
+/// the caption's top (common in books). Only accepted when label lines sit
+/// in that area, so short ordinary captions keep the above/below search.
+(BBox, List<TextLine>)? _sideCaptionArea(
+  List<TextLine> lines,
+  Set<TextLine> consumed,
+  TextLine caption,
+  PageInput page,
+  double pitch,
+) {
+  final prose = [
+    for (final l in lines)
+      if (!consumed.contains(l) && isProse(l.text)) l,
+  ];
+  if (prose.isEmpty) return null;
+  final columnLeft = prose
+      .map((l) => l.box.left)
+      .reduce((a, b) => a < b ? a : b);
+  final columnRight = prose
+      .map((l) => l.box.right)
+      .reduce((a, b) => a > b ? a : b);
+  final em = caption.fontSize;
+  if ((caption.box.left - columnLeft).abs() > em) return null;
+
+  // The caption may wrap onto further lines in its narrow column.
+  final captionLines = [caption];
+  var grew = true;
+  while (grew) {
+    grew = false;
+    final last = captionLines.last;
+    for (final l in lines) {
+      if (captionLines.contains(l) || consumed.contains(l)) continue;
+      final gap = l.box.top - last.box.bottom;
+      if (gap >= -0.2 * em &&
+          gap <= 0.8 * pitch &&
+          (l.box.left - caption.box.left).abs() <= em &&
+          !isProse(l.text) &&
+          !isCaption(l.text)) {
+        captionLines.add(l);
+        grew = true;
+        break;
+      }
+    }
+  }
+  final captionBox = _union(captionLines);
+  if (captionBox.width > 0.45 * (columnRight - columnLeft)) return null;
+
+  final gap = 0.5 * em;
+  final left = captionBox.right + gap;
+  bool beside(TextLine l) => l.box.right > left && l.box.left < columnRight;
+
+  // Bounded above by the nearest line over the caption, below by the next
+  // prose or caption line; without one the figure may reach the bottom
+  // margin, estimated as the mirror of the top margin.
+  final above = [
+    for (final l in lines)
+      if (l.box.bottom <= caption.box.top &&
+          !captionLines.contains(l) &&
+          _overlapsX(l.box, BBox(captionBox.left, 0, columnRight, 0)))
+        l.box.bottom,
+  ];
+  final top = above.isEmpty
+      ? caption.box.top - pitch
+      : (above.reduce((a, b) => a > b ? a : b) + gap).clamp(
+          caption.box.top - pitch,
+          caption.box.top,
+        );
+  final stops = [
+    for (final l in lines)
+      if (l.box.top >= caption.box.top &&
+          !captionLines.contains(l) &&
+          !consumed.contains(l) &&
+          beside(l) &&
+          (isProse(l.text) || isCaption(l.text)))
+        l.box.top,
+  ];
+  final pageTop = lines.map((l) => l.box.top).reduce((a, b) => a < b ? a : b);
+  final bottomLimit = stops.isEmpty
+      ? page.height - pageTop
+      : stops.reduce((a, b) => a < b ? a : b) - gap;
+
+  final labels = [
+    for (final l in lines)
+      if (!captionLines.contains(l) &&
+          !consumed.contains(l) &&
+          l.box.left >= left &&
+          l.box.top >= top &&
+          l.box.bottom <= bottomLimit)
+        l,
+  ];
+  if (labels.isEmpty || labels.any((l) => isProse(l.text))) return null;
+  final right = labels
+      .map((l) => l.box.right)
+      .fold(columnRight, (a, b) => a > b ? a : b);
+  if (bottomLimit - top < 2.5 * em) return null;
+  return (BBox(left, top, right, bottomLimit), labels);
+}
 
 /// The area between [caption] and the nearest prose line above (or below
 /// if [below]) in the caption's column, with the label lines inside it.
