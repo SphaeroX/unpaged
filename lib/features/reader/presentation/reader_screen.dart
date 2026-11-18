@@ -496,8 +496,8 @@ class _TextBlock extends ConsumerWidget {
           final selection = state.textEditingValue.selection;
           return AdaptiveTextSelectionToolbar.buttonItems(
             anchors: state.contextMenuAnchors,
+            // App actions first: Android hides trailing items behind ⋮.
             buttonItems: [
-              ...state.contextMenuButtonItems,
               ContextMenuButtonItem(
                 label: l10n.highlight,
                 onPressed: () {
@@ -512,6 +512,7 @@ class _TextBlock extends ConsumerWidget {
                   unawaited(_highlight(context, ref, selection, note: true));
                 },
               ),
+              ...state.contextMenuButtonItems,
             ],
           );
         },

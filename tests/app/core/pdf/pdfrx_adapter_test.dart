@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
@@ -152,6 +153,82 @@ void main() {
 
       expect(boxes.length, greaterThanOrEqualTo(2));
       expect(boxes[1].top, greaterThan(boxes[0].top));
+    });
+  });
+
+  group('PdfrxAdapter selection menu', () {
+    const chosen = PdfSelection(page: 2, start: 5, end: 17, text: 'words');
+
+    test('pageView extends the default menu instead of replacing it', () {
+      // A custom buildContextMenu returning a Positioned was wrapped in a
+      // second Positioned by pdfrx; the build error showed as a grey box.
+      final viewer = PdfrxAdapter().pageView(
+        'tests/fixtures/three_pages.pdf',
+        selectionActions: [
+          SelectionAction(label: 'Highlight', onSelected: (_) {}),
+        ],
+      ) as PdfViewer;
+
+      expect(viewer.params.buildContextMenu, isNull);
+      expect(viewer.params.customizeContextMenuItems, isNotNull);
+    });
+
+    test('puts the actions in front of the default items', () {
+      final items = [
+        ContextMenuButtonItem(
+          type: ContextMenuButtonType.copy,
+          onPressed: () {},
+        ),
+      ];
+
+      PdfrxAdapter.addSelectionActions(
+        items,
+        [
+          SelectionAction(label: 'Highlight', onSelected: (_) {}),
+          SelectionAction(label: 'Add note', onSelected: (_) {}),
+        ],
+        hasSelection: true,
+        selection: () async => [chosen],
+        dismiss: () {},
+      );
+
+      expect(items.map((i) => i.label), ['Highlight', 'Add note', null]);
+      expect(items.last.type, ContextMenuButtonType.copy);
+    });
+
+    test(
+      'pressing an action passes the selection and closes the menu',
+      () async {
+        List<PdfSelection>? got;
+        var dismissed = false;
+        final items = <ContextMenuButtonItem>[];
+        PdfrxAdapter.addSelectionActions(
+          items,
+          [SelectionAction(label: 'Highlight', onSelected: (s) => got = s)],
+          hasSelection: true,
+          selection: () async => [chosen],
+          dismiss: () => dismissed = true,
+        );
+
+        items.single.onPressed!();
+        await pumpEventQueue();
+
+        expect(got, [chosen]);
+        expect(dismissed, isTrue);
+      },
+    );
+
+    test('adds nothing without selected text', () {
+      final items = <ContextMenuButtonItem>[];
+      PdfrxAdapter.addSelectionActions(
+        items,
+        [SelectionAction(label: 'Highlight', onSelected: (_) {})],
+        hasSelection: false,
+        selection: () async => [chosen],
+        dismiss: () {},
+      );
+
+      expect(items, isEmpty);
     });
   });
 }

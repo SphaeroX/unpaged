@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 import 'dart:typed_data';
 
@@ -173,12 +174,52 @@ class PdfrxAdapter implements PdfAdapter {
               ),
         ];
       },
-      buildContextMenu: selectionActions.isEmpty
-          ? null
-          : (context, params) =>
-                _SelectionMenu(actions: selectionActions, params: params),
+      // Extend pdfrx' own menu (Copy, Select all); a replaced menu has to
+      // position itself, and a wrongly nested Positioned shows a grey box.
+      customizeContextMenuItems: (params, items) {
+        final delegate = params.textSelectionDelegate;
+        addSelectionActions(
+          items,
+          selectionActions,
+          hasSelection:
+              params.isTextSelectionEnabled && delegate.hasSelectedText,
+          selection: () async => [
+            for (final r in await delegate.getSelectedTextRanges())
+              PdfSelection(
+                page: r.pageNumber,
+                start: r.start,
+                end: r.end,
+                text: r.text,
+              ),
+          ],
+          dismiss: () => unawaited(delegate.clearTextSelection()),
+        );
+      },
     ),
   );
+
+  /// Puts [actions] in front of the default selection [items], so Android
+  /// does not hide them in the overflow menu.
+  static void addSelectionActions(
+    List<ContextMenuButtonItem> items,
+    List<SelectionAction> actions, {
+    required bool hasSelection,
+    required Future<List<PdfSelection>> Function() selection,
+    required VoidCallback dismiss,
+  }) {
+    if (!hasSelection || actions.isEmpty) return;
+    items.insertAll(0, [
+      for (final a in actions)
+        ContextMenuButtonItem(
+          label: a.label,
+          onPressed: () async {
+            final selected = await selection();
+            dismiss();
+            a.onSelected(selected);
+          },
+        ),
+    ]);
+  }
 
   @override
   Future<List<BBox>> textRects(
@@ -215,44 +256,4 @@ class PdfrxAdapter implements PdfAdapter {
       await document.dispose();
     }
   }
-}
-
-/// Context menu with the app's selection actions.
-class _SelectionMenu extends StatelessWidget {
-  const new({required this.actions, required this.params});
-
-  final List<SelectionAction> actions;
-  final PdfViewerContextMenuBuilderParams params;
-
-  Future<void> _run(SelectionAction action) async {
-    final delegate = params.textSelectionDelegate;
-    final ranges = await delegate.getSelectedTextRanges();
-    params.dismissContextMenu();
-    action.onSelected([
-      for (final r in ranges)
-        PdfSelection(
-          page: r.pageNumber,
-          start: r.start,
-          end: r.end,
-          text: r.text,
-        ),
-    ]);
-  }
-
-  @override
-  Widget build(BuildContext context) => Positioned(
-    left: params.anchorA.dx,
-    top: params.anchorA.dy,
-    child: Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(8),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final a in actions)
-            TextButton(onPressed: () => _run(a), child: Text(a.label)),
-        ],
-      ),
-    ),
-  );
 }

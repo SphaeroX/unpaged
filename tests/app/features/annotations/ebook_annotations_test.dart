@@ -95,6 +95,23 @@ void main() {
     await env.unmount(tester);
   });
 
+  testWidgets('Highlight and Add note come before Copy in the toolbar', (
+    tester,
+  ) async {
+    // Android moves trailing items into the overflow menu; the highlight
+    // actions must stay visible on a phone.
+    await pumpReader(tester, _doc([('p1b0', 'The quick brown fox jumps.')]));
+
+    await select(tester, 4, 9);
+
+    final highlightX = tester.getTopLeft(find.text('Highlight')).dx;
+    final noteX = tester.getTopLeft(find.text('Add note')).dx;
+    final copyX = tester.getTopLeft(find.text('Copy')).dx;
+    expect(highlightX, lessThan(noteX));
+    expect(noteX, lessThan(copyX));
+    await env.unmount(tester);
+  });
+
   testWidgets('a stored highlight is drawn behind its text', (tester) async {
     await AnnotationRepository(env.db).add(
       'abc',
