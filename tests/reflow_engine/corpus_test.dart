@@ -44,4 +44,49 @@ void main() {
       (2, 'The last paragraph is short.'),
     ]);
   });
+
+  test('synthetic two columns yield the known paragraphs in order', () {
+    final doc = const ReflowEngine().reflow(
+      loadFixture('synthetic_two_column'),
+    );
+
+    expect(doc.blocks.map((b) => (b.page, b.text)), [
+      (1, 'A Synthetic Two Column Paper'),
+      (
+        1,
+        'Reflow engines read the glyphs of a page and rebuild the text in '
+            'reading order. This paper is laid out in two columns, so the left '
+            'column must be read completely before the right one. Long words '
+            'are split with an information hyphen at the end of a line, while '
+            'a well-known compound keeps its hyphen even when the line ends '
+            'after the Offline-Modus prefix in German text.',
+      ),
+      (
+        1,
+        'A second paragraph starts with an indent and continues on the next '
+            'page without a break in the middle of the sentence. The '
+            'well-known example above shows the rule.',
+      ),
+      (2, 'The final paragraph is short.'),
+    ]);
+  });
+
+  group('corpus regressions', () {
+    String fullText(String name) => const ReflowEngine()
+        .reflow(loadFixture(name))
+        .blocks
+        .map((b) => b.text)
+        .join('\n');
+
+    test('superscript citations stay inside their line', () {
+      expect(
+        fullText('two_column_figures'),
+        contains('deep ultraviolet (UV).1–3 For x'),
+      );
+    });
+
+    test('degree signs stay attached to their number', () {
+      expect(fullText('single_column_text'), contains('120° corners'));
+    });
+  });
 }

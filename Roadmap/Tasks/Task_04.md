@@ -64,6 +64,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Annahme: Fehlklassifikationen werden in Kauf genommen, solange kein Text verloren geht; im Zweifel lieber als Bildausschnitt.
+- Aus Task_03: Listeneinträge mit hängendem Einzug zerfallen derzeit in zwei Absätze (Einzugsregel in `paragraphs.dart`); Formelzeilen erscheinen als Textblöcke (`two_column_formulas`, ab Seite 2); Beschriftungen in Abbildungen erzeugen Textmüll (`two_column_figures`, `single_column_tables`). `two_column_figures` und `single_column_tables` haben noch keinen Snapshot. Snapshot-Änderungen aus den geplanten Verbesserungen von Task 04 sind vom Nutzer pauschal freigegeben (von Hand prüfen, im Commit begründen, am Ende auflisten).
 - pdfrx 3 bietet in der öffentlichen API keine Bild- oder Linienobjekte (Stand Task_01); Abbildungen müssen daher über textfreie Flächen + Bildunterschrift erkannt werden, sofern Task_02 nichts anderes herausfindet.
 
 ## Notizen zu diesem Task

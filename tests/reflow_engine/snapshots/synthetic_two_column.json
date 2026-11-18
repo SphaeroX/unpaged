@@ -1,0 +1,53 @@
+{
+  "engineVersion": 2,
+  "blocks": [
+    {
+      "id": "p1b0",
+      "type": "paragraph",
+      "text": "A Synthetic Two Column Paper",
+      "page": 1,
+      "box": [
+        186.71,
+        83.72,
+        408.78,
+        98.92
+      ]
+    },
+    {
+      "id": "p1b1",
+      "type": "paragraph",
+      "text": "Reflow engines read the glyphs of a page and rebuild the text in reading order. This paper is laid out in two columns, so the left column must be read completely before the right one. Long words are split with an information hyphen at the end of a line, while a well-known compound keeps its hyphen even when the line ends after the Offline-Modus prefix in German text.",
+      "page": 1,
+      "box": [
+        59.89,
+        130.37,
+        254.24,
+        210.64
+      ]
+    },
+    {
+      "id": "p1b2",
+      "type": "paragraph",
+      "text": "A second paragraph starts with an indent and continues on the next page without a break in the middle of the sentence. The well-known example above shows the rule.",
+      "page": 1,
+      "box": [
+        315.05,
+        172.99,
+        526.42,
+        196.53
+      ]
+    },
+    {
+      "id": "p2b0",
+      "type": "paragraph",
+      "text": "The final paragraph is short.",
+      "page": 2,
+      "box": [
+        70.79,
+        144.54,
+        194.28,
+        154.01
+      ]
+    }
+  ]
+}

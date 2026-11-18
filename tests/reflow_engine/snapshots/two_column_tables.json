@@ -1,0 +1,653 @@
+{
+  "engineVersion": 2,
+  "blocks": [
+    {
+      "id": "p1b0",
+      "type": "paragraph",
+      "text": "Measure Before You Train:",
+      "page": 1,
+      "box": [
+        199.35,
+        92.31,
+        397.62,
+        104.43
+      ]
+    },
+    {
+      "id": "p1b1",
+      "type": "paragraph",
+      "text": "Typed Decision Models vs. a Classical Baseline vs. a Generative",
+      "page": 1,
+      "box": [
+        66.05,
+        114.23,
+        528.89,
+        129.63
+      ]
+    },
+    {
+      "id": "p1b2",
+      "type": "paragraph",
+      "text": "LLM",
+      "page": 1,
+      "box": [
+        278.36,
+        136.4,
+        316.85,
+        148.04
+      ]
+    },
+    {
+      "id": "p1b3",
+      "type": "paragraph",
+      "text": "for Routing a Personal Multilingual Inbox",
+      "page": 1,
+      "box": [
+        143.29,
+        158.06,
+        452.39,
+        173.49
+      ]
+    },
+    {
+      "id": "p1b4",
+      "type": "paragraph",
+      "text": "Federico Lucca",
+      "page": 1,
+      "box": [
+        260.77,
+        190.69,
+        334.63,
+        198.96
+      ]
+    },
+    {
+      "id": "p1b5",
+      "type": "paragraph",
+      "text": "Independent researcher, Trento, Italy federico . lucca@gmail . com",
+      "page": 1,
+      "box": [
+        231.78,
+        206.67,
+        363.43,
+        228.4
+      ]
+    },
+    {
+      "id": "p1b6",
+      "type": "paragraph",
+      "text": "Preprint v2.2, November 2026 — arXiv:2610.32955",
+      "page": 1,
+      "box": [
+        203.89,
+        241.8,
+        390.97,
+        249.9
+      ]
+    },
+    {
+      "id": "p1b7",
+      "type": "paragraph",
+      "text": "Abstract",
+      "page": 1,
+      "box": [
+        56.8,
+        278.57,
+        101.17,
+        286.98
+      ]
+    },
+    {
+      "id": "p1b8",
+      "type": "paragraph",
+      "text": "Personal email agents decide, for every incoming message, its type and urgency and whether to draft a reply, create a task or ignore it. In production these decisions are delegated to a generative LLM or to rules, and their error rate is rarely measured: the stored labels were written by the system itself. We describe Foyer, a self-hosted personal inbox agent, and a measurement protocol—stratified sampling, a frozen snapshot of the model input, thread-grouped splits, secret redaction, and human labels collected in the agent’s own review loop—that produces ground truth before any training. On 231 real emails in Italian and English we compare eleven systems: the stored production type (keyword rules and an earlier LLM classifier), a TF-IDF + logistic-regression baseline, local typed decision models (Tev1 0.8B and 4B, Nimble 9B, Jeva-4B), two hosted ones (Bespoke Nimble v4-max and TypeSafe Jev) and three hosted generative LLMs (Qwen2.5-7B, Gemma 4 26B-A4B and 31B). Four results. First, the stored production type scores 28% against a 57% majority class. Second, with about two hundred labels a logistic regression has the highest point accuracy on every field (type 0.77 ± 0.02 over five seeds of the split, urgency 0.74, needs-reply 0.83, is-noise 0.90) at a latency three orders of magnitude lower, though it never predicts the two rarest types; but on every field at least one hosted model is statistically indistinguishable from it (exact McNemar, Holm-corrected)—Gemma 4 on type (0.74), Nimble v4-max on urgency and is-noise (0.71, 0.86). Third, a generative model recovers part of the sender’s relationship to the owner from the text (0.60); inheritance from the contact is right 98.6% of the time on the 55–63% of emails whose sender was seen before (0.86 on all emails, with a majority fallback): the relationship belongs in the contact graph, not in the prompt. Fourth, per-email accuracy is not the product metric: composed into actions, the classifier ignores 18% of the emails that needed a reply or a task, against 4% for the best generative model; a cost-chosen threshold cuts that rate to 10% (7/68), indistinguishable from the hosted decision model’s. On the unbiased corpus no cost difference among the leading systems is significant; on the adversarial corpus the thresholded classifier is the cheapest system for any missed-email price above 4. A third, adversarially sampled round (722 emails in total) with eleven pre-registered hypotheses confirms seven and refutes four. Two blind annotators agree with the reference at κ = 0.81 and 0.86 on message type. We release the protocol, the harness and the pre-registration; the emails stay private.",
+      "page": 1,
+      "box": [
+        56.72,
+        295.96,
+        539.29,
+        567.94
+      ]
+    },
+    {
+      "id": "p1b9",
+      "type": "paragraph",
+      "text": "1 Introduction",
+      "page": 1,
+      "box": [
+        57.47,
+        584.58,
+        134.52,
+        593.0
+      ]
+    },
+    {
+      "id": "p1b10",
+      "type": "paragraph",
+      "text": "A growing share of what personal AI agents do is not generation but decision: which project does this email belong to, is it urgent, does it need a reply, is it noise. Generative LLMs answer these questions by producing text that is then parsed; typed decision models, introduced with TypeSafe’s Jev in September 2026 [1] and followed within weeks by open models (Nimble [2], Tev1, Clef, Strands Decider) and a local endpoint in Ollama [3], answer them directly with a probability distribution over caller-defined options, in one forward pass and without free text.",
+      "page": 1,
+      "box": [
+        56.61,
+        603.66,
+        293.84,
+        720.22
+      ]
+    },
+    {
+      "id": "p1b11",
+      "type": "paragraph",
+      "text": "Whether this new class of models is good enough to replace the generative step in a personal agent is an empirical question, and it cannot be answered with the data such agents typically keep: the stored labels are the model’s own output. Early evidence is mixed. Classical classifiers trained on a few thousand records outperform Jev on network-traffic classiifcation [8]; a community benchmark reports a plain 9B instruct model ahead of every decision model on triage tasks; the vendor’s own benchmark places the open models within three points of Jev [3]. None of it concerns personal, multilingual correspondence.",
+      "page": 1,
+      "box": [
+        56.74,
+        724.9,
+        293.82,
+        781.69
+      ]
+    },
+    {
+      "id": "p1b12",
+      "type": "paragraph",
+      "text": "This paper makes three contributions.",
+      "page": 1,
+      "box": [
+        312.75,
+        661.45,
+        461.84,
+        670.4
+      ]
+    },
+    {
+      "id": "p1b13",
+      "type": "paragraph",
+      "text": "1. A measurement protocol for a production email agent",
+      "page": 1,
+      "box": [
+        303.72,
+        677.08,
+        538.6,
+        686.05
+      ]
+    },
+    {
+      "id": "p1b14",
+      "type": "paragraph",
+      "text": "that yields human ground truth without changing the system: stratified sampling by predicted class, a frozen snapshot of the exact model input, deterministic splits keyed on record ids, and labelling in the agent’s own interface.",
+      "page": 1,
+      "box": [
+        315.14,
+        689.04,
+        538.43,
+        743.76
+      ]
+    },
+    {
+      "id": "p1b15",
+      "type": "paragraph",
+      "text": "2. A comparison of eleven systems on that ground truth—",
+      "page": 1,
+      "box": [
+        302.92,
+        748.73,
+        540.58,
+        757.78
+      ]
+    },
+    {
+      "id": "p1b16",
+      "type": "paragraph",
+      "text": "the stored production type, a classical baseline, local and hosted typed decision models, hosted generative LLMs— on message type, urgency, three agent switches (draft a reply, create a task, ignore) and project assignment, with calibration, latency and cost.",
+      "page": 1,
+      "box": [
+        315.16,
+        760.77,
+        540.57,
+        781.69
+      ]
+    },
+    {
+      "id": "p2b0",
+      "type": "paragraph",
+      "text": "3. A decomposition of the agent’s labels into what is learn-",
+      "page": 2,
+      "box": [
+        57.12,
+        101.31,
+        293.84,
+        110.35
+      ]
+    },
+    {
+      "id": "p2b1",
+      "type": "paragraph",
+      "text": "able from the text of one message (type, urgency, the three switches) and what one message carries only in part (the sender’s relationship to the owner: 0.60 for the best generative model), with a measured alternative for the latter: inheritance from the contact graph.",
+      "page": 2,
+      "box": [
+        69.27,
+        113.34,
+        292.67,
+        170.13
+      ]
+    },
+    {
+      "id": "p2b2",
+      "type": "paragraph",
+      "text": "2 Related Work",
+      "page": 2,
+      "box": [
+        56.9,
+        184.12,
+        140.85,
+        192.51
+      ]
+    },
+    {
+      "id": "p2b3",
+      "type": "paragraph",
+      "text": "Typed decision models. Jev [1] defined the interface: a state, a set of typed questions (choice, yes/no, score), and a distribution per question. Open models followed: Bespoke Nimble 9B, fine-tuned from Qwen3.5-9B with LoRA on answer tokens only and released with its contrastively curated data and recipe [2]—its held-out comparison places the untuned 9B base at 66% against 90% for Nimble and 93% for Jev, and its evaluation notes insist that models be compared only on the same examples under the same procedure, which we adopt; Together’s Tev1 4B/0.8B, Cloudflare’s Clef, Amazon’s Strands Decider and Perplexity’s pplx-decider; Ollama 0.35 exposed them locally through /v1/systemone [3]. The LLM-as-Jev framework shows that any causal LLM can be scored under the same convention [5]. Jeva [4] encodes the request and each option separately, with an explicit null outcome, permutation invariance, scaling to thousands of candidates and reuse of option encodings across requests—a design aimed at two failures we also see in project assignment: over-use of none and reencoding a i fxed candidate set on every call; on this corpus the candidate-set reuse holds, while null awareness is an open-set property that our fixed-set comparison does not test (Section 6). An early evidence audit found 29 arXiv papers mentioning typed decision models within nine days of the Jev release and proposes an evaluation checklist [6], which we follow; a broader benchmark places Jev against nineteen general-purpose LLMs [7], and a data-driven analysis maps its functionality, applications and ecosystem [9].",
+      "page": 2,
+      "box": [
+        56.54,
+        201.86,
+        293.84,
+        533.7
+      ]
+    },
+    {
+      "id": "p2b4",
+      "type": "paragraph",
+      "text": "Decision models vs. classical classifiers. On network-flow classiifcation, Random Forest and Extra Trees trained on 8,000 records beat Jev in every test week [8]; a community test of 14 decision models on 56 triage tasks found a plain Qwen3.5-9B ahead of all of them. We take the classical baseline as the cost l foor every neural option must beat.",
+      "page": 2,
+      "box": [
+        56.72,
+        553.01,
+        292.75,
+        621.83
+      ]
+    },
+    {
+      "id": "p2b5",
+      "type": "paragraph",
+      "text": "Email classification and personal agents. Email classification predates LLMs by three decades: rule learning for mail filing [13], folder prediction on the Enron corpus [14, 15], reply prediction—“does this message need a reply”—and attachment prediction as the first “intelligent email” tasks [16], the former being exactly our needs-reply switch, and the observation that users need a handful of broad categories rather than many folders [17], which is what our six types and three switches are. That work trained per-user classifiers on a few hundred labelled messages, which is also where our baseline sits. What is new is the alternative: zero-shot decisions from a language model, generative or typed, without any per-user data—and the question of whether, for one inbox, that alternative beats a classifier trained on labels the user can produce in an afternoon. Privacy motivates the local setting: keeping the model where the data are is the premise of federated and on-device learning [18], and personal correspondence is the canonical example of data that should not leave the device.",
+      "page": 2,
+      "box": [
+        56.72,
+        641.14,
+        293.83,
+        781.69
+      ]
+    },
+    {
+      "id": "p2b6",
+      "type": "paragraph",
+      "text": "3 The System",
+      "page": 2,
+      "box": [
+        302.81,
+        160.67,
+        374.98,
+        171.38
+      ]
+    },
+    {
+      "id": "p2b7",
+      "type": "paragraph",
+      "text": "Foyer is a self-hosted personal inbox agent in daily use: it ingests the owner’s mail accounts, decides for each message what it is and what should happen to it, assigns it to a project, and runs small background agents on the result. For this study only the routing decisions matter, and at the time of the measurements they were produced as follows. Obvious noise (newsletters, bot senders, the owner’s own mail) was filtered by lists and rules. Type and urgency were assigned at ingest by a keyword heuristic (Appendix B.5): type is offer, request or update if one of a handful of Italian/English keywords appears in subject or snippet, else other; urgency is high or medium on a list of urgency words, else low. The heuristic can never produce client, spam or newsletter. The stored type field, however, also holds values written earlier by an LLM batch classiifer whose classes included client, spam and newsletter; on the 231 v2 emails it reads client 32 times. What we evaluate as the production baseline is that stored field, the stored production type, i.e. what the agent actually displayed, not the heuristic alone. Project assignment was the only decision taken by a generative LLM, prompted with a group of messages and the list of existing projects. Every decision is logged with a flow id, which gives provenance for the error analysis.",
+      "page": 2,
+      "box": [
+        302.2,
+        179.05,
+        539.65,
+        451.03
+      ]
+    },
+    {
+      "id": "p2b8",
+      "type": "paragraph",
+      "text": "At the time of the study the LLM backend was a hosted gateway with a local Ollama model as fallback; the local model had been demoted after timing out on CPU. The study therefore measures the production system as it actually ran, not as its documentation describes it: reading the code rather than the README revealed both that the local model was no longer primary and that type and urgency were never produced by a model at all. The pipeline above is the one measured here; after the measurements it was changed (Section 7).",
+      "page": 2,
+      "box": [
+        302.67,
+        454.99,
+        539.76,
+        571.14
+      ]
+    },
+    {
+      "id": "p2b9",
+      "type": "paragraph",
+      "text": "4 Measurement Protocol",
+      "page": 2,
+      "box": [
+        302.85,
+        586.05,
+        431.59,
+        594.43
+      ]
+    },
+    {
+      "id": "p2b10",
+      "type": "paragraph",
+      "text": "The stored classiifcation i feld is written by the model; counting it says nothing about error. We added a dataset_email command that:",
+      "page": 2,
+      "box": [
+        302.87,
+        604.38,
+        538.81,
+        636.21
+      ]
+    },
+    {
+      "id": "p2b11",
+      "type": "paragraph",
+      "text": "• samples stratified by predicted type (seven classes: re-",
+      "page": 2,
+      "box": [
+        303.02,
+        641.14,
+        539.72,
+        650.05
+      ]
+    },
+    {
+      "id": "p2b12",
+      "type": "paragraph",
+      "text": "quest, update, offer, client, other, spam, newsletter), because 39% of stored labels are other and 94% of urgencies low; uniform sampling would teach the prior, not the content; • freezes a snapshot of exactly what the model sees (sender,",
+      "page": 2,
+      "box": [
+        303.02,
+        653.17,
+        539.77,
+        709.96
+      ]
+    },
+    {
+      "id": "p2b13",
+      "type": "paragraph",
+      "text": "subject, body truncated to 1,500 characters, date, channel) next to the model’s prediction, so later re-runs cannot change the example; • assigns splits deterministically by thread, stratified by",
+      "page": 2,
+      "box": [
+        303.02,
+        712.9,
+        538.78,
+        757.78
+      ]
+    },
+    {
+      "id": "p2b14",
+      "type": "paragraph",
+      "text": "type: a first version keyed on sha1 ( id) put 1 1 threads across splits and gave 4 test emails a near-duplicate in train, so the unit is the thread (normalised subject + sender key), and, while the test split is below 60 emails, the primary protocol is 5-fold thread-grouped cross-validation with the baseline trained out-of-fold; • redacts secrets in the frozen body (passwords, tokens,",
+      "page": 2,
+      "box": [
+        311.22,
+        760.77,
+        539.3,
+        781.69
+      ]
+    },
+    {
+      "id": "p3b0",
+      "type": "paragraph",
+      "text": "card and account numbers) before storage—a pilot export contained a VPN password in clear text; • collects human labels in the interface: type, area, project,",
+      "page": 3,
+      "box": [
+        57.09,
+        125.3,
+        293.37,
+        158.17
+      ]
+    },
+    {
+      "id": "p3b1",
+      "type": "paragraph",
+      "text": "urgency, needs-reply, action-within-48h, is-noise; • reports, before any training, the only number that matters:",
+      "page": 3,
+      "box": [
+        57.09,
+        161.16,
+        293.19,
+        182.08
+      ]
+    },
+    {
+      "id": "p3b2",
+      "type": "paragraph",
+      "text": "how often the production model was right; • pre-registers the hypotheses of each new labelling round:",
+      "page": 3,
+      "box": [
+        57.09,
+        185.07,
+        293.19,
+        205.99
+      ]
+    },
+    {
+      "id": "p3b3",
+      "type": "paragraph",
+      "text": "for the third round, eleven hypotheses with thresholds and a veriifcation script were committed before the labelled f ile was opened (one post-hoc change: a format fix in the script, not a threshold).",
+      "page": 3,
+      "box": [
+        65.36,
+        208.98,
+        292.57,
+        253.8
+      ]
+    },
+    {
+      "id": "p3b4",
+      "type": "paragraph",
+      "text": "In the first round the id-keyed split placed 1 1 of 92 threads across splits and gave 4 test emails a near-duplicate in train; the second round was split by thread and stratified by type (train 159 / validation 39 / test 33), with one inherited thread still crossing. Because the i fxed test split holds no high and one offer, every number in this paper comes from thread-grouped cross-validation (trained baseline) or from all 231 rows (zero-shot systems); the fixed split is kept in the repository for future rounds.",
+      "page": 3,
+      "box": [
+        56.74,
+        257.75,
+        293.84,
+        362.35
+      ]
+    },
+    {
+      "id": "p3b5",
+      "type": "paragraph",
+      "text": "5 Experimental Setup",
+      "page": 3,
+      "box": [
+        56.96,
+        376.77,
+        171.42,
+        387.49
+      ]
+    },
+    {
+      "id": "p3b6",
+      "type": "paragraph",
+      "text": "Data. Three labelling rounds on the owner’s production database. Rounds 1–2 were sampled stratified by the stored production type: 1 19 emails on 20 October 2026 (4 skipped as ambiguous) and 120 on 21 October; eight rows marked ignore (private family mail, empty bodies) are excluded, leaving the v2 corpus: 231 emails in 207 threads, our unbiased reference. Round 3 (500 emails, 491 kept) was sampled adversarially: all 1 18 emails of the unlabelled pool in which Nimble or Gemma 4 saw offer or spam (G1), 125 on which the models disagreed on action-48h (G2), and 257 at random stratiifed on the baseline’s prediction (G3). The v3 corpus (722 emails, 698 threads) is therefore a stress test built on the LLMs’ presumed errors, not a sample of the natural inbox; system comparisons are reported on v2, and v3 is used for the pre-registered hypotheses, the contactgraph result and the action analysis. In the first round two model annotators proposed type and urgency and the owner confirmed or corrected each row in a spreadsheet that showed sender, subject, 700 characters of body and both proposals but not the production prediction (1 10/1 15 types and 104/1 15 urgencies survived review); in the second round the owner labelled from the model proposal with the same interface, then the full set was revised jointly with an assistant to apply the final label definitions below. The ground truth is therefore a single human reviewer anchored on model proposals; two blind annotators relabelled 60 v2 emails from scratch to measure how far it is shared (Section 9). Class distribution in Table 1.",
+      "page": 3,
+      "box": [
+        56.66,
+        395.13,
+        293.84,
+        724.82
+      ]
+    },
+    {
+      "id": "p3b7",
+      "type": "paragraph",
+      "text": "Labels. Label names are given in English throughout; the questions and class definitions shown to the models were in Italian (verbatim in Appendix B). Two axes were separated Table 1: Labelled corpus (231 emails after exclusions).",
+      "page": 3,
+      "box": [
+        56.87,
+        748.81,
+        292.57,
+        781.68
+      ]
+    },
+    {
+      "id": "p3b8",
+      "type": "paragraph",
+      "text": "n Relationship n Type",
+      "page": 3,
+      "box": [
+        420.69,
+        80.99,
+        463.93,
+        86.79
+      ]
+    },
+    {
+      "id": "p3b9",
+      "type": "paragraph",
+      "text": "1 15 update 132 service newsletter 53 client",
+      "page": 3,
+      "box": [
+        306.97,
+        92.43,
+        533.89,
+        98.26
+      ]
+    },
+    {
+      "id": "p3b10",
+      "type": "paragraph",
+      "text": "69 20 self",
+      "page": 3,
+      "box": [
+        417.55,
+        100.34,
+        534.03,
+        112.71
+      ]
+    },
+    {
+      "id": "p3b11",
+      "type": "paragraph",
+      "text": "18 request",
+      "page": 3,
+      "box": [
+        306.95,
+        108.27,
+        533.94,
+        114.02
+      ]
+    },
+    {
+      "id": "p3b12",
+      "type": "paragraph",
+      "text": "18 monitoring 14 other offer",
+      "page": 3,
+      "box": [
+        418.08,
+        116.1,
+        459.99,
+        121.9
+      ]
+    },
+    {
+      "id": "p3b13",
+      "type": "paragraph",
+      "text": "5 supplier",
+      "page": 3,
+      "box": [
+        420.79,
+        123.94,
+        452.32,
+        129.77
+      ]
+    },
+    {
+      "id": "p3b14",
+      "type": "paragraph",
+      "text": "8 spam 3 family / partner / institution 7 / 6 / 2 Urgency low / medium / high 161 / 59 / 1 1 needs-reply yes",
+      "page": 3,
+      "box": [
+        307.24,
+        124.02,
+        533.94,
+        137.65
+      ]
+    },
+    {
+      "id": "p3b15",
+      "type": "paragraph",
+      "text": "60",
+      "page": 3,
+      "box": [
+        528.07,
+        143.32,
+        534.14,
+        147.81
+      ]
+    },
+    {
+      "id": "p3b16",
+      "type": "paragraph",
+      "text": "Projects (incl. none)",
+      "page": 3,
+      "box": [
+        307.02,
+        151.2,
+        358.7,
+        157.0
+      ]
+    },
+    {
+      "id": "p3b17",
+      "type": "paragraph",
+      "text": "16 + 1 action-48h yes / is-noise yes 20 / 1 19",
+      "page": 3,
+      "box": [
+        408.0,
+        151.2,
+        534.03,
+        157.0
+      ]
+    },
+    {
+      "id": "p3b18",
+      "type": "paragraph",
+      "text": "after the first round, because the stored type mixed what a message says with who sent it. Type (six classes: request, update, offer, newsletter, spam, other) describes the message. Relationship (client, supplier, partner, family, institution, service, monitoring, self) describes the sender and is assigned per contact; client is someone who gives the owner work, an actual paying client rather than a prospective one (the definition the labels follow; Appendix C). The first-round guideline used a broader wording (any interaction that can lead to a deal); the i fve first-round emails labelled client under it are superseded by the v2 labels, and no reported result depends on that wording. Urgency has three levels. Three booleans are the agent’s switches: needs-reply (the agent drafts an answer), action-48h (the agent creates a task) and is-noise (the agents ignore the message; it is kept only as context). Project is the project the email belongs to as of October 2026; 26 rows are deliberately empty (“none”) because the project-manager agent has not proposed one yet.",
+      "page": 3,
+      "box": [
+        302.19,
+        171.47,
+        539.76,
+        383.68
+      ]
+    },
+    {
+      "id": "p3b19",
+      "type": "paragraph",
+      "text": "Systems. Stored production type: the type and urgency stored in the production database, written by the keyword heuristic of Appendix B.5 and, for part of the emails, by the earlier LLM batch classifier (Section 3); it has no output for the booleans and holds client for 32 rows, wrong by construction after the label change. Classical baseline: TF-IDF word 1–2-grams (20,000 features), logistic regression with balanced class weights, 5-fold cross-validation grouped by thread (207 threads), the only trained system. Its figures in the tables come from one split (seed 0); over five seeds of the split it scores 0.771 ± 0.021 on type (0.733 ± 0.010 urgency, 0.866 ± 0.020 needs-reply, 0.923 ± 0.012 action-48h, 0.917 ± 0.010 is-noise). Adding character 3–5-grams gives 0.785 ± 0.014 on type; we report it as a note, not as the baseline. Typed decision models: Tev1 0.8B on CPU",
+      "page": 3,
+      "box": [
+        302.39,
+        402.02,
+        539.75,
+        578.33
+      ]
+    },
+    {
+      "id": "p3b20",
+      "type": "paragraph",
+      "text": "(i5-1245UE), Tev1 4B and Nimble 9B (Q8) on a Kaggle T4",
+      "page": 3,
+      "box": [
+        302.76,
+        581.39,
+        538.31,
+        590.41
+      ]
+    },
+    {
+      "id": "p3b21",
+      "type": "paragraph",
+      "text": "via Ollama /v1/systemone, Jeva-4B [4] in-process on the same GPU, and Bespoke Nimble v4-max and TypeSafe Jev (jev-1.14.0) through their APIs. Generative LLMs: Qwen2.5-7B-Instruct, Gemma 4 26B-A4B and Gemma 4 31B through OpenRouter, JSON mode, temperature 0. All systems received the same Italian question and one-line class definitions (Appendix B), and the typed decision models the same question format: choice for type and urgency, choice yes/no with one definition per option for the three switches (Jev, Nimble v4-max and Jeva-4B also as noul, Table 3); the body was stripped of markup and URLs and truncated to 1,500 characters. Zero-shot systems were run once on all 231 rows. The hosted Gemma 4 26B is not deterministic at temperature 0 (0.774, 0.800, 0.791 on the first-round corpus; on type here, 0.740 and 0.749 on two runs); hosted figures are single-run estimates.",
+      "page": 3,
+      "box": [
+        302.51,
+        593.4,
+        539.76,
+        781.69
+      ]
+    }
+  ]
+}

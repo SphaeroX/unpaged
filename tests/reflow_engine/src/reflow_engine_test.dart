@@ -53,6 +53,19 @@ void main() {
       expect(paragraphs(input), hasLength(1));
     });
 
+    test('keeps a short last line without ascenders in the paragraph', () {
+      final input = DocumentInput(
+        pages: [
+          page(1, [
+            typesetLine('The Hessian has the largest eigenval-', y: 100),
+            typesetLine('ues.', y: 112),
+          ]),
+        ],
+      );
+
+      expect(paragraphs(input), ['The Hessian has the largest eigenvalues.']);
+    });
+
     test('starts a new paragraph at a first-line indent', () {
       final input = DocumentInput(
         pages: [

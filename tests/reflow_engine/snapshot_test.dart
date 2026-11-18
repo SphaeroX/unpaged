@@ -12,7 +12,13 @@ import 'corpus_test.dart' show loadFixture;
 /// never regenerated just to make a test pass (see docs/testing.md). To
 /// create a missing snapshot: `UPDATE_SNAPSHOTS=1 flutter test
 /// tests/reflow_engine/snapshot_test.dart`, then review the JSON by hand.
-const snapshotDocuments = ['synthetic_single_column', 'single_column_text'];
+const snapshotDocuments = [
+  'synthetic_single_column',
+  'synthetic_two_column',
+  'single_column_text',
+  'two_column_tables',
+  'two_column_formulas',
+];
 
 void main() {
   final update = Platform.environment['UPDATE_SNAPSHOTS'] == '1';

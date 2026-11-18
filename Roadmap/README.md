@@ -14,13 +14,13 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 und Task_02 erledigt.
+Stand: 2026-11-18 – Task_01 bis Task_03 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
 | 01 | Durchstich: Flutter-Gerüst, DE/EN, PDF öffnen und im Original anzeigen | erledigt |
 | 02 | Reflow-Spike & Engine-Basis | erledigt |
-| 03 | Spalten & Lesereihenfolge | offen |
+| 03 | Spalten & Lesereihenfolge | erledigt |
 | 04 | Blocktypen & Nicht-Text-Bereiche | offen |
 | 05 | Bibliothek & Import | offen |
 | 06 | Reflow-Pipeline in der App | offen |
@@ -42,6 +42,8 @@ Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamt
 - Externe Abhängigkeiten (pdfrx, Dateiauswahl, später DB) stecken hinter Interfaces in `lib/core/` mit Riverpod-Provider; Tests ersetzen sie per `overrideWithValue`. *(Task_01)*
 - Engine-Ein-/Ausgabe, Koordinatensystem (oben links, y nach unten) und Adapter-Besonderheiten: `docs/architecture.md`. Fixture- und Snapshot-Workflow: `docs/testing.md`. *(Task_02)*
 - Isolate-Frage geklärt: Extraktion und Engine laufen in `Isolate.run` (Host belegt). *(Task_02)*
+- Engine-Pipeline und Zuständigkeit der Dateien: `docs/architecture.md` (Abschnitt Architektur). *(Task_03)*
+- Der Nutzer hat Snapshot-Änderungen, die aus den geplanten Verbesserungen von Task 03/04 folgen, pauschal freigegeben (von Hand prüfen, im Commit begründen, im Abschlussbericht auflisten). Für spätere Tasks gilt wieder die Einzelfreigabe. *(Task_03)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details
@@ -51,4 +53,5 @@ Dinge, die global noch zu beachten sind: Besonderheiten, bekannte Einschränkung
 - Hauptrisiko ist die Reflow-Qualität bei Mehrspaltern; deshalb liegen die Engine-Tasks (02–04) vor der App-Integration. *(Roadmap-Anlage)*
 - Offene Entscheidungen des Nutzers: endgültige `applicationId` (Platzhalter `dev.paperflow`) und Copyright-Inhaber der MIT-Lizenz, beide spätestens in Task_12. *(Roadmap-Anlage)*
 - Cloud-Umgebung: Flutter unter `/opt/flutter`, Android-SDK unter `/opt/android-sdk` (nachinstalliert, nicht persistent). APK-Builds funktionieren; Integrationstests laufen dort **nicht** (kein Gerät/Emulator) und müssen lokal nachgeholt werden. *(Task_01)*
+- Bekannte Engine-Grenzen: mehr als zwei Spalten, abgesetzte Akzente (`supe´rieure`), teils zerlegte Ligaturen (`i feld`). *(Task_03)*
 - pdfrx liefert keine Schriftgrößen und keine Bild-/Linienobjekte, nur Zeichen + Boxen. *(Task_01)*

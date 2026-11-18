@@ -1,5 +1,5 @@
 {
-  "engineVersion": 1,
+  "engineVersion": 2,
   "blocks": [
     {
       "id": "p1b0",
@@ -38,21 +38,9 @@
       ]
     },
     {
-      "id": "p1b3",
-      "type": "paragraph",
-      "text": "1",
-      "page": 1,
-      "box": [
-        295.51,
-        783.47,
-        300.14,
-        791.71
-      ]
-    },
-    {
       "id": "p2b0",
       "type": "paragraph",
-      "text": "Introduction. --- Topological edge states are commonly discussed in systems with bulk band gaps, where boundary-localized modes are spectrally separated from extended bulk states and protected by topological invariants defined over the Brillouin zone [1, 2]. Representative examples include quantum Hall [3-6] and quantum spin Hall (QSH) phases [7-10], in which nontrivial Chern number, spin-Chern number or Z2 invariants guarantee robust chiral or helical boundary transport [11-13]. Within the conventional bulk-edge correspondence framework, the bulk gap plays a central role by defining the topological invariant and ensuring the robustness of boundary modes against disorder and backscattering [14, 15]. However, boundary transport is not restricted to such gapped settings. Recent studies have shown that unconventional boundary transport can also emerge in gapless systems, where edge states coexist with bulk modes. Two-dimensional graphene with gapless Dirac cones at Brillouin zone boundaries provides a representative platform in this context [16, 17]. Although global topological invariants are ill defined in gapless spectra, boundary-localized states may still appear over certain momentum ranges [18-20]. In graphene-like lattices, such states typically connect Dirac points at inequivalent valleys. When the two Dirac cones are energetically displaced while remaining gapless, their projections onto a given boundary occur at different energies. This energy displacement results in tilted edge-state dispersions and therefore gives rise to boundary transport beyond conventional helical or chiral scenarios. A representative example is the antichiral edge state [21-26], in which edge states on opposite boundaries propagate in the same direction. An analogous phenomenon can occur in time-reversal-invariant systems, where spin-up and spin-down states form Kramers pairs, giving rise to antihelical edge states [27-30]. In this case, states with the same spins propagate in the same direction on opposite boundaries, while states with opposite spins propagate in opposite directions along a given boundary as required by time-reversal symmetry. Recent studies have demonstrated",
+      "text": "Introduction. --- Topological edge states are commonly discussed in systems with bulk band gaps, where boundary-localized modes are spectrally separated from extended bulk states and protected by topological invariants defined over the Brillouin zone [1, 2]. Representative examples include quantum Hall [3-6] and quantum spin Hall (QSH) phases [7-10], in which nontrivial Chern number, spin-Chern number or Z2 invariants guarantee robust chiral or helical boundary transport [11-13]. Within the conventional bulk-edge correspondence framework, the bulk gap plays a central role by defining the topological invariant and ensuring the robustness of boundary modes against disorder and backscattering [14, 15]. However, boundary transport is not restricted to such gapped settings. Recent studies have shown that unconventional boundary transport can also emerge in gapless systems, where edge states coexist with bulk modes. Two-dimensional graphene with gapless Dirac cones at Brillouin zone boundaries provides a representative platform in this context [16, 17]. Although global topological invariants are ill defined in gapless spectra, boundary-localized states may still appear over certain momentum ranges [18-20]. In graphene-like lattices, such states typically connect Dirac points at inequivalent valleys. When the two Dirac cones are energetically displaced while remaining gapless, their projections onto a given boundary occur at different energies. This energy displacement results in tilted edge-state dispersions and therefore gives rise to boundary transport beyond conventional helical or chiral scenarios. A representative example is the antichiral edge state [21-26], in which edge states on opposite boundaries propagate in the same direction. An analogous phenomenon can occur in time-reversal-invariant systems, where spin-up and spin-down states form Kramers pairs, giving rise to antihelical edge states [27-30]. In this case, states with the same spins propagate in the same direction on opposite boundaries, while states with opposite spins propagate in opposite directions along a given boundary as required by time-reversal symmetry. Recent studies have demonstrated antihelical edge states in photonic systems through engineered coupling phases. Xie et al. introduced direction-dependent complex couplings in a coupled-resonator lattice to realize a photonic topological metal with antihelical edge states [31]. Liu et al. exploited pseudo-spin-dependent winding phases associated with higher-order resonator modes to achieve analogous boundary transport [32]. In contrast, a natural yet largely unexploited strategy in photonics is to introduce staggered next-nearest-neighbor (NNN) couplings within a conventional Kane-Mele framework [27, 33, 34]. This staggered NNN coupling produces spin-dependent energy shifts of the Dirac cones and thereby provides the underlying mechanism for antihelical edge states.",
       "page": 2,
       "box": [
         54.01,
@@ -62,33 +50,9 @@
       ]
     },
     {
-      "id": "p2b1",
-      "type": "paragraph",
-      "text": "2",
-      "page": 2,
-      "box": [
-        295.25,
-        783.35,
-        300.25,
-        791.71
-      ]
-    },
-    {
       "id": "p3b0",
       "type": "paragraph",
-      "text": "antihelical edge states in photonic systems through engineered coupling phases. Xie et al. introduced direction-dependent complex couplings in a coupled-resonator lattice to realize a photonic topological metal with antihelical edge states [31]. Liu et al. exploited pseudo-spin-dependent winding phases associated with higher-order resonator modes to achieve analogous boundary transport [32]. In contrast, a natural yet largely unexploited strategy in photonics is to introduce staggered next-nearest-neighbor (NNN) couplings within a conventional Kane-Mele framework [27, 33, 34]. This staggered NNN coupling produces spin-dependent energy shifts of the Dirac cones and thereby provides the underlying mechanism for antihelical edge states.",
-      "page": 3,
-      "box": [
-        54.12,
-        83.49,
-        543.73,
-        313.0
-      ]
-    },
-    {
-      "id": "p3b1",
-      "type": "paragraph",
-      "text": "In this work, we establish antihelical edge transport within a modified Kane-Mele framework implemented in electromagnetic-dual photonic metacrystals. Reversing the spin-dependent next- nearest-neighbor coupling on one sublattice reorganizes the bulk spectrum into a spin-polarized Dirac semimetal (SP-DSM) characterized by pseudospin-dependent Dirac-cone energy shifts. In zigzag ribbon geometries, this bulk Dirac-cone reorganization produces tilted dispersions and gapless antihelical edge transport coexisting with bulk modes. In finite geometries, the symmetry-dependent matching of these antihelical boundary modes governs their behavior at structural corners, giving rise to corner-localized modes at 120° corners. To assess practical feasibility, we propose a realistic metacrystal based on split-ring metaatoms with opposite gap orientations to implement the required staggered bianisotropy. Furthermore, exploiting the tensorial freedom of bianisotropic constitutive relations, we show that the electromagnetic pseudospin basis can be continuously manipulated and spatially reconfigured while preserving the boundary-localized transport.",
+      "text": "In this work, we establish antihelical edge transport within a modified Kane-Mele framework implemented in electromagnetic-dual photonic metacrystals. Reversing the spin-dependent next-nearest-neighbor coupling on one sublattice reorganizes the bulk spectrum into a spin-polarized Dirac semimetal (SP-DSM) characterized by pseudospin-dependent Dirac-cone energy shifts. In zigzag ribbon geometries, this bulk Dirac-cone reorganization produces tilted dispersions and gapless antihelical edge transport coexisting with bulk modes. In finite geometries, the symmetry-dependent matching of these antihelical boundary modes governs their behavior at structural corners, giving rise to corner-localized modes at 120° corners. To assess practical feasibility, we propose a realistic metacrystal based on split-ring metaatoms with opposite gap orientations to implement the required staggered bianisotropy. Furthermore, exploiting the tensorial freedom of bianisotropic constitutive relations, we show that the electromagnetic pseudospin basis can be continuously manipulated and spatially reconfigured while preserving the boundary-localized transport.",
       "page": 3,
       "box": [
         54.1,
@@ -98,7 +62,7 @@
       ]
     },
     {
-      "id": "p3b2",
+      "id": "p3b1",
       "type": "paragraph",
       "text": "Tight-binding Models and Antihelical Edge States. --- We begin with the conventional Kane-",
       "page": 3,
@@ -107,18 +71,6 @@
         738.86,
         540.86,
         749.89
-      ]
-    },
-    {
-      "id": "p3b3",
-      "type": "paragraph",
-      "text": "3",
-      "page": 3,
-      "box": [
-        295.1,
-        783.35,
-        300.26,
-        791.83
       ]
     }
   ]
