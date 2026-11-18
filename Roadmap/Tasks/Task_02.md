@@ -67,7 +67,8 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 
 ## Offene Fragen / Annahmen
 
-- Der Agent wählt die Korpus-PDFs selbst (Nutzerentscheidung); nur Dateien mit eindeutig freier Lizenz.
+- Der Agent wählt die Korpus-PDFs selbst (Nutzerentscheidung); nur Dateien mit eindeutig freier Lizenz. Hinweis aus Task_01: arxiv.org ist in der Cloud-Umgebung erreichbar; viele aktuelle Paper stehen unter CC BY 4.0 bzw. CC0 (Lizenz-Link auf der `abs`-Seite prüfen). Zum Kleinhalten des Repos dürfen Seiten ausgeschnitten werden (bei CC BY mit Hinweis auf die Änderung in `SOURCES.md`).
+- pdfrx liefert pro Zeichen nur Text und Box (`PdfPage.loadText()` → `PdfPageRawText.fullText`/`charRects`), **keine Schriftgröße**: Die Schriftgröße im Eingabemodell wird aus der Box-Höhe geschätzt.
 - Ob die Engine-Tests mit JSON-Fixtures oder anders an Zeichendaten kommen, entscheidet dieser Task.
 
 ## Notizen zu diesem Task

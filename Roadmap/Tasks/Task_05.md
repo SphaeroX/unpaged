@@ -65,6 +65,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Welches Paket für Intents genutzt wird (oder eigener Platform-Channel), entscheidet der Task nach Lizenzprüfung.
+- Aus Task_01: `file_picker` liefert auf Android ggf. `content://`-URIs, dann ist `PlatformFile.path` `null`. Der Import muss deshalb über Bytes/Streams (z. B. `PlatformFile.xFile`) kopieren; `PdfPicker` entsprechend umbauen.
 
 ## Notizen zu diesem Task
 

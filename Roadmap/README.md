@@ -14,11 +14,11 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Roadmap angelegt, noch kein Task begonnen.
+Stand: 2026-11-18 – Task_01 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
-| 01 | Durchstich: Flutter-Gerüst, DE/EN, PDF öffnen und im Original anzeigen | offen |
+| 01 | Durchstich: Flutter-Gerüst, DE/EN, PDF öffnen und im Original anzeigen | erledigt |
 | 02 | Reflow-Spike & Engine-Basis | offen |
 | 03 | Spalten & Lesereihenfolge | offen |
 | 04 | Blocktypen & Nicht-Text-Bereiche | offen |
@@ -38,6 +38,8 @@ Status ist `offen`, `läuft` (Datei trägt das Präfix `RUN_`) oder `erledigt` (
 Globale Informationen, Architekturentscheidungen und Wissen, das für das gesamte Projekt gilt. Wird laufend ergänzt; jeden Eintrag mit dem Task kennzeichnen, aus dem er stammt.
 
 - Projektregeln, Stack und Architektur stehen in der Root-`AGENTS.md` und in `docs/`; hier nur, was sich während der Roadmap ergibt. *(Roadmap-Anlage)*
+- Flutter 3.50 / Dart 3.14: Material kommt aus `package:material_ui/material_ui.dart`; Konstruktoren als `const new(...)`; Details in `docs/architecture.md` und `docs/code-style.md`. *(Task_01)*
+- Externe Abhängigkeiten (pdfrx, Dateiauswahl, später DB) stecken hinter Interfaces in `lib/core/` mit Riverpod-Provider; Tests ersetzen sie per `overrideWithValue`. *(Task_01)*
 - Tests liegen unter `tests/app/`, `tests/reflow_engine/`, `tests/integration/` und werden mit expliziten Pfaden ausgeführt (siehe `docs/testing.md`). *(Roadmap-Anlage)*
 
 ## Auffälligkeiten & Details
@@ -46,4 +48,5 @@ Dinge, die global noch zu beachten sind: Besonderheiten, bekannte Einschränkung
 
 - Hauptrisiko ist die Reflow-Qualität bei Mehrspaltern; deshalb liegen die Engine-Tasks (02–04) vor der App-Integration. *(Roadmap-Anlage)*
 - Offene Entscheidungen des Nutzers: endgültige `applicationId` (Platzhalter `dev.paperflow`) und Copyright-Inhaber der MIT-Lizenz, beide spätestens in Task_12. *(Roadmap-Anlage)*
-- In der Umgebung, in der die Roadmap angelegt wurde, war kein Flutter-SDK installiert. *(Roadmap-Anlage)*
+- Cloud-Umgebung: Flutter unter `/opt/flutter`, Android-SDK unter `/opt/android-sdk` (nachinstalliert, nicht persistent). APK-Builds funktionieren; Integrationstests laufen dort **nicht** (kein Gerät/Emulator) und müssen lokal nachgeholt werden. *(Task_01)*
+- pdfrx liefert keine Schriftgrößen und keine Bild-/Linienobjekte, nur Zeichen + Boxen. *(Task_01)*

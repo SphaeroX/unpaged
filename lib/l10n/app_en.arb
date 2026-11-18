@@ -1,0 +1,8 @@
+{
+  "@@locale": "en",
+  "appTitle": "paperflow",
+  "openPdf": "Open PDF",
+  "@openPdf": {"description": "Button that opens the system file picker for a PDF"},
+  "pdfOpenError": "This PDF could not be opened.",
+  "@pdfOpenError": {"description": "Shown when a PDF file is unreadable or damaged"}
+}

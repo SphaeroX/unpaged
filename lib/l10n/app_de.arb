@@ -1,0 +1,6 @@
+{
+  "@@locale": "de",
+  "appTitle": "paperflow",
+  "openPdf": "PDF öffnen",
+  "pdfOpenError": "Diese PDF konnte nicht geöffnet werden."
+}

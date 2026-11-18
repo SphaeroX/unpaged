@@ -14,6 +14,19 @@
 | Tests | `flutter_test`, `mocktail`, `integration_test` | Siehe `docs/testing.md` |
 | Lint / Format | `very_good_analysis`, `flutter analyze`, `dart format` | Siehe `docs/code-style.md` |
 
+### Abhängigkeiten und Lizenzen
+
+| Paket | Zweck | Lizenz |
+|---|---|---|
+| `material_ui` | Material-Widgets (seit Flutter 3.50 eigenes Paket, nicht mehr `package:flutter/material.dart`) | BSD-3-Clause |
+| `pdfrx` / `pdfrx_engine` (bringt `pdfium_dart`/`pdfium_flutter` mit) | PDF-Rendering und Text; PDFium wird als Native Asset gebündelt | MIT (PDFium: BSD-3-Clause/Apache-2.0) |
+| `flutter_riverpod` | State Management | MIT |
+| `file_picker` | Dateiauswahl | MIT |
+| `intl`, `flutter_localizations` | l10n | BSD-3-Clause |
+| `very_good_analysis` (dev) | Lint-Regeln | MIT |
+| `mocktail` (dev) | Mocks | MIT |
+| `integration_test`, `flutter_test` (dev) | Tests | BSD-3-Clause |
+
 ## Verbindliche Rahmenbedingungen
 
 - **Komplett offline.** Keine Netzwerkzugriffe, keine Analytics, keine Crash-Reporter; es verlassen keine Daten das Gerät.
@@ -44,12 +57,11 @@
 
 ## Umgebung
 
-- Flutter-SDK vom Kanal `stable`; die genutzte Version wird in `pubspec.yaml` (`environment`) festgehalten.
+- Flutter-SDK vom Kanal `stable` (eingerichtet mit Flutter 3.50.0 / Dart 3.14); die SDK-Untergrenze steht in `pubspec.yaml` (`environment`).
+- Android: `applicationId`/`namespace` `dev.paperflow` (Platzhalter), `minSdk = 24` in `android/app/build.gradle.kts`.
+- Material-Widgets immer aus `package:material_ui/material_ui.dart` importieren. Lokalisierung: `AppLocalizations.delegate` plus `GlobalMaterialLocalizations.delegates` aus `material_ui` (die Delegates aus `flutter_localizations` reichen für Material-Widgets nicht).
+- pdfrx in der App vor direkter Dokument-API mit `pdfrxFlutterInitialize()` initialisieren; in Host-Tests (`flutter test`) stattdessen `pdfrxInitialize(tmpPath: ...)` aus pdfrx_engine, da dort keine Flutter-Plugins laufen.
 - Abhängigkeiten nur mit `flutter pub add` / `flutter pub get` (im Engine-Paket `dart pub`). `pubspec.lock` der App wird versioniert.
-
-## Erster Implementierungsschritt
-
-Noch nicht ausgeführt: `flutter create --org dev.paperflow --project-name paperflow --platforms android .` im Projekt-Root, danach den Standard-Ordner `test/` entfernen (Tests liegen unter `tests/`, siehe `docs/testing.md`).
 
 ## Offene Entscheidungen
 

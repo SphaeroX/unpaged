@@ -10,6 +10,8 @@
 
 ## Verbindlich
 
+- Dart 3.14: Konstruktoren in der neuen Kurzform `const new(...)` schreiben (Lint `unnecessary_type_name_in_constructor`); `dart fix --apply` erledigt das.
+- `public_member_api_docs` ist abgeschaltet (App-Code, keine öffentliche Bibliothek).
 - Lint-Regeln nicht per `// ignore:` umgehen, außer mit Kommentar, der den Grund nennt.
 - Keine generierten Riverpod-Provider (`riverpod_generator`); Provider von Hand schreiben. Codegenerierung ist nur für drift erlaubt.
 - Alle sichtbaren Texte über `AppLocalizations` (ARB-Dateien), keine hart kodierten Strings in Widgets.

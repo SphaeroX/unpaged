@@ -64,7 +64,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Annahme: Fehlklassifikationen werden in Kauf genommen, solange kein Text verloren geht; im Zweifel lieber als Bildausschnitt.
-- Ob pdfrx Bild- oder Linienobjekte liefert, ist offen; Ergebnis aus Task_02 prüfen.
+- pdfrx 3 bietet in der öffentlichen API keine Bild- oder Linienobjekte (Stand Task_01); Abbildungen müssen daher über textfreie Flächen + Bildunterschrift erkannt werden, sofern Task_02 nichts anderes herausfindet.
 
 ## Notizen zu diesem Task
 

@@ -24,7 +24,7 @@ dart format .                                          # Format
 flutter build apk --release                            # Release-Build
 ```
 
-Das Flutter-Gerüst existiert noch nicht; der erste Implementierungsschritt steht in `docs/architecture.md`.
+Integrationstests und APK-Builds brauchen das Android-SDK (`ANDROID_HOME`); Integrationstests zusätzlich ein Gerät oder einen Emulator.
 
 ## Dokumentation (bei Bedarf laden)
 
