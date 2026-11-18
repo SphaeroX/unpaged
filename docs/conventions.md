@@ -33,6 +33,7 @@
 
 - Workflow `.github/workflows/android.yml` (GitHub Actions, Flutter 3.50.0, Java 21): bei jedem Push/PR auf `main` Format-Check, `flutter analyze`, `flutter test tests/app tests/reflow_engine` und Release-APK als Artefakt.
 - Release: Tag `vX.Y.Z` pushen (`git tag v1.0.0 && git push origin v1.0.0`) oder den Workflow manuell mit Eingabe `version` (z. B. `1.0.0`) starten – dann legt er das Tag `v1.0.0` selbst an → APK `unpaged-X.Y.Z.apk` wird als GitHub-Release veröffentlicht (Versionsname aus dem Tag, Build-Nummer = Lauf-Nummer).
+- Screenshots: Workflow `.github/workflows/screenshots.yml` startet bei Pushes auf `main`, die App-Code, Assets, Android, Engine, `pubspec.*` oder `tests/screenshots/` ändern (und manuell), einen Android-Emulator (API 34, Pixel 6), führt `tests/screenshots/screenshots_test.dart` per `flutter drive` aus und committet geänderte Bilder in `docs/screenshots/` als `github-actions[bot]` mit `[skip ci]`. Die `README.md` bindet diese Dateien ein und ist damit immer aktuell. Neue Screens: Aufnahme im Test ergänzen und in der README-Tabelle verlinken.
 - Signatur: Mit den Repository-Secrets `ANDROID_KEYSTORE_BASE64` (Keystore als Base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` schreibt der Workflow `android/key.properties` + Keystore und `android/app/build.gradle.kts` signiert damit; ohne Secrets wird mit dem Debug-Schlüssel signiert (nur zum Testen, Updates zwischen beiden Varianten sind nicht möglich). Keystore und `key.properties` nie committen (stehen in `.gitignore`).
 
 ---

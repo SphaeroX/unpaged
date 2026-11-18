@@ -12,6 +12,7 @@ coverage/
 
 # Android
 android/.gradle/
+android/.kotlin/
 android/captures/
 android/local.properties
 android/key.properties
@@ -50,3 +51,6 @@ Thumbs.db
 # Lokale Agent-Dateien
 CLAUDE.local.md
 .claude/settings.local.json
+
+# Arbeitsdateien des Launch-Videos (/brag)
+brag-output/
