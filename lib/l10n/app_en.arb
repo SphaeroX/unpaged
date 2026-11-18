@@ -39,5 +39,11 @@
     }
   },
   "reflowFailed": "eBook mode could not be prepared",
-  "reflowNoText": "No text – original view only"
+  "reflowNoText": "No text – original view only",
+  "readerUnavailable": "The eBook version is missing or damaged.",
+  "prepareAgain": "Prepare again",
+  "switchToEbook": "eBook view",
+  "switchToOriginal": "Original view",
+  "ebookNotReady": "The eBook version is not ready yet.",
+  "zoomClose": "Close"
 }

@@ -70,6 +70,12 @@
 - `ReflowScheduler` (Interface `ReflowQueue`, Provider `reflowSchedulerProvider`) arbeitet Bücher nacheinander ab. Beim Start der Bibliothek: alle `pending`/`running` (unterbrochen) und `done` mit älterer `engineVersion` neu; `failed`/`noText` werden nicht automatisch wiederholt. Nach einem Import wird das Buch eingereiht.
 - Löschen eines Buchs entfernt auch seinen Reflow-Cache.
 
+### eBook-Ansicht (Task 07)
+
+- `ReaderScreen` (`lib/features/reader/presentation/`) lädt das Dokument über `reflowDocumentProvider(bookId)` und zeigt die Blöcke in einer `ListView.builder` (lazy). Stile: Überschrift nach `level` (`headlineSmall` / `titleLarge` / `titleMedium`), Absatz `bodyLarge`, Listeneintrag eingerückt, Bildunterschrift kursiv. Bereiche als `Image.file` aus dem `ReflowStore`; Antippen öffnet eine Zoom-Ansicht (`InteractiveViewer`, Doppeltipp zoomt).
+- Fehlt das Dokument oder ist es beschädigt: Hinweis + „Neu vorbereiten“ (Status `pending`, `reflowSchedulerProvider.enqueue`).
+- Umschalten: `ViewerScreen` (mit `bookId`) hat eine Aktion „eBook-Ansicht“, die nur bei `ReflowStatus.done` wechselt (sonst SnackBar mit Status); `ReaderScreen` hat „Originalansicht“. Gewechselt wird per `pushReplacement`; der Sprung an die passende Stelle folgt in Task 09.
+
 ### Markierungen und Lesestand
 
 - Original: verankert an Seite + Zeichenbereich.

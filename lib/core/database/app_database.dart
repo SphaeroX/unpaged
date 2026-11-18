@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
 
 part 'app_database.g.dart';
 
@@ -43,9 +44,17 @@ class AppDatabase extends _$AppDatabase {
     books,
   )..orderBy([(b) => OrderingTerm.desc(b.importedAt)])).watch();
 
+  Stream<Book?> watchBook(String id) =>
+      (select(books)..where((b) => b.id.equals(id))).watchSingleOrNull();
+
   Future<Book?> bookById(String id) =>
       (select(books)..where((b) => b.id.equals(id))).getSingleOrNull();
 }
+
+final StreamProviderFamily<Book?, String> bookProvider =
+    StreamProvider.family<Book?, String>(
+      (ref, id) => ref.watch(databaseProvider).watchBook(id),
+    );
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase.defaults();

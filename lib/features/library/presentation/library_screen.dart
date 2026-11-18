@@ -70,7 +70,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final path = ref.read(bookFileStoreProvider).fileFor(book.id).path;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => ViewerScreen(path: path, title: book.title),
+        builder: (_) =>
+            ViewerScreen(path: path, title: book.title, bookId: book.id),
       ),
     );
   }

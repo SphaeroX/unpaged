@@ -18,19 +18,23 @@ class TestEnv {
     : db = AppDatabase(NativeDatabase.memory()),
       dir = Directory.systemTemp.createTempSync('paperflow_test') {
     store = BookFileStore(dir);
+    reflow = ReflowStore(dir);
   }
 
   final AppDatabase db;
   final Directory dir;
   late final BookFileStore store;
+  late final ReflowStore reflow;
 
   /// Background reflow is switched off in widget tests unless a test
   /// overrides [reflowSchedulerProvider] itself.
-  List<dynamic> get overrides => [
+  List<dynamic> get overrides => overridesWith();
+
+  List<dynamic> overridesWith({ReflowQueue? queue}) => [
     databaseProvider.overrideWithValue(db),
     bookFileStoreProvider.overrideWithValue(store),
-    reflowStoreProvider.overrideWithValue(ReflowStore(dir)),
-    reflowSchedulerProvider.overrideWithValue(NoopReflowScheduler()),
+    reflowStoreProvider.overrideWithValue(reflow),
+    reflowSchedulerProvider.overrideWithValue(queue ?? NoopReflowScheduler()),
   ];
 
   /// Unmounts the app and lets drift's stream timers run out. Call at the

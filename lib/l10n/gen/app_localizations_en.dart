@@ -60,4 +60,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reflowNoText => 'No text – original view only';
+
+  @override
+  String get readerUnavailable => 'The eBook version is missing or damaged.';
+
+  @override
+  String get prepareAgain => 'Prepare again';
+
+  @override
+  String get switchToEbook => 'eBook view';
+
+  @override
+  String get switchToOriginal => 'Original view';
+
+  @override
+  String get ebookNotReady => 'The eBook version is not ready yet.';
+
+  @override
+  String get zoomClose => 'Close';
 }

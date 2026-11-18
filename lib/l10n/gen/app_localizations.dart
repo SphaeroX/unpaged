@@ -175,6 +175,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No text – original view only'**
   String get reflowNoText;
+
+  /// No description provided for @readerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The eBook version is missing or damaged.'**
+  String get readerUnavailable;
+
+  /// No description provided for @prepareAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare again'**
+  String get prepareAgain;
+
+  /// No description provided for @switchToEbook.
+  ///
+  /// In en, this message translates to:
+  /// **'eBook view'**
+  String get switchToEbook;
+
+  /// No description provided for @switchToOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Original view'**
+  String get switchToOriginal;
+
+  /// No description provided for @ebookNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'The eBook version is not ready yet.'**
+  String get ebookNotReady;
+
+  /// No description provided for @zoomClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get zoomClose;
 }
 
 class _AppLocalizationsDelegate

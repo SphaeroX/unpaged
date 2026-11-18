@@ -14,7 +14,7 @@ paperflow ist ein Open-Source-PDF-Reader für Android (MIT, Google Play Store, C
 
 ## Aktueller Status
 
-Stand: 2026-11-18 – Task_01 bis Task_06 erledigt.
+Stand: 2026-11-18 – Task_01 bis Task_07 erledigt.
 
 | Task | Titel | Status |
 |---|---|---|
@@ -24,7 +24,7 @@ Stand: 2026-11-18 – Task_01 bis Task_06 erledigt.
 | 04 | Blocktypen & Nicht-Text-Bereiche | erledigt |
 | 05 | Bibliothek & Import | erledigt |
 | 06 | Reflow-Pipeline in der App | erledigt |
-| 07 | eBook-Leseansicht | offen |
+| 07 | eBook-Leseansicht | erledigt |
 | 08 | Lese-Einstellungen | offen |
 | 09 | Lesestand | offen |
 | 10 | Markierungen im Original | offen |

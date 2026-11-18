@@ -61,4 +61,23 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get reflowNoText => 'Kein Text – nur Originalansicht';
+
+  @override
+  String get readerUnavailable =>
+      'Die eBook-Fassung fehlt oder ist beschädigt.';
+
+  @override
+  String get prepareAgain => 'Neu vorbereiten';
+
+  @override
+  String get switchToEbook => 'eBook-Ansicht';
+
+  @override
+  String get switchToOriginal => 'Originalansicht';
+
+  @override
+  String get ebookNotReady => 'Die eBook-Fassung ist noch nicht fertig.';
+
+  @override
+  String get zoomClose => 'Schließen';
 }

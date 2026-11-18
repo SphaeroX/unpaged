@@ -59,6 +59,7 @@ Der Task gilt erst als fertig, wenn alle Punkte erfüllt und durch Tests oder ei
 ## Offene Fragen / Annahmen
 
 - Welche Schriften mitgeliefert werden, entscheidet der Task (Annahme: 2–3 gut lesbare Serif/Sans-Schriften unter OFL).
+- Aus Task_07: `ReaderScreen._TextBlock` bildet Stile aus `Theme.of(context).textTheme`; dort Schrift/Größe/Zeilenabstand anwenden. Schriften müssen offline im App-Bundle liegen (kein `google_fonts`-Download zur Laufzeit).
 
 ## Notizen zu diesem Task
 

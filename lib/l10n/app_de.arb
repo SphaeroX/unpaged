@@ -12,5 +12,11 @@
   "alreadyInLibrary": "Diese PDF ist bereits in deiner Bibliothek.",
   "reflowRunning": "eBook wird vorbereitet … {percent} %",
   "reflowFailed": "eBook-Modus konnte nicht vorbereitet werden",
-  "reflowNoText": "Kein Text – nur Originalansicht"
+  "reflowNoText": "Kein Text – nur Originalansicht",
+  "readerUnavailable": "Die eBook-Fassung fehlt oder ist beschädigt.",
+  "prepareAgain": "Neu vorbereiten",
+  "switchToEbook": "eBook-Ansicht",
+  "switchToOriginal": "Originalansicht",
+  "ebookNotReady": "Die eBook-Fassung ist noch nicht fertig.",
+  "zoomClose": "Schließen"
 }

@@ -3,10 +3,13 @@ import 'package:paperflow/features/library/presentation/library_screen.dart';
 import 'package:paperflow/l10n/gen/app_localizations.dart';
 
 class PaperflowApp extends StatelessWidget {
-  const new({super.key, this.locale});
+  const new({super.key, this.locale, this.home});
 
   /// Forces a locale (tests); `null` follows the device language.
   final Locale? locale;
+
+  /// Start screen override (tests); defaults to the library.
+  final Widget? home;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class PaperflowApp extends StatelessWidget {
         ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const LibraryScreen(),
+      home: home ?? const LibraryScreen(),
     );
   }
 }

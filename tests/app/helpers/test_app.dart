@@ -8,9 +8,10 @@ Widget buildTestApp({
   // not exported under a stable name across Riverpod versions.
   List<dynamic> overrides = const [],
   Locale locale = const Locale('en'),
+  Widget? home,
 }) {
   return ProviderScope(
     overrides: overrides.cast(),
-    child: PaperflowApp(locale: locale),
+    child: PaperflowApp(locale: locale, home: home),
   );
 }
