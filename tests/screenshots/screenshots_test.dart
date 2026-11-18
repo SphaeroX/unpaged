@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:unpaged/core/database/app_database.dart';
 import 'package:unpaged/core/files/book_file_store.dart';
 import 'package:unpaged/core/files/pdf_picker.dart';
 import 'package:unpaged/core/files/pdf_source.dart';
@@ -72,6 +74,11 @@ void main() {
     await tester.pumpWidget(
       buildTestApp(
         overrides: [
+          // Fresh library on every run (the app's own database survives
+          // reinstalls of the test build).
+          databaseProvider.overrideWithValue(
+            AppDatabase(NativeDatabase.memory()),
+          ),
           pdfPickerProvider.overrideWithValue(_QueuePicker(paths)),
           bookFileStoreProvider.overrideWithValue(BookFileStore(tmp)),
           reflowStoreProvider.overrideWithValue(ReflowStore(tmp)),
@@ -104,7 +111,7 @@ void main() {
     await _settle(tester);
     await binding.takeScreenshot('03_ebook');
 
-    // A figure kept as a crop of the original page.
+    // The first region (table, figure or formula) kept as a crop of the page.
     // (`scrollUntilVisible` cannot take `.first` of a finder that is still
     // empty, so scroll by hand until the first crop is built.)
     final figure = find.byType(Image);

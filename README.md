@@ -25,8 +25,8 @@ Everything happens on the device. Unpaged has no network access, no analytics an
 | Library | Original page | eBook mode |
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/01_library.png" alt="Library with three books" width="240"> | <img src="docs/screenshots/02_original.png" alt="Two-column paper in the original view" width="240"> | <img src="docs/screenshots/03_ebook.png" alt="The same paper reflowed in eBook mode" width="240"> |
-| **Figures as crops** | **Reading settings** | **Dark theme** |
-| <img src="docs/screenshots/04_ebook_figure.png" alt="A figure kept as an image of the original page" width="240"> | <img src="docs/screenshots/05_settings_sepia.png" alt="Reading settings with the sepia theme" width="240"> | <img src="docs/screenshots/06_ebook_dark.png" alt="eBook mode in the dark theme" width="240"> |
+| **Formulas as crops** | **Reading settings** | **Dark theme** |
+| <img src="docs/screenshots/04_ebook_figure.png" alt="A formula kept as an image of the original page" width="240"> | <img src="docs/screenshots/05_settings_sepia.png" alt="Reading settings with the sepia theme" width="240"> | <img src="docs/screenshots/06_ebook_dark.png" alt="eBook mode in the dark theme" width="240"> |
 
 ## Features
 
