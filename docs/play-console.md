@@ -2,7 +2,9 @@
 
 > Wann lesen: bevor Formulare in der Play Console geändert werden oder wenn sich Berechtigungen, Datenverarbeitung oder Zielgruppe der App ändern. Grundlage ist das tatsächliche Verhalten der App (siehe `docs/architecture.md`, Abschnitt „Verbindliche Rahmenbedingungen“).
 
-App: „Unpaged“, Paket `io.github.sphaerox.unpaged`, kostenlos.
+App: „Unpaged: PDF reader & eBook“, Paket `io.github.sphaerox.unpaged`, kostenlos.
+
+Stand 18.11.2026: alle Erklärungen unter „App-Inhalte“ und die Store-Einstellungen sind so eingetragen wie unten beschrieben. Offen ist nur die Veröffentlichung selbst (Länder/Regionen, Release im gewünschten Track, Einreichung zur Prüfung).
 
 ## Datenschutzerklärung
 
@@ -24,6 +26,8 @@ Nein, die App enthält keine Werbung.
 - Standort wird mit anderen geteilt: Nein
 - Digitale Käufe: Nein
 - Web-Browser oder Suchmaschine: Nein
+- E-Mail für IARC: prompt-engineered@protonmail.com
+- Ergebnis: Altersfreigabe ab 0 (u. a. USK 0, PEGI 3, ESRB Everyone)
 - Hinweis: Die App zeigt Inhalte aus PDFs, die der Nutzer selbst öffnet; sie liefert keine eigenen Inhalte aus.
 
 ## Zielgruppe und Inhalte
@@ -41,13 +45,14 @@ Nein, die App enthält keine Werbung.
 ## Weitere Erklärungen
 
 - Werbe-ID: Die App verwendet keine Werbe-ID.
-- Behörden-App: Nein. Finanzfunktionen: keine. Gesundheits-App: Nein. News-App: Nein.
+- App-Zugriff (Anmeldedaten): kein Teil der App ist zugangsbeschränkt.
+- Behörden-App: Nein. Finanzfunktionen: „Meine App bietet keine Finanzfunktionen“. Gesundheits-App: „Meine App hat keine Gesundheitsfunktionen“. News-App: Nein.
 - Berechtigungen: keine (die zusammengeführte Manifest-Datei enthält nur die interne Kennung `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` von androidx).
 
 ## Store-Einstellungen
 
 - App-Kategorie: Bücher & Nachschlagewerke
-- Tags: passend zu PDF-Reader/eBook-Reader, soweit die Console sie anbietet
+- Tags: „Bücher & Nachschlagewerke“, „E-Reader“ (einen eigenen PDF-Tag gibt es nicht)
 - E-Mail: prompt-engineered@protonmail.com (dieselbe öffentliche Kontaktadresse wie bei CycleScope)
 - Website: https://sphaerox.github.io/unpaged/
 - Telefon: keine
