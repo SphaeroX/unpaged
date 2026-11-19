@@ -318,6 +318,190 @@ void main() {
     });
   });
 
+  group('formulas', () {
+    test('what stands on the row of an equation number is a formula, '
+        'even if its symbols read like words', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('Re = Wg - Wp dp qp gg;', x: 60, y: 120),
+        line('(2.67)', x: 180, y: 120),
+        ...prose(y: 150),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+      expect(blocks[1].box.left, lessThanOrEqualTo(60));
+      expect(blocks[1].box.right, greaterThanOrEqualTo(205));
+    });
+
+    test('a prose line before an equation number stays text', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('for this case the values in the table are taken from', y: 120),
+        line('(3)', x: 300, y: 120),
+        ...prose(y: 150),
+      ]);
+
+      expect(
+        blocks.map((b) => b.text).join(' '),
+        contains('the values in the table are taken from'),
+      );
+    });
+
+    test('stacked numbered equations keep all their numbers', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('aT = Nu k0 / d,', x: 60, y: 120),
+        line('(2.6)', x: 180, y: 120),
+        line('Nu = 2 + 0.459 Re Pr,', x: 60, y: 134),
+        line('(2.7)', x: 180, y: 134),
+        line('Re = v q d / g', x: 60, y: 148),
+        line('(2.8)', x: 180, y: 148),
+        ...prose(y: 180),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+      expect(blocks.map((b) => b.text).join(' '), isNot(contains('(2.')));
+    });
+
+    test('an equation with its number at the end of the same line '
+        'is a formula', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        // One run of glyphs: the number follows after a wide gap.
+        [
+          ...line('F = Fc - Fnp dnp cos anp ;', x: 40, y: 120),
+          ...line('(2.81)', x: 165, y: 120),
+        ],
+        ...prose(y: 150),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+    });
+
+    test('a sentence that ends with a reference to an equation stays text', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('It follows from the Eq. (2.66)', y: 120),
+        ...prose(y: 150),
+      ]);
+
+      expect(blocks.map((b) => b.type), everyElement(BlockType.paragraph));
+    });
+
+    test('an equation number under a two-row equation joins it', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('dT dr2 = dr dT if DTr', x: 40, y: 120),
+        line('= Tk - 2 Tk + Tk dr2', x: 60, y: 136),
+        line('(2.18)', x: 180, y: 150),
+        ...prose(y: 180),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+    });
+
+    test('a short sentence with inline math between formulas stays text', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('∂tv1 − µ1∆v1 = v1(−m + αv2),', x: 60, y: 120),
+        line('Thus, for every t ∈ [0, T],', y: 136),
+        line('∂tv2 − µ2∆v2 = v2(r − βv1),', x: 60, y: 152),
+        ...prose(y: 180),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+      expect(blocks[2].text, 'Thus, for every t ∈ [0, T],');
+    });
+
+    test('pieces of an equation on the row of its number are one formula', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('kP = r qg Wp gx gs gs', x: 30, y: 120),
+        line('= 6 Cd', x: 150, y: 120),
+        line('(2.29)', x: 215, y: 120),
+        ...prose(y: 150),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+      expect(blocks[1].box.left, lessThanOrEqualTo(30));
+      expect(blocks[1].box.right, greaterThanOrEqualTo(235));
+    });
+
+    test('a numbered equation of many word-like symbols is a formula', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        [
+          ...line(
+            'rx = rx(z); ry = ry(z); sxy = sxz; rz = syz = sxz = 0:',
+            y: 120,
+          ),
+          ...line('(3.25)', x: 262, y: 120),
+        ],
+        ...prose(y: 150),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+    });
+
+    // Springer's math fonts: "¼" is "=", "þ" is "+", "ð…Þ" are parentheses.
+    test('display equations in a math font without Unicode mapping are '
+        'formulas, inline math becomes readable', () {
+      final blocks = reflow([
+        ...prose(y: 60),
+        line('Re ¼ Wg - Wp dp qp gg;', x: 60, y: 120),
+        line('ð2:67Þ', x: 180, y: 120),
+        line('the capacity was approximated by y ¼ A1 þ A2 in all', y: 150),
+        line('of the cases that were considered in this chapter.', y: 162),
+        line('Sd ¼ 24=Re;', x: 60, y: 200),
+        line('ð2:68Þ', x: 180, y: 200),
+        ...prose(y: 230),
+      ]);
+
+      expect(blocks.map((b) => b.type), [
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+        BlockType.formula,
+        BlockType.paragraph,
+      ]);
+      expect(blocks[2].text, contains('approximated by y = A1 + A2 in all'));
+      final text = blocks.map((b) => b.text).join(' ');
+      for (final glyph in ['¼', 'þ', 'ð', 'Þ']) {
+        expect(text, isNot(contains(glyph)));
+      }
+    });
+  });
+
   group('a page set sideways', () {
     // A wide table turned by 90°: its text runs bottom-up in columns.
     List<List<TextChar>> rotated({String title = 'Table 3.1 Temperatures'}) => [

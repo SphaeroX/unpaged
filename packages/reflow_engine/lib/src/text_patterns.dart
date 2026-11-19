@@ -103,6 +103,18 @@ List<String> words(String text) =>
 int realWordCount(String text) =>
     words(text).where((w) => _realWord.hasMatch(w) && !_isMathName(w)).length;
 
+/// Number of prose words with at least four letters. The symbols of an
+/// equation may read like short words ("dp", "if", "rnn"), a sentence
+/// has longer ones.
+int longWordCount(String text) => words(text)
+    .where(
+      (w) =>
+          _realWord.hasMatch(w) &&
+          !_isMathName(w) &&
+          w.replaceAll(RegExp('[^A-Za-z]'), '').length >= 4,
+    )
+    .length;
+
 int mathCharCount(String text) => _mathChar.allMatches(text).length;
 
 /// Words of at least two letters in any case ("LLM", "Results").
@@ -125,6 +137,11 @@ bool _isMathName(String w) => const {
   'det',
   'arg',
   'mod',
+  'sinh',
+  'cosh',
+  'tanh',
+  'erf',
+  'erfc',
 }.contains(w.replaceAll(RegExp('[^a-z]'), ''));
 
 /// A line that reads like a display equation rather than prose.
@@ -135,9 +152,10 @@ bool looksLikeFormula(String text) {
   return real <= 2 && math >= 2 && math >= real;
 }
 
-final _equationNumber = RegExp(r'^\(\d+[a-z]?\)$');
+final _equationNumber = RegExp(r'^\(\d+(?:[.:]\d+)*[a-z]?\)$');
 
-/// "(1)", "(12b)": the number of a display equation.
+/// "(1)", "(12b)", "(2.64)": the number of a display equation ("(2:64)"
+/// in math fonts that print the period as a colon).
 bool isEquationNumber(String text) =>
     _equationNumber.hasMatch(text.replaceAll(' ', ''));
 

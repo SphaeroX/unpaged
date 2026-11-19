@@ -1,6 +1,7 @@
 import 'package:reflow_engine/src/classify.dart';
 import 'package:reflow_engine/src/hyphenation.dart';
 import 'package:reflow_engine/src/lines.dart';
+import 'package:reflow_engine/src/math_glyphs.dart';
 import 'package:reflow_engine/src/model.dart';
 import 'package:reflow_engine/src/paragraphs.dart';
 import 'package:reflow_engine/src/reading_order.dart';
@@ -19,9 +20,10 @@ class ReflowEngine {
   const new();
 
   /// Increase whenever the output for the same input changes.
-  static const version = 5;
+  static const version = 6;
 
-  ReflowDocument reflow(DocumentInput input) {
+  ReflowDocument reflow(DocumentInput document) {
+    final input = normalizeMathGlyphs(document);
     final rawLines = [for (final page in input.pages) buildLines(page.chars)];
     final bodyLines = removeRunningElements(input.pages, rawLines);
 
