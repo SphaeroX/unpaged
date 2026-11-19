@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:material_ui/material_ui.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:reflow_engine/reflow_engine.dart';
+import 'package:unpaged/core/pdf/graphics_detector.dart';
 import 'package:unpaged/core/pdf/pdf_adapter.dart';
 import 'package:unpaged/core/pdf/png_encoder.dart';
 
@@ -68,11 +69,57 @@ class PdfrxAdapter implements PdfAdapter {
         wordStart = false;
       }
     }
-    return PageInput(
+    final input = PageInput(
       number: page.pageNumber,
       width: page.width,
       height: page.height,
       chars: chars,
+    );
+    // Rendering costs time: only pages with a figure or table to locate.
+    if (!pageNeedsGraphics(input)) return input;
+    return input.withGraphics(await _graphics(page, chars));
+  }
+
+  /// Pixels per point of the page image the graphics are detected in.
+  static const graphicsScale = 1.0;
+
+  /// Longest side of that image in pixels (very large pages are scaled).
+  static const maxGraphicsSide = 2000;
+
+  /// What [page] shows besides its [chars] (pictures, drawings, rules),
+  /// read from a coarse rendering: pdfrx exposes no page objects.
+  static Future<List<BBox>> _graphics(
+    PdfPage page,
+    List<TextChar> chars,
+  ) async {
+    final longest = page.width > page.height ? page.width : page.height;
+    if (longest <= 0) return const [];
+    final scale = longest * graphicsScale > maxGraphicsSide
+        ? maxGraphicsSide / longest
+        : graphicsScale;
+    final width = (page.width * scale).round().clamp(1, maxGraphicsSide);
+    final height = (page.height * scale).round().clamp(1, maxGraphicsSide);
+    final image = await page.render(
+      width: width,
+      height: height,
+      fullWidth: page.width * scale,
+      fullHeight: page.height * scale,
+    );
+    if (image == null) return const [];
+    // The pixels are native memory that `dispose` frees: copy them first.
+    final Uint8List pixels;
+    final int w;
+    final int h;
+    try {
+      pixels = Uint8List.fromList(image.pixels);
+      (w, h) = (image.width, image.height);
+    } finally {
+      image.dispose();
+    }
+    final text = [for (final c in chars) c.box];
+    return await Isolate.run(
+      () =>
+          detectGraphics(pixels, width: w, height: h, scale: scale, text: text),
     );
   }
 

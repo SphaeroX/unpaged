@@ -91,6 +91,7 @@ class PageInput {
     required this.width,
     required this.height,
     required this.chars,
+    this.graphics,
   });
 
   factory fromJson(Map<String, dynamic> json) => PageInput(
@@ -101,6 +102,12 @@ class PageInput {
       for (final c in json['c'] as List<dynamic>)
         TextChar.fromJson(c as List<dynamic>),
     ],
+    graphics: json['g'] == null
+        ? null
+        : [
+            for (final g in json['g'] as List<dynamic>)
+              BBox.fromJson(g as List<dynamic>),
+          ],
   );
 
   /// 1-based page number.
@@ -109,11 +116,25 @@ class PageInput {
   final double height;
   final List<TextChar> chars;
 
+  /// Areas covered by pictures, drawings and rules (everything visible that
+  /// is not a glyph of [chars]); `null` if the page was not analysed.
+  final List<BBox>? graphics;
+
+  PageInput withGraphics(List<BBox> graphics) => PageInput(
+    number: number,
+    width: width,
+    height: height,
+    chars: chars,
+    graphics: graphics,
+  );
+
   Map<String, dynamic> toJson() => {
     'n': number,
     'w': _r(width),
     'h': _r(height),
     'c': [for (final c in chars) c.toJson()],
+    if (graphics case final graphics?)
+      'g': [for (final g in graphics) g.toJson()],
   };
 
   @override
@@ -122,7 +143,9 @@ class PageInput {
       other.number == number &&
       other.width == width &&
       other.height == height &&
-      _listEquals(other.chars, chars);
+      _listEquals(other.chars, chars) &&
+      (other.graphics == null) == (graphics == null) &&
+      _listEquals(other.graphics ?? const [], graphics ?? const []);
 
   @override
   int get hashCode => Object.hash(number, width, height, chars.length);

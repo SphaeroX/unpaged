@@ -46,12 +46,31 @@ List<List<TextLine>> removeRunningElements(
     return frontText.contains(text);
   }
 
+  // Books print a changing chapter or section title on the baseline of the
+  // page number: it goes with the number.
+  bool besidePageNumber(PageInput page, List<TextLine> lines, TextLine line) {
+    final key = zoneKey(page, line);
+    if (key == null) return false;
+    final zone = key.substring(0, key.indexOf('|'));
+    return lines.any((other) {
+      if (identical(other, line)) return false;
+      final otherKey = zoneKey(page, other);
+      if (otherKey == null || !otherKey.startsWith('$zone|')) return false;
+      final size = line.fontSize > other.fontSize
+          ? line.fontSize
+          : other.fontSize;
+      return _pageNumber.hasMatch(otherKey.substring(zone.length + 1)) &&
+          (other.baseline - line.baseline).abs() <= 0.5 * size;
+    });
+  }
+
   return [
     for (var i = 0; i < pages.length; i++)
       [
         for (final line in linesPerPage[i])
           if (!_inSideMargin(pages[i], line) &&
               !_isRunning(zoneKey(pages[i], line), pageCounts, pages.length) &&
+              !besidePageNumber(pages[i], linesPerPage[i], line) &&
               !(i > 0 &&
                   zoneKey(pages[i], line) != null &&
                   repeatsFrontMatter(line)))

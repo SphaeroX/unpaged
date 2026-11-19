@@ -133,9 +133,17 @@ List<Draft> buildParagraphs(List<(int, List<FlowItem>)> pages) {
           current = null;
           continue;
         case LineItem(:final line):
-          final kind = kindOf(line.text);
+          var kind = kindOf(line.text);
           final pageChanged = previousPage != pageNumber;
           previousPage = pageNumber;
+          // "Fig. 2.45. The calculation …" in the middle of a paragraph
+          // is a reference, not the start of a caption.
+          if (kind == LineKind.caption &&
+              current != null &&
+              !pageChanged &&
+              continuesLine(current.lines.last, line, pitch)) {
+            kind = LineKind.body;
+          }
 
           if (current == null) {
             final resumed = interrupted;

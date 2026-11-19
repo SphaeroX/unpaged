@@ -66,6 +66,7 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 
 - Die Engine-Tests laufen ohne pdfrx. Ihre Eingabe sind JSON-Fixtures `tests/reflow_engine/fixtures/<name>.json` (`DocumentInput`), die der echte pdfrx-Adapter aus `tests/reflow_engine/corpus/<name>.pdf` erzeugt.
 - `tests/app/core/pdf/corpus_fixtures_test.dart` prüft, dass Fixtures und Adapter-Ausgabe übereinstimmen. Nach einer **bewussten** Adapter-Änderung: `UPDATE_FIXTURES=1 flutter test tests/app/core/pdf/corpus_fixtures_test.dart`, danach Engine-Tests laufen lassen. Fixtures sind Eingabedaten, keine Snapshots.
+- Fixtures enthalten für Seiten mit Bild-/Tabellenunterschrift auch die Grafikflächen (`g`), die der Adapter aus dem Seitenbild liest. Handgebaute Engine-Tests geben sie über `page(nummer, zeilen, graphics: [...])` aus `tests/reflow_engine/helpers.dart` an; ohne `graphics` gilt die Seite als nicht untersucht.
 - Neue Korpus-PDF: Datei ablegen, Quelle und Lizenz in `tests/reflow_engine/corpus/SOURCES.md` eintragen, Fixture erzeugen. Synthetische PDFs entstehen mit `tests/reflow_engine/corpus/tool/generate_synthetic.py` (fpdf2, Anleitung im Skript).
 
 ## Welche Tests wann ausführen
