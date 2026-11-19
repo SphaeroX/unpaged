@@ -232,45 +232,153 @@ PageRegions detectRegions(List<TextLine> lines, PageInput page) {
     for (final l in lines)
       if (!consumed.contains(l) && !captionText.contains(l)) l,
   ];
+  final numbers = [
+    for (final l in free)
+      if (isEquationNumber(l.text)) l,
+  ];
+  // Symbols may read like words ("Re = Wg - Wp dp qp gg;"), so near an
+  // equation number everything but running text counts as the equation.
+  bool mayBeEquation(TextLine l) =>
+      !isEquationNumber(l.text) &&
+      // Running text has several words of a sentence.
+      !(isProse(l.text) && longWordCount(l.text) >= 3) &&
+      !isCaption(l.text) &&
+      !_isFlushProse(l, free);
+  bool onRowLeftOf(TextLine l, TextLine number) =>
+      !identical(l, number) &&
+      l.box.right <= number.box.left &&
+      l.box.top < number.box.bottom &&
+      number.box.top < l.box.bottom;
+  // The lines on the row of [number], up to the equation number before it
+  // (a second column has equations of its own).
+  List<TextLine> rowOf(TextLine number) {
+    var limit = double.negativeInfinity;
+    for (final other in numbers) {
+      if (onRowLeftOf(other, number) && other.box.right > limit) {
+        limit = other.box.right;
+      }
+    }
+    return [
+      for (final l in free)
+        if (onRowLeftOf(l, number) &&
+            !isEquationNumber(l.text) &&
+            l.box.left >= limit)
+          l,
+    ]..sort((a, b) => b.box.right.compareTo(a.box.right));
+  }
+
+  // A further row of an equation: a math sign and no word of a sentence.
+  bool isEquationRow(TextLine l) =>
+      mathCharCount(l.text) >= 1 &&
+      longWordCount(l.text) == 0 &&
+      mayBeEquation(l);
+
   final formulaLines = {
     for (final l in free)
-      if (looksLikeFormula(l.text) && !_isFlushProse(l, free)) l,
+      if ((looksLikeFormula(l.text) && !_isFlushProse(l, free)) ||
+          (_endsWithEquationNumber(l) && mayBeEquation(l)))
+        l,
   };
+  for (final number in numbers) {
+    // What stands on the row of an equation number is its equation: the
+    // line next to it, and further pieces if they read like one …
+    final row = rowOf(number);
+    if (row.isNotEmpty) {
+      if (mayBeEquation(row.first)) {
+        formulaLines
+          ..add(row.first)
+          ..addAll(row.skip(1).where(isEquationRow));
+      }
+      continue;
+    }
+    // … and a number on a row of its own belongs to the rows next to it.
+    for (final l in free) {
+      if (isEquationRow(l) &&
+          l.box.left < number.box.left &&
+          _verticalGap(l.box, number.box) <= 1.2 * pitch) {
+        formulaLines.add(l);
+      }
+    }
+  }
   var grew = true;
   while (grew) {
     grew = false;
     for (final l in free) {
-      if (formulaLines.contains(l) ||
-          isEquationNumber(l.text) ||
-          !mayJoinFormula(l.text)) {
-        continue;
-      }
-      if (formulaLines.any((f) => _near(f, l, 1.5 * pitch))) {
+      if (formulaLines.contains(l) || isEquationNumber(l.text)) continue;
+      // Fragments, and further rows of an equation.
+      final joins = mayJoinFormula(l.text) || isEquationRow(l);
+      if (joins && formulaLines.any((f) => _near(f, l, 1.5 * pitch))) {
         formulaLines.add(l);
         grew = true;
       }
     }
   }
   final groups = _cluster(formulaLines.toList(), 1.5 * pitch);
-  // An equation number belongs to the nearest formula on its left.
-  for (final number in free.where((l) => isEquationNumber(l.text))) {
+  // Pieces on the row of one equation number are one equation.
+  for (final number in numbers) {
+    final row = rowOf(number).where(formulaLines.contains).toSet();
+    final parts = groups.where((g) => g.any(row.contains)).toList();
+    if (parts.length < 2) continue;
+    groups
+      ..removeWhere(parts.contains)
+      ..add([for (final g in parts) ...g]);
+  }
+  // An equation number belongs to the formula on its row, else to the
+  // nearest one above or below it.
+  final boxes = {for (final g in groups) g: _union(g)};
+  final numbered = <TextLine, List<TextLine>>{};
+  for (final number in numbers) {
     List<TextLine>? best;
     var bestRight = double.negativeInfinity;
     for (final g in groups) {
-      final box = _union(g);
-      final sameRow =
-          box.top < number.box.bottom && number.box.top < box.bottom;
-      if (sameRow && box.right <= number.box.left && box.right > bestRight) {
-        best = g;
-        bestRight = box.right;
+      for (final l in g) {
+        if (onRowLeftOf(l, number) && l.box.right > bestRight) {
+          best = g;
+          bestRight = l.box.right;
+        }
       }
     }
-    best?.add(number);
+    if (best == null) {
+      var nearest = 1.2 * pitch;
+      for (final g in groups) {
+        final box = boxes[g]!;
+        final gap = _verticalGap(box, number.box);
+        if (box.left < number.box.left &&
+            box.right <= number.box.right + number.fontSize &&
+            gap <= nearest) {
+          best = g;
+          nearest = gap;
+        }
+      }
+    }
+    if (best != null) numbered[number] = best;
+  }
+  for (final MapEntry(key: number, value: group) in numbered.entries) {
+    group.add(number);
   }
   for (final group in groups) {
     consume(Region(BlockType.formula, _union(group)), group);
   }
   return PageRegions(regions, consumed);
+}
+
+/// Vertical distance between two boxes (0 if their rows overlap).
+double _verticalGap(BBox a, BBox b) => a.top > b.bottom
+    ? a.top - b.bottom
+    : b.top > a.bottom
+    ? b.top - a.bottom
+    : 0;
+
+final _trailingEquationNumber = RegExp(r'\(\d+(?:[.:]\d+)*[a-z]?\)$');
+
+/// Whether [line] ends with an equation number set off by a wide gap
+/// ("F = Fc - Fnp ;      (2.81)"), unlike a reference in a sentence.
+bool _endsWithEquationNumber(TextLine line) {
+  if (!_trailingEquationNumber.hasMatch(line.text.trimRight())) return false;
+  final open = line.chars.lastIndexWhere((c) => c.text == '(');
+  if (open <= 0) return false;
+  final gap = line.chars[open].box.left - line.chars[open - 1].box.right;
+  return gap >= 1.5 * line.fontSize;
 }
 
 double _pitch(List<TextLine> lines) {

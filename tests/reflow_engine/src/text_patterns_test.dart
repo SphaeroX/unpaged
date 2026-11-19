@@ -33,4 +33,41 @@ void main() {
       test('"$text" is body text', () => expect(isCaption(text), isFalse));
     }
   });
+
+  group('isEquationNumber', () {
+    for (final text in [
+      '(1)',
+      '(12b)',
+      '(2.64)',
+      '(2.103)',
+      '(3.16a)',
+      // The math font of Springer books prints the period as a colon.
+      '(2:64)',
+      '( 2.5 )',
+    ]) {
+      test('"$text" is an equation number', () {
+        expect(isEquationNumber(text), isTrue);
+      });
+    }
+
+    for (final text in ['(see 2.3)', '(2.5 mm)', '(a)', '2.64', '(1, 2)']) {
+      test('"$text" is not an equation number', () {
+        expect(isEquationNumber(text), isFalse);
+      });
+    }
+  });
+
+  group('longWordCount', () {
+    test('symbols that read like short words are no long words', () {
+      expect(longWordCount('Re = Wg - Wp dp qp gg;'), 0);
+      expect(longWordCount('dT dr2 = dr dT if DTr'), 0);
+      expect(longWordCount('C = 2 sin a cos b'), 0);
+      expect(longWordCount('T2 = Tk erfc x + cosh y'), 0);
+    });
+
+    test('counts the words of a sentence', () {
+      expect(longWordCount('Thus, for every t ∈ [0, T],'), 2);
+      expect(longWordCount('where a is the first term'), 3);
+    });
+  });
 }
