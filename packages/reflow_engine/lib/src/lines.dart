@@ -140,6 +140,13 @@ List<TextChar> dropVerticalText(List<TextChar> chars) {
   ];
 }
 
+/// Whether the page is set sideways: a large share of its glyphs runs
+/// vertically (a wide table turned by 90°), not just a margin note.
+bool isSidewaysPage(List<TextChar> chars) {
+  final vertical = chars.length - dropVerticalText(chars).length;
+  return vertical >= 40 && vertical >= 0.3 * chars.length;
+}
+
 List<_Group> _buildRuns(List<TextChar> chars) {
   final runs = <_Group>[];
   _Group? current;

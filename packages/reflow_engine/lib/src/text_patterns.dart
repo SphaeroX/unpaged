@@ -1,9 +1,28 @@
 /// Text-level patterns shared by block classification and region detection.
 library;
 
-final _caption = RegExp(
-  r'^(figure|fig\.|table|tab\.|abbildung|abb\.|tabelle)\s*'
-  r'(\d+|[ivxlc]+)[.:]',
+const _captionWord = r'^(figure|fig\.|table|tab\.|abbildung|abb\.|tabelle)\s*';
+
+/// "Fig. 1.3", "Table 2": caption word and arabic number.
+final _numberedCaption = RegExp(
+  '$_captionWord'
+  r'\d+(?:\.\d+)*[a-z]?',
+  caseSensitive: false,
+);
+
+/// What may follow the number of a caption: "Figure 1: …", "Fig. 2. …",
+/// or, without punctuation, the title itself ("Fig. 1.3 Scheme of …",
+/// "Fig. 4.2 a Microstructure …"). Body text that begins with a reference
+/// continues in lower case or with punctuation ("Fig. 2.19).",
+/// "Figure 2.50 shows …").
+final _afterCaptionNumber = RegExp(
+  r'^(?:[.:]|\s+(?:[^a-z0-9\s.,;:)\]]|[a-z]\s)|\s*$)',
+);
+
+/// "Table IV:", "Fig. ii." (roman numbers need the punctuation).
+final _romanCaption = RegExp(
+  '$_captionWord'
+  '[ivxlc]+[.:]',
   caseSensitive: false,
 );
 
@@ -39,7 +58,15 @@ final _mathChar = RegExp(
   'αβγδεζηθικλμνξπρστυφχψωΓΔΘΛΞΠΣΦΨΩ]',
 );
 
-bool isCaption(String text) => _caption.hasMatch(text.trimLeft());
+bool isCaption(String text) {
+  final t = text.trimLeft();
+  final numbered = _numberedCaption.matchAsPrefix(t);
+  if (numbered != null &&
+      _afterCaptionNumber.hasMatch(t.substring(numbered.end))) {
+    return true;
+  }
+  return _romanCaption.hasMatch(t);
+}
 
 bool isTableCaption(String text) => _tableCaption.hasMatch(text.trimLeft());
 

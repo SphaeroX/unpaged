@@ -33,11 +33,16 @@ List<TextChar> line(
   return chars;
 }
 
-PageInput page(int number, List<List<TextChar>> lines) => PageInput(
+PageInput page(
+  int number,
+  List<List<TextChar>> lines, {
+  List<BBox>? graphics,
+}) => PageInput(
   number: number,
   width: 600,
   height: 800,
   chars: [for (final l in lines) ...l],
+  graphics: graphics,
 );
 
 /// Lines of a column starting at [y] with a 12 pt pitch.

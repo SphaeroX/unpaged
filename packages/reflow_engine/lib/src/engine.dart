@@ -6,13 +6,20 @@ import 'package:reflow_engine/src/paragraphs.dart';
 import 'package:reflow_engine/src/reading_order.dart';
 import 'package:reflow_engine/src/regions.dart';
 import 'package:reflow_engine/src/running_elements.dart';
+import 'package:reflow_engine/src/text_patterns.dart';
+
+/// Whether the graphics of [page] ([PageInput.graphics]) help to lay it
+/// out: it has a figure or table caption, or it is set sideways.
+bool pageNeedsGraphics(PageInput page) =>
+    isSidewaysPage(page.chars) ||
+    buildLines(page.chars).any((l) => isCaption(l.text));
 
 /// Turns the characters of a document into reflowable blocks.
 class ReflowEngine {
   const new();
 
   /// Increase whenever the output for the same input changes.
-  static const version = 4;
+  static const version = 5;
 
   ReflowDocument reflow(DocumentInput input) {
     final rawLines = [for (final page in input.pages) buildLines(page.chars)];
