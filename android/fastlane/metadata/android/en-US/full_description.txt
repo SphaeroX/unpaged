@@ -16,6 +16,10 @@ Made for scientific papers, textbooks and technical documentation, including two
 • The PDF exactly as published, with smooth zooming
 • Switch between original and eBook with one tap
 
+<b>Find your way</b>
+• Search the whole document in both views, tap a hit to jump there
+• Fast-scroll handle at the edge with the page number for long documents
+
 <b>Library</b>
 • Your PDFs with reading progress, continue where you stopped
 • The eBook version is prepared once in the background after import
