@@ -184,66 +184,110 @@ class PdfrxAdapter implements PdfAdapter {
 
   static double _clamp(double v, double max) => v.clamp(0, max).toDouble();
 
+  /// pdfrx keeps the controller it saw first, so each screen's
+  /// [PageViewController] maps to one pdfrx controller for its lifetime.
+  final _viewers = Expando<PdfViewerController>();
+
+  PdfViewerController? _viewerFor(PageViewController? controller) {
+    if (controller == null) return null;
+    final viewer = _viewers[controller] ??= PdfViewerController();
+    controller.goToHandler = (page) async {
+      if (viewer.isReady) await viewer.goToPage(pageNumber: page);
+    };
+    return viewer;
+  }
+
   @override
   Widget pageView(
     String path, {
+    PageViewController? controller,
     int initialPage = 1,
     ValueChanged<int>? onPageChanged,
     List<PageHighlight> highlights = const [],
     List<SelectionAction> selectionActions = const [],
     ValueChanged<int>? onHighlightTap,
-  }) => PdfViewer.file(
-    path,
-    initialPageNumber: initialPage,
-    params: PdfViewerParams(
-      onPageChanged: (page) {
-        if (page != null) onPageChanged?.call(page);
-      },
-      pageOverlaysBuilder: (context, pageRect, page) {
-        final scale = pageRect.width / page.width;
-        return [
-          for (final h in highlights.where((h) => h.page == page.pageNumber))
-            for (final r in h.rects)
-              Positioned(
-                left: r.left * scale,
-                top: r.top * scale,
-                width: r.width * scale,
-                height: r.height * scale,
-                child: PdfOverlayInteractionRegion(
-                  onTap: (_) {
-                    onHighlightTap?.call(h.id);
-                    return true;
-                  },
-                  child: ColoredBox(
-                    color: Color(h.argb).withValues(alpha: 0.4),
+  }) {
+    final viewer = _viewerFor(controller);
+    return PdfViewer.file(
+      path,
+      controller: viewer,
+      initialPageNumber: initialPage,
+      params: PdfViewerParams(
+        viewerOverlayBuilder: viewer == null
+            ? null
+            : (context, size, _) => [
+                PdfViewerScrollThumb(
+                  controller: viewer,
+                  thumbSize: const Size(48, 36),
+                  thumbBuilder: (context, size, page, _) =>
+                      _thumb(context, page),
+                ),
+              ],
+        onPageChanged: (page) {
+          if (page != null) onPageChanged?.call(page);
+        },
+        pageOverlaysBuilder: (context, pageRect, page) {
+          final scale = pageRect.width / page.width;
+          return [
+            for (final h in highlights.where((h) => h.page == page.pageNumber))
+              for (final r in h.rects)
+                Positioned(
+                  left: r.left * scale,
+                  top: r.top * scale,
+                  width: r.width * scale,
+                  height: r.height * scale,
+                  child: PdfOverlayInteractionRegion(
+                    onTap: (_) {
+                      onHighlightTap?.call(h.id);
+                      return true;
+                    },
+                    child: ColoredBox(
+                      color: Color(h.argb).withValues(alpha: 0.4),
+                    ),
                   ),
                 ),
-              ),
-        ];
-      },
-      // Extend pdfrx' own menu (Copy, Select all); a replaced menu has to
-      // position itself, and a wrongly nested Positioned shows a grey box.
-      customizeContextMenuItems: (params, items) {
-        final delegate = params.textSelectionDelegate;
-        addSelectionActions(
-          items,
-          selectionActions,
-          hasSelection:
-              params.isTextSelectionEnabled && delegate.hasSelectedText,
-          selection: () async => [
-            for (final r in await delegate.getSelectedTextRanges())
-              PdfSelection(
-                page: r.pageNumber,
-                start: r.start,
-                end: r.end,
-                text: r.text,
-              ),
-          ],
-          dismiss: () => unawaited(delegate.clearTextSelection()),
-        );
-      },
-    ),
-  );
+          ];
+        },
+        // Extend pdfrx' own menu (Copy, Select all); a replaced menu has to
+        // position itself, and a wrongly nested Positioned shows a grey box.
+        customizeContextMenuItems: (params, items) {
+          final delegate = params.textSelectionDelegate;
+          addSelectionActions(
+            items,
+            selectionActions,
+            hasSelection:
+                params.isTextSelectionEnabled && delegate.hasSelectedText,
+            selection: () async => [
+              for (final r in await delegate.getSelectedTextRanges())
+                PdfSelection(
+                  page: r.pageNumber,
+                  start: r.start,
+                  end: r.end,
+                  text: r.text,
+                ),
+            ],
+            dismiss: () => unawaited(delegate.clearTextSelection()),
+          );
+        },
+      ),
+    );
+  }
+
+  /// The grip of the fast-scroll thumb with the current page number.
+  static Widget _thumb(BuildContext context, int? page) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.secondaryContainer,
+      elevation: 2,
+      borderRadius: const BorderRadius.horizontal(left: Radius.circular(18)),
+      child: Center(
+        child: Text(
+          page == null ? '' : '$page',
+          style: TextStyle(color: scheme.onSecondaryContainer),
+        ),
+      ),
+    );
+  }
 
   /// Puts [actions] in front of the default selection [items], so Android
   /// does not hide them in the overflow menu.
@@ -266,6 +310,19 @@ class PdfrxAdapter implements PdfAdapter {
           },
         ),
     ]);
+  }
+
+  @override
+  Stream<PageText> pageTexts(String path) async* {
+    final document = await _open(path);
+    try {
+      for (final page in document.pages) {
+        final text = await page.loadStructuredText();
+        yield PageText(page: page.pageNumber, text: text.fullText);
+      }
+    } finally {
+      await document.dispose();
+    }
   }
 
   @override

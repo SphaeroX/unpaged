@@ -7,6 +7,7 @@ import 'package:unpaged/core/database/app_database.dart';
 import 'package:unpaged/core/pdf/pdf_adapter.dart';
 import 'package:unpaged/features/progress/data/reading_position_repository.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
+import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
@@ -23,6 +24,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -57,6 +59,15 @@ void main() {
     await settleIo(tester);
 
     expect(find.text('No books yet. Open a PDF to start.'), findsOneWidget);
+
+    await env.unmount(tester);
+  });
+
+  testWidgets('the app bar links to the source code on GitHub', (tester) async {
+    await tester.pumpWidget(buildTestApp(overrides: overrides()));
+    await settleIo(tester);
+
+    expect(find.byTooltip('Unpaged on GitHub'), findsOneWidget);
 
     await env.unmount(tester);
   });
@@ -154,7 +165,7 @@ void main() {
     await tester.tap(find.text('Paper One'));
     await settleIo(tester);
 
-    expect(find.byTooltip('Original view'), findsOneWidget);
+    expect(find.byType(ReaderScreen), findsOneWidget);
 
     await env.unmount(tester);
   });

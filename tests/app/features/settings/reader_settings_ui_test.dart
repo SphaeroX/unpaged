@@ -9,6 +9,7 @@ import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 import 'package:unpaged/features/settings/data/settings_repository.dart';
 import 'package:unpaged/features/settings/domain/reader_settings.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 import '../../helpers/text_style.dart';
@@ -76,7 +77,7 @@ void main() {
     tester,
   ) async {
     await pumpReader(tester);
-    await tester.tap(find.byTooltip('Reading settings'));
+    await chooseFromMenu(tester, 'Reading settings');
     await tester.pumpAndSettle();
 
     await tester.tap(find.byTooltip('Larger text'));
@@ -89,7 +90,7 @@ void main() {
 
   testWidgets('choosing sepia changes the reader background', (tester) async {
     await pumpReader(tester);
-    await tester.tap(find.byTooltip('Reading settings'));
+    await chooseFromMenu(tester, 'Reading settings');
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Sepia'));

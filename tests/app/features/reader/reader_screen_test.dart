@@ -10,6 +10,7 @@ import 'package:unpaged/features/reflow/data/reflow_store.dart';
 import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
 import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 import '../../helpers/text_style.dart';
@@ -74,6 +75,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -186,11 +188,11 @@ void main() {
       await pumpViewer(tester);
       expect(find.text('ORIGINAL'), findsOneWidget);
 
-      await tester.tap(find.byTooltip('eBook view'));
+      await chooseFromMenu(tester, 'eBook view');
       await settleIo(tester);
       expect(find.text('Body text here.'), findsOneWidget);
 
-      await tester.tap(find.byTooltip('Original view'));
+      await chooseFromMenu(tester, 'Original view');
       await settleIo(tester);
       expect(find.text('ORIGINAL'), findsOneWidget);
       await env.unmount(tester);
@@ -211,7 +213,7 @@ void main() {
           );
       await pumpViewer(tester);
 
-      await tester.tap(find.byTooltip('eBook view'));
+      await chooseFromMenu(tester, 'eBook view');
       await settleIo(tester);
 
       expect(find.text('Preparing eBook … 50 %'), findsOneWidget);

@@ -7,6 +7,7 @@ import 'package:unpaged/core/files/book_file_store.dart';
 import 'package:unpaged/core/files/pdf_picker.dart';
 import 'package:unpaged/core/files/pdf_source.dart';
 import 'package:unpaged/core/platform/incoming_pdf_channel.dart';
+import 'package:unpaged/core/widgets/app_bar_actions.dart';
 import 'package:unpaged/features/import/domain/import_service.dart';
 import 'package:unpaged/features/progress/data/reading_position_repository.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
@@ -124,7 +125,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final l10n = AppLocalizations.of(context);
     final books = ref.watch(booksProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle)),
+      appBar: AppBar(title: Text(l10n.appTitle), actions: appBarActions([])),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _pick,
         icon: const Icon(Icons.file_open),

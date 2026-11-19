@@ -6,12 +6,15 @@ import 'package:flutter_riverpod/misc.dart'
 import 'package:material_ui/material_ui.dart';
 import 'package:unpaged/core/database/app_database.dart';
 import 'package:unpaged/core/pdf/pdf_adapter.dart';
+import 'package:unpaged/core/widgets/app_bar_actions.dart';
 import 'package:unpaged/features/annotations/data/annotation_repository.dart';
 import 'package:unpaged/features/annotations/domain/annotation.dart';
 import 'package:unpaged/features/annotations/presentation/annotation_sheets.dart';
 import 'package:unpaged/features/progress/data/reading_position_repository.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/reader/presentation/reader_screen.dart';
+import 'package:unpaged/features/search/domain/text_search.dart';
+import 'package:unpaged/features/search/presentation/search_screen.dart';
 import 'package:unpaged/features/share/presentation/share_menu.dart';
 import 'package:unpaged/l10n/gen/app_localizations.dart';
 
@@ -78,6 +81,51 @@ class ViewerScreen extends ConsumerStatefulWidget {
 
 class _ViewerScreenState extends ConsumerState<ViewerScreen> {
   late int _page = widget.initialPage;
+
+  /// Moves the page view (fast scrolling, search hits).
+  final _pages = PageViewController();
+
+  /// The last search, shown again when the search is reopened.
+  String _query = '';
+
+  /// The search hit currently marked on its page.
+  PageHighlight? _found;
+
+  /// Id of [_found]; annotation ids are positive.
+  static const _foundId = -1;
+
+  Future<void> _search() async {
+    final adapter = ref.read(pdfAdapterProvider);
+    final hit = await SearchScreen.show(
+      context,
+      initialQuery: _query,
+      search: (query) {
+        _query = query;
+        return searchPages(
+          adapter.pageTexts(widget.path).map((p) => (p.page, p.text)),
+          query,
+        );
+      },
+    );
+    if (hit == null || !mounted) return;
+    final argb = Theme.of(context).colorScheme.tertiary.toARGB32();
+    final rects = await adapter.textRects(
+      widget.path,
+      page: hit.page,
+      start: hit.match.start,
+      end: hit.match.end,
+    );
+    if (!mounted) return;
+    setState(
+      () => _found = PageHighlight(
+        id: _foundId,
+        page: hit.page,
+        rects: rects,
+        argb: argb,
+      ),
+    );
+    await _pages.goToPage(hit.page);
+  }
 
   void _onPageChanged(int page, int pageCount) {
     _page = page;
@@ -174,32 +222,43 @@ class _ViewerScreenState extends ConsumerState<ViewerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title ?? l10n.appTitle),
-        actions: [
+        actions: appBarActions([
+          MenuEntry(
+            icon: Icons.search,
+            label: l10n.search,
+            onSelected: _search,
+          ),
           if (id != null)
-            IconButton(
-              tooltip: l10n.highlights,
-              icon: const Icon(Icons.bookmarks_outlined),
-              onPressed: () => showAnnotationList(context, [
+            MenuEntry(
+              icon: Icons.bookmarks_outlined,
+              label: l10n.highlights,
+              onSelected: () => showAnnotationList(context, [
                 for (final (a, _) in highlights) a,
               ], onOpen: (a) => _goToPage(a.page)),
             ),
           if (id != null)
-            IconButton(
-              tooltip: l10n.switchToEbook,
-              icon: const Icon(Icons.menu_book_outlined),
-              onPressed: () => _switchToEbook(book),
+            MenuEntry(
+              icon: Icons.menu_book_outlined,
+              label: l10n.switchToEbook,
+              onSelected: () => _switchToEbook(book),
             ),
-          PdfShareMenu(path: widget.path, title: widget.title ?? l10n.appTitle),
-        ],
+          ...pdfShareEntries(
+            context,
+            ref,
+            path: widget.path,
+            title: widget.title ?? l10n.appTitle,
+          ),
+        ]),
       ),
       body: info.when(
         data: (info) => ref
             .read(pdfAdapterProvider)
             .pageView(
               widget.path,
+              controller: _pages,
               initialPage: widget.initialPage,
               onPageChanged: (p) => _onPageChanged(p, info.pageCount),
-              highlights: [for (final (_, h) in highlights) h],
+              highlights: [for (final (_, h) in highlights) h, ?_found],
               selectionActions: id == null
                   ? const []
                   : [

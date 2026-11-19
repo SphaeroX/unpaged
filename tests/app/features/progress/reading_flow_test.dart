@@ -10,6 +10,7 @@ import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 
@@ -43,6 +44,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -108,7 +110,7 @@ void main() {
     onPageChanged!(4);
     await settleIo(tester);
 
-    await tester.tap(find.byTooltip('eBook view'));
+    await chooseFromMenu(tester, 'eBook view');
     await settleIo(tester);
 
     expect(isAtTop(tester, 'Block 0 on page 4.'), isTrue);
@@ -123,7 +125,7 @@ void main() {
       const ReaderScreen(bookId: 'abc', title: 'Paper', initialPage: 2),
     );
 
-    await tester.tap(find.byTooltip('Original view'));
+    await chooseFromMenu(tester, 'Original view');
     await settleIo(tester);
 
     expect(find.text('ORIGINAL page 2'), findsOneWidget);

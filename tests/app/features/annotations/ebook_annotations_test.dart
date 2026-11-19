@@ -8,6 +8,7 @@ import 'package:unpaged/features/annotations/domain/annotation.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 
@@ -197,7 +198,7 @@ void main() {
     final a = (await load(tester)).single;
     expect(a.orphaned, isTrue);
 
-    await tester.tap(find.byTooltip('Highlights'));
+    await chooseFromMenu(tester, 'Highlights');
     await tester.pumpAndSettle();
     expect(find.text('Not found in the current version'), findsOneWidget);
     await env.unmount(tester);

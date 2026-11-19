@@ -158,9 +158,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get orphanedHighlight => 'In der aktuellen Fassung nicht gefunden';
 
   @override
-  String get shareMenu => 'Teilen oder drucken';
-
-  @override
   String get sharePdf => 'PDF teilen';
 
   @override
@@ -168,4 +165,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shareUnavailable => 'Keine App zum Teilen oder Drucken gefunden.';
+
+  @override
+  String get search => 'Suchen';
+
+  @override
+  String get searchHint => 'Im Dokument suchen';
+
+  @override
+  String get searchNoResults => 'Keine Treffer.';
+
+  @override
+  String searchLimited(int count) {
+    return 'Nur die ersten $count Treffer werden angezeigt.';
+  }
+
+  @override
+  String get moreOptions => 'Weitere Optionen';
+
+  @override
+  String get gitHub => 'Unpaged auf GitHub';
+
+  @override
+  String get linkUnavailable => 'Keine App gefunden, die den Link öffnen kann.';
 }

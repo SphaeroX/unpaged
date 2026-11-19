@@ -16,6 +16,10 @@ Gemacht für wissenschaftliche Paper, Fachbücher und technische Dokumentation, 
 • Die PDF genau wie veröffentlicht, mit flüssigem Zoom
 • Mit einem Tipp zwischen Original und eBook wechseln
 
+<b>Schnell zurechtfinden</b>
+• Im ganzen Dokument suchen, in beiden Ansichten, Treffer antippen springt hin
+• Schnellscroll-Griff am Rand mit Seitenzahl für lange Dokumente
+
 <b>Bibliothek</b>
 • Deine PDFs mit Lesestand, weiterlesen, wo du aufgehört hast
 • Die eBook-Fassung wird nach dem Import einmal im Hintergrund vorbereitet

@@ -14,6 +14,7 @@ import 'package:unpaged/core/files/pdf_source.dart';
 import 'package:unpaged/features/reflow/data/reflow_store.dart';
 import 'package:unpaged/l10n/gen/app_localizations.dart';
 
+import '../app/helpers/menu.dart';
 import '../app/helpers/test_app.dart';
 import 'sample_pdfs.g.dart';
 
@@ -150,7 +151,11 @@ void main() {
     await binding.takeScreenshot('${prefix}02_original');
 
     // The same paper reflowed as an eBook.
-    await tester.tap(find.byTooltip(l10n.switchToEbook));
+    await chooseFromMenu(
+      tester,
+      l10n.switchToEbook,
+      menuTooltip: l10n.moreOptions,
+    );
     await tester.pumpAndSettle();
     await _settle(tester);
     await binding.takeScreenshot('${prefix}03_ebook');
@@ -170,7 +175,11 @@ void main() {
     await binding.takeScreenshot('${prefix}04_ebook_figure');
 
     // Reading settings with the sepia theme.
-    await tester.tap(find.byTooltip(l10n.readingSettings));
+    await chooseFromMenu(
+      tester,
+      l10n.readingSettings,
+      menuTooltip: l10n.moreOptions,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text(l10n.themeSepia));
     await tester.pumpAndSettle();

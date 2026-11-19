@@ -47,6 +47,8 @@ Everything happens on the device. Unpaged has no network access, no analytics an
 - **Library with reading progress** – continue where you stopped, in the view you used last.
 - **Reading settings** – serif (Literata), sans (Atkinson Hyperlegible) or system font, text size, line spacing, light / dark / sepia theme.
 - **Highlights and notes** – in both views, stored only inside the app; your PDF is never modified.
+- **Search** in both views – hits listed with their page; tapping one jumps there and marks the word.
+- **Fast scrolling** – drag the handle at the right edge to fly through long documents, with the page number shown while dragging.
 - **Share and print** the original PDF.
 - **Import** via the file picker, "Open with" and "Share" from other apps.
 - English and German user interface.
@@ -131,5 +133,6 @@ Unpaged is released under the [MIT License](LICENSE).
 ### Credits
 
 - PDF rendering and text extraction: [pdfrx](https://pub.dev/packages/pdfrx) with [PDFium](https://pdfium.googlesource.com/pdfium/).
+- GitHub mark in the app bar: [Primer Octicons](https://github.com/primer/octicons), MIT License.
 - Fonts: [Literata](https://github.com/googlefonts/literata) and [Atkinson Hyperlegible](https://www.brailleinstitute.org/freefont/), SIL Open Font License 1.1.
 - The paper in the screenshots is the first three pages of H. K. Utsha, M. Muntasir, M. M. R. Adnan, *Predicting local electric field in Al<sub>x</sub>Ga<sub>1-x</sub>N p-i-n photodiodes using exciton Franz-Keldysh photocurrent spectroscopy*, [arXiv:2611.19296](https://arxiv.org/abs/2611.19296), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). All test documents and their licences are listed in [tests/reflow_engine/corpus/SOURCES.md](tests/reflow_engine/corpus/SOURCES.md).

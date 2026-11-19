@@ -42,7 +42,11 @@ platform :android do
   lane :metadata do
     upload_to_play_store(
       json_key_data: play_json_key,
-      metadata_path: File.join(__dir__, "metadata", "android"),
+      # The listing is app-wide, but supply picks a release of a track and
+      # fails when production holds several (one in review, one draft).
+      track: "internal",
+      # Not __dir__: fastlane evals the Fastfile, there it is just ".".
+      metadata_path: File.join(ROOT, "android", "fastlane", "metadata", "android"),
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_changelogs: true,

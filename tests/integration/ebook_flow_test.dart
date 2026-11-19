@@ -8,8 +8,10 @@ import 'package:pdfrx/pdfrx.dart';
 import 'package:unpaged/core/files/book_file_store.dart';
 import 'package:unpaged/core/files/pdf_picker.dart';
 import 'package:unpaged/core/files/pdf_source.dart';
+import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 import 'package:unpaged/features/reflow/data/reflow_store.dart';
 
+import '../app/helpers/menu.dart';
 import '../app/helpers/test_app.dart';
 
 /// tests/reflow_engine/corpus/synthetic_single_column.pdf (CC0), inlined.
@@ -53,7 +55,7 @@ void main() {
     for (var i = 0; i < 50; i++) {
       await tester.pump(const Duration(milliseconds: 200));
     }
-    await tester.tap(find.byTooltip('eBook view'));
+    await chooseFromMenu(tester, 'eBook view');
     await tester.pumpAndSettle();
 
     expect(
@@ -82,7 +84,7 @@ void main() {
     for (var i = 0; i < 50; i++) {
       await tester.pump(const Duration(milliseconds: 200));
     }
-    await tester.tap(find.byTooltip('eBook view'));
+    await chooseFromMenu(tester, 'eBook view');
     await tester.pumpAndSettle();
     await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
     await tester.pumpAndSettle();
@@ -92,6 +94,6 @@ void main() {
     await tester.tap(find.text('synthetic'));
     await tester.pumpAndSettle();
 
-    expect(find.byTooltip('Original view'), findsOneWidget);
+    expect(find.byType(ReaderScreen), findsOneWidget);
   });
 }

@@ -26,6 +26,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -95,6 +96,7 @@ void main() {
     verifyNever(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
