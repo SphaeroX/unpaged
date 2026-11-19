@@ -9,6 +9,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:reflow_engine/reflow_engine.dart';
 import 'package:unpaged/core/database/app_database.dart';
 import 'package:unpaged/core/files/book_file_store.dart';
+import 'package:unpaged/core/widgets/app_bar_actions.dart';
+import 'package:unpaged/core/widgets/fast_scroll_thumb.dart';
 import 'package:unpaged/features/annotations/data/annotation_repository.dart';
 import 'package:unpaged/features/annotations/domain/annotation.dart';
 import 'package:unpaged/features/annotations/domain/reanchor.dart';
@@ -17,6 +19,8 @@ import 'package:unpaged/features/progress/data/reading_position_repository.dart'
 import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/reflow/data/reflow_store.dart';
 import 'package:unpaged/features/reflow/domain/reflow_scheduler.dart';
+import 'package:unpaged/features/search/domain/text_search.dart';
+import 'package:unpaged/features/search/presentation/search_screen.dart';
 import 'package:unpaged/features/settings/domain/reader_settings.dart';
 import 'package:unpaged/features/settings/presentation/reader_settings_controller.dart';
 import 'package:unpaged/features/settings/presentation/reader_settings_sheet.dart';
@@ -88,11 +92,16 @@ class ReaderScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        actions: [
-          IconButton(
-            tooltip: l10n.highlights,
-            icon: const Icon(Icons.bookmarks_outlined),
-            onPressed: () async {
+        actions: appBarActions([
+          MenuEntry(
+            icon: Icons.search,
+            label: l10n.search,
+            onSelected: () => current.search?.call(),
+          ),
+          MenuEntry(
+            icon: Icons.bookmarks_outlined,
+            label: l10n.highlights,
+            onSelected: () async {
               final list = await ref
                   .read(annotationRepositoryProvider)
                   .list(bookId, ReadingView.ebook);
@@ -118,15 +127,15 @@ class ReaderScreen extends ConsumerWidget {
               );
             },
           ),
-          IconButton(
-            tooltip: l10n.readingSettings,
-            icon: const Icon(Icons.text_fields),
-            onPressed: () => ReaderSettingsSheet.show(context),
+          MenuEntry(
+            icon: Icons.text_fields,
+            label: l10n.readingSettings,
+            onSelected: () => ReaderSettingsSheet.show(context),
           ),
-          IconButton(
-            tooltip: l10n.switchToOriginal,
-            icon: const Icon(Icons.picture_as_pdf_outlined),
-            onPressed: () => Navigator.of(context).pushReplacement(
+          MenuEntry(
+            icon: Icons.picture_as_pdf_outlined,
+            label: l10n.switchToOriginal,
+            onSelected: () => Navigator.of(context).pushReplacement(
               MaterialPageRoute<void>(
                 builder: (_) => ViewerScreen(
                   path: ref.read(bookFileStoreProvider).fileFor(bookId).path,
@@ -137,11 +146,13 @@ class ReaderScreen extends ConsumerWidget {
               ),
             ),
           ),
-          PdfShareMenu(
+          ...pdfShareEntries(
+            context,
+            ref,
             path: ref.read(bookFileStoreProvider).fileFor(bookId).path,
             title: title,
           ),
-        ],
+        ]),
       ),
       body: switch ((doc, saved)) {
         (AsyncData(value: final doc?), AsyncData(value: final position)) =>
@@ -173,10 +184,12 @@ class ReaderScreen extends ConsumerWidget {
   }
 }
 
-/// The block currently at the top of the reader (shared with the app bar
-/// action that switches to the original view).
+/// Shared between the app bar and the block list: the page at the top of
+/// the reader (for switching to the original view) and the search, which
+/// the block list provides once the document is shown.
 class _CurrentBlock {
   int? page;
+  VoidCallback? search;
 }
 
 class _Unavailable extends StatelessWidget {
@@ -224,6 +237,19 @@ class _BlockListState extends ConsumerState<_BlockList> {
   final _centerKey = UniqueKey();
   final GlobalKey<State<StatefulWidget>> _viewportKey = GlobalKey();
   final _itemKeys = <int, GlobalKey>{};
+  final _scroll = ScrollController();
+
+  /// Block at the scroll origin; jumps (fast scrolling, search) move it.
+  late int _start = widget.initialIndex.clamp(0, _blocks.length);
+
+  /// Block at the top of the viewport, for the fast-scroll thumb.
+  late int _top = _start;
+
+  /// The search hit marked in its block.
+  SearchHit? _found;
+
+  /// The last search, shown again when the search is reopened.
+  String _query = '';
 
   List<ReflowBlock> get _blocks => widget.doc.blocks;
 
@@ -233,6 +259,41 @@ class _BlockListState extends ConsumerState<_BlockList> {
     widget.current.page = pageOfBlock(widget.doc, widget.initialIndex);
     unawaited(_reanchorHighlights());
   }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  /// Shows block [index] at the top and remembers it as the position.
+  void _jumpTo(int index) {
+    final i = index.clamp(0, _blocks.length - 1);
+    if (_scroll.hasClients) _scroll.jumpTo(0);
+    setState(() {
+      _start = i;
+      _top = i;
+    });
+    _save(i);
+  }
+
+  Future<void> _search() async {
+    final hit = await SearchScreen.show(
+      context,
+      initialQuery: _query,
+      search: (query) {
+        _query = query;
+        return Stream.fromIterable(searchBlocks(widget.doc, query));
+      },
+    );
+    if (hit == null || !mounted) return;
+    setState(() => _found = hit);
+    _jumpTo(_blocks.indexWhere((b) => b.id == hit.blockId));
+  }
+
+  double get _fraction => _blocks.length < 2 ? 0 : _top / (_blocks.length - 1);
+
+  int _indexAt(double fraction) => (fraction * (_blocks.length - 1)).round();
 
   /// Moves eBook highlights made with another engine version to where
   /// their quote is now; unknown quotes are kept as orphaned.
@@ -293,7 +354,10 @@ class _BlockListState extends ConsumerState<_BlockList> {
         bestDistance = distance;
       }
     }
-    if (best != null) _save(best);
+    if (best != null) {
+      _save(best);
+      if (best != _top) setState(() => _top = best!);
+    }
   }
 
   void _save(int index) {
@@ -330,19 +394,23 @@ class _BlockListState extends ConsumerState<_BlockList> {
               block: block,
               bookId: widget.bookId,
               engineVersion: widget.doc.engineVersion,
+              found: _found?.blockId == block.id ? _found?.match : null,
             ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final start = widget.initialIndex.clamp(0, _blocks.length);
+    widget.current.search = _search;
+    final l10n = AppLocalizations.of(context);
+    final start = _start;
     // Two slivers around a centre: the list starts at [start] without
     // measuring the (variable) heights of the blocks before it.
-    return NotificationListener<ScrollEndNotification>(
+    final list = NotificationListener<ScrollEndNotification>(
       onNotification: _onScrollEnd,
       child: CustomScrollView(
         key: _viewportKey,
+        controller: _scroll,
         center: _centerKey,
         slivers: [
           SliverList(
@@ -364,6 +432,18 @@ class _BlockListState extends ConsumerState<_BlockList> {
         ],
       ),
     );
+    if (_blocks.length < 2) return list;
+    int pageAt(double f) => _blocks[_indexAt(f)].page;
+    return FastScrollThumb(
+      fraction: _fraction,
+      label: (f) => '${pageAt(f)}',
+      dragLabel: (f) => l10n.pageLabel(pageAt(f)),
+      onDrag: (f) {
+        final i = _indexAt(f);
+        if (i != _start) _jumpTo(i);
+      },
+      child: list,
+    );
   }
 }
 
@@ -372,11 +452,15 @@ class _TextBlock extends ConsumerWidget {
     required this.block,
     required this.bookId,
     required this.engineVersion,
+    this.found,
   });
 
   final ReflowBlock block;
   final String bookId;
   final int engineVersion;
+
+  /// A search hit in this block, marked until the next search.
+  final TextMatch? found;
 
   Future<void> _highlight(
     BuildContext context,
@@ -415,22 +499,25 @@ class _TextBlock extends ConsumerWidget {
         );
   }
 
-  /// The block text with highlighted ranges as coloured spans.
-  static TextSpan _spans(String text, List<Annotation> marks, TextStyle style) {
-    final sorted = [...marks]..sort((a, b) => a.start.compareTo(b.start));
+  /// The block text with marked ranges (start, end, colour) as coloured
+  /// spans.
+  static TextSpan _spans(
+    String text,
+    List<(int, int, Color)> marks,
+    TextStyle style,
+  ) {
+    final sorted = [...marks]..sort((a, b) => a.$1.compareTo(b.$1));
     final children = <TextSpan>[];
     var pos = 0;
-    for (final m in sorted) {
-      final start = m.start.clamp(pos, text.length);
-      final end = m.end.clamp(start, text.length);
+    for (final (from, to, color) in sorted) {
+      final start = from.clamp(pos, text.length);
+      final end = to.clamp(start, text.length);
       if (start > pos) children.add(TextSpan(text: text.substring(pos, start)));
       if (end > start) {
         children.add(
           TextSpan(
             text: text.substring(start, end),
-            style: TextStyle(
-              backgroundColor: Color(m.color.argb).withValues(alpha: 0.55),
-            ),
+            style: TextStyle(backgroundColor: color),
           ),
         );
       }
@@ -484,7 +571,16 @@ class _TextBlock extends ConsumerWidget {
     return Padding(
       padding: padding,
       child: SelectableText.rich(
-        _spans(block.text, marks, style),
+        _spans(block.text, [
+          for (final m in marks)
+            (m.start, m.end, Color(m.color.argb).withValues(alpha: 0.55)),
+          if (found case final f?)
+            (
+              f.start,
+              f.end,
+              Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.4),
+            ),
+        ], style),
         onSelectionChanged: (selection, cause) {
           if (cause != SelectionChangedCause.tap || !selection.isCollapsed) {
             return;

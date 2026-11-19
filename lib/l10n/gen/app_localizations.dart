@@ -356,12 +356,6 @@ abstract class AppLocalizations {
   /// **'Not found in the current version'**
   String get orphanedHighlight;
 
-  /// No description provided for @shareMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'Share or print'**
-  String get shareMenu;
-
   /// No description provided for @sharePdf.
   ///
   /// In en, this message translates to:
@@ -379,6 +373,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No app found to share or print with.'**
   String get shareUnavailable;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in the document'**
+  String get searchHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches.'**
+  String get searchNoResults;
+
+  /// No description provided for @searchLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the first {count} matches are shown.'**
+  String searchLimited(int count);
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @gitHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaged on GitHub'**
+  String get gitHub;
+
+  /// No description provided for @linkUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No app found to open the link.'**
+  String get linkUnavailable;
 }
 
 class _AppLocalizationsDelegate

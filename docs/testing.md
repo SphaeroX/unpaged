@@ -37,7 +37,7 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 | `tests/reflow_engine/` | Tests des Engine-Pakets, gespiegelt zu `packages/reflow_engine/lib/` | **Kein** Import von Flutter oder pdfrx |
 | `tests/reflow_engine/corpus/` | Frei lizenzierte Test-PDFs + `SOURCES.md` (Quelle und Lizenz je Datei) | Nur Dateien mit nachgewiesener freier Lizenz |
 | `tests/reflow_engine/snapshots/` | Erwartete Engine-Ergebnisse als JSON | Siehe Snapshot-Regeln |
-| `tests/app/helpers/` | Gemeinsame Test-Hilfen (z. B. `buildTestApp` mit Provider-Overrides) | – |
+| `tests/app/helpers/` | Gemeinsame Test-Hilfen (z. B. `buildTestApp` mit Provider-Overrides, `chooseFromMenu` für Einträge im ⋮-Menü der App-Leiste) | – |
 | `tests/fixtures/` | Kleine, selbst erzeugte PDFs für App-Tests (keine Fremdlizenzen) | Pfade relativ zum Projekt-Root |
 | `tests/integration/` | `integration_test`-Abläufe (Import, Lesen, Moduswechsel) | Nur Kernabläufe |
 | `tests/screenshots/` | README- und Play-Store-Screenshots: `screenshots_test.dart` (Ablauf), `driver.dart` (schreibt `docs/screenshots/<name>.png`), `sample_pdfs.g.dart` (Korpus-PDFs als Base64, erzeugt von `tool/generate_sample_pdfs.sh`) | Läuft nur über `flutter drive`, nicht mit `flutter test`; keine Prüfungen, nur Aufnahmen |
@@ -49,6 +49,8 @@ Unit-, Widget- und Engine-Tests laufen auf dem Host ohne Gerät. Integrationstes
 ## Muster
 
 - Abhängigkeiten werden über Riverpod-Provider ersetzt (`provider.overrideWithValue(mock)`), nie über globale Variablen.
+- mocktail-Stubs greifen nur, wenn die Zahl der benannten Argumente exakt passt: Stubs von `PdfAdapter.pageView` listen alle benannten Parameter (auch `controller: any(named: 'controller')`). Bekommt eine Adapter-Methode einen neuen Parameter, müssen alle Stubs ihn aufnehmen.
+- Aktionen der App-Leiste liegen im ⋮-Menü: in Tests `await chooseFromMenu(tester, 'Label')` (`tests/app/helpers/menu.dart`; Integrationstests importieren ihn von dort, Screenshots mit `menuTooltip: l10n.moreOptions`).
 - Der echte pdfrx-Adapter wird auf dem Host gegen echte PDFs getestet; PDFium wird beim ersten `flutter test` automatisch als Native Asset geladen. Initialisierung im Test: `setUpAll(() => pdfrxInitialize(tmpPath: Directory.systemTemp.path))`.
 - Integrationstests binden Test-PDFs inline (Base64) ein, damit keine Test-Assets ins App-Bundle gelangen.
 - Widget-Tests mit Datenbank/Dateien: `TestEnv` aus `tests/app/helpers/test_env.dart` (In-Memory-drift + Temp-Verzeichnis, `env.overrides`). Echte Datei-I/O läuft im Fake-Async-Kontext nicht von selbst → nach Aktionen `await settleIo(tester)`. Am Ende jedes Widget-Tests `await env.unmount(tester)` (drift-Stream-Timer laufen aus), im `tearDown` `env.dispose()` (wartet bewusst nicht auf drift, sonst hängt der Test).

@@ -11,6 +11,7 @@ import 'package:unpaged/features/annotations/domain/annotation.dart';
 import 'package:unpaged/features/progress/domain/reading_position.dart';
 import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 
@@ -39,6 +40,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -182,7 +184,7 @@ void main() {
     );
     await pumpViewer(tester);
 
-    await tester.tap(find.byTooltip('Highlights'));
+    await chooseFromMenu(tester, 'Highlights');
     await tester.pumpAndSettle();
     await tester.tap(find.text('on page four'));
     await settleIo(tester);
@@ -190,6 +192,7 @@ void main() {
     final call = verify(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: captureAny(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),

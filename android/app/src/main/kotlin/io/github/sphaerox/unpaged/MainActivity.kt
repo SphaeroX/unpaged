@@ -33,6 +33,8 @@ class MainActivity : FlutterActivity() {
         }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PdfShare.CHANNEL)
             .setMethodCallHandler(PdfShare(this))
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, ExternalLink.CHANNEL)
+            .setMethodCallHandler(ExternalLink(this))
     }
 
     override fun onNewIntent(intent: Intent) {

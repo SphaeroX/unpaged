@@ -156,6 +156,73 @@ void main() {
     });
   });
 
+  group('PdfrxAdapter.pageView fast scrolling', () {
+    const pdf = 'tests/fixtures/three_pages.pdf';
+
+    test('a controller adds the draggable scroll thumb', () {
+      final viewer = PdfrxAdapter().pageView(
+        pdf,
+        controller: PageViewController(),
+      ) as PdfViewer;
+
+      expect(viewer.controller, isNotNull);
+      expect(viewer.params.viewerOverlayBuilder, isNotNull);
+    });
+
+    test('keeps one pdfrx controller per page view controller', () {
+      // The screen rebuilds the viewer often; pdfrx only takes the
+      // controller it saw first.
+      final adapter = PdfrxAdapter();
+      final controller = PageViewController();
+
+      final a = adapter.pageView(pdf, controller: controller) as PdfViewer;
+      final b = adapter.pageView(pdf, controller: controller) as PdfViewer;
+      final other =
+          adapter.pageView(pdf, controller: PageViewController()) as PdfViewer;
+
+      expect(b.controller, same(a.controller));
+      expect(other.controller, isNot(same(a.controller)));
+    });
+
+    test('goToPage before the viewer is shown does nothing', () async {
+      await PageViewController().goToPage(2);
+    });
+  });
+
+  group('PdfrxAdapter.pageTexts', () {
+    test('yields the text of every page in order', () async {
+      final pages = await PdfrxAdapter()
+          .pageTexts('tests/fixtures/three_pages.pdf')
+          .toList();
+
+      expect(pages.map((p) => p.page), [1, 2, 3]);
+      expect(pages[1].text, contains('Hello paperflow page 2'));
+    });
+
+    test('offsets fit textRects, so a found word can be highlighted', () async {
+      const pdf = 'tests/fixtures/three_pages.pdf';
+      final adapter = PdfrxAdapter();
+      final page = (await adapter.pageTexts(pdf).toList())[2];
+      final start = page.text.indexOf('page 3');
+
+      final boxes = await adapter.textRects(
+        pdf,
+        page: 3,
+        start: start,
+        end: start + 'page 3'.length,
+      );
+
+      expect(boxes, hasLength(1));
+    });
+
+    test('throws PdfOpenException for a broken file', () async {
+      expect(
+        PdfrxAdapter().pageTexts('tests/fixtures/not_a_pdf.pdf').toList(),
+        throwsA(isA<PdfOpenException>()),
+      );
+    });
+  });
+
   group('PdfrxAdapter selection menu', () {
     const chosen = PdfSelection(page: 2, start: 5, end: 17, text: 'words');
 

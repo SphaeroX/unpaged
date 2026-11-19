@@ -84,8 +84,21 @@
     }
   },
   "orphanedHighlight": "Not found in the current version",
-  "shareMenu": "Share or print",
   "sharePdf": "Share PDF",
   "printPdf": "Print",
-  "shareUnavailable": "No app found to share or print with."
+  "shareUnavailable": "No app found to share or print with.",
+  "search": "Search",
+  "searchHint": "Search in the document",
+  "searchNoResults": "No matches.",
+  "searchLimited": "Only the first {count} matches are shown.",
+  "@searchLimited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moreOptions": "More options",
+  "gitHub": "Unpaged on GitHub",
+  "linkUnavailable": "No app found to open the link."
 }

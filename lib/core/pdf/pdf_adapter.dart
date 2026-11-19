@@ -76,6 +76,28 @@ class SelectionAction {
   final void Function(List<PdfSelection> selection) onSelected;
 }
 
+/// The text of one page; offsets match [PdfAdapter.textRects].
+@immutable
+class PageText {
+  const new({required this.page, required this.text});
+
+  /// 1-based page number.
+  final int page;
+  final String text;
+}
+
+/// Steers a [PdfAdapter.pageView]: the screen owns it for as long as it
+/// shows the view, the adapter connects it to its viewer.
+class PageViewController {
+  /// Set by the adapter when it builds the view.
+  Future<void> Function(int page)? goToHandler;
+
+  /// Scrolls to [page] (1-based); does nothing before the view is shown.
+  Future<void> goToPage(int page) async {
+    await goToHandler?.call(page);
+  }
+}
+
 /// The only gateway to the PDF engine. Features never import pdfrx directly.
 abstract class PdfAdapter {
   /// Opens the PDF at [path] and returns basic facts.
@@ -98,14 +120,22 @@ abstract class PdfAdapter {
 
   /// Widget showing the original pages of the PDF at [path], starting at
   /// [initialPage]; [onPageChanged] reports the current page (1-based).
+  /// With a [controller] the view gets a draggable scroll thumb for fast
+  /// scrolling and can be moved to a page.
   Widget pageView(
     String path, {
+    PageViewController? controller,
     int initialPage = 1,
     ValueChanged<int>? onPageChanged,
     List<PageHighlight> highlights = const [],
     List<SelectionAction> selectionActions = const [],
     ValueChanged<int>? onHighlightTap,
   });
+
+  /// The text of every page, page by page (for searching).
+  ///
+  /// Throws [PdfOpenException] if the file cannot be read as a PDF.
+  Stream<PageText> pageTexts(String path);
 
   /// Boxes (one per line, top-down page points) covering the characters
   /// [start]..[end) of [page].

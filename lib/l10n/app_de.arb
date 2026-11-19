@@ -43,8 +43,14 @@
   "noHighlights": "Noch keine Markierungen.",
   "pageLabel": "Seite {page}",
   "orphanedHighlight": "In der aktuellen Fassung nicht gefunden",
-  "shareMenu": "Teilen oder drucken",
   "sharePdf": "PDF teilen",
   "printPdf": "Drucken",
-  "shareUnavailable": "Keine App zum Teilen oder Drucken gefunden."
+  "shareUnavailable": "Keine App zum Teilen oder Drucken gefunden.",
+  "search": "Suchen",
+  "searchHint": "Im Dokument suchen",
+  "searchNoResults": "Keine Treffer.",
+  "searchLimited": "Nur die ersten {count} Treffer werden angezeigt.",
+  "moreOptions": "Weitere Optionen",
+  "gitHub": "Unpaged auf GitHub",
+  "linkUnavailable": "Keine App gefunden, die den Link öffnen kann."
 }

@@ -9,6 +9,7 @@ import 'package:unpaged/core/platform/pdf_share_channel.dart';
 import 'package:unpaged/features/reader/presentation/reader_screen.dart';
 import 'package:unpaged/features/viewer/presentation/viewer_screen.dart';
 
+import '../../helpers/menu.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/test_env.dart';
 
@@ -28,6 +29,7 @@ void main() {
     when(
       () => adapter.pageView(
         any(),
+        controller: any(named: 'controller'),
         initialPage: any(named: 'initialPage'),
         onPageChanged: any(named: 'onPageChanged'),
         highlights: any(named: 'highlights'),
@@ -95,9 +97,7 @@ void main() {
   ) async {
     await pumpViewer(tester);
 
-    await tester.tap(find.byTooltip('Share or print'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Share PDF'));
+    await chooseFromMenu(tester, 'Share PDF');
     await settleIo(tester);
 
     verify(() => share.share(storedPath(), name: 'Paper.pdf')).called(1);
@@ -107,9 +107,7 @@ void main() {
   testWidgets('original view: "Print" opens the print dialog', (tester) async {
     await pumpViewer(tester);
 
-    await tester.tap(find.byTooltip('Share or print'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Print'));
+    await chooseFromMenu(tester, 'Print');
     await settleIo(tester);
 
     verify(() => share.print(storedPath(), name: 'Paper.pdf')).called(1);
@@ -125,9 +123,7 @@ void main() {
     );
     await settleIo(tester);
 
-    await tester.tap(find.byTooltip('Share or print'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Share PDF'));
+    await chooseFromMenu(tester, 'Share PDF');
     await settleIo(tester);
 
     verify(() => share.share(storedPath(), name: 'Paper.pdf')).called(1);
@@ -141,9 +137,7 @@ void main() {
         .thenAnswer((_) async => false);
     await pumpViewer(tester, locale: const Locale('de'));
 
-    await tester.tap(find.byTooltip('Teilen oder drucken'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('PDF teilen'));
+    await chooseFromMenu(tester, 'PDF teilen', menuTooltip: 'Weitere Optionen');
     await settleIo(tester);
 
     expect(

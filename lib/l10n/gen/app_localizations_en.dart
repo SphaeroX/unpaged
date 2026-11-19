@@ -156,9 +156,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orphanedHighlight => 'Not found in the current version';
 
   @override
-  String get shareMenu => 'Share or print';
-
-  @override
   String get sharePdf => 'Share PDF';
 
   @override
@@ -166,4 +163,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareUnavailable => 'No app found to share or print with.';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get searchHint => 'Search in the document';
+
+  @override
+  String get searchNoResults => 'No matches.';
+
+  @override
+  String searchLimited(int count) {
+    return 'Only the first $count matches are shown.';
+  }
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get gitHub => 'Unpaged on GitHub';
+
+  @override
+  String get linkUnavailable => 'No app found to open the link.';
 }
